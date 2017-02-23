@@ -15,7 +15,7 @@ class AddColumnUsername extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('username', 50)->after('id')->unique();
-            $table->string('email', 50)->nullable();
+            $table->string('email', 50)->nullable()->change();
         });
     }
 
