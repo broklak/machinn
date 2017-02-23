@@ -11,8 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('master/room-number', 'Master\RoomNumberController');
 
-Route::resource('nomor-kamar', 'Master\RoomNumberController');
+Auth::routes();
+Route::get('logout', 'Auth\LoginController@logout');
+
+Route::get('/', 'Master\RoomNumberController@index');
