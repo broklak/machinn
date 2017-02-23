@@ -1,2 +1,1 @@
-# machinn
 Hotel Management System
