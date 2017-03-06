@@ -12,7 +12,7 @@ class GlobalHelper
 {
     public static function setDisplayMessage($messageType = 'error', $message = 'Error Message')
     {
-        $message = '<div class="notification ' . $messageType . '">' . $message . '</div>';
+        $message = '<div style="margin:20px 0" class="alert alert-' . $messageType . '">' . $message . '</div>';
         return $message;
     }
 
@@ -21,6 +21,14 @@ class GlobalHelper
         $money = $currency . number_format($money,0,',',',');
 
         return $money;
+    }
+
+    public static function setActivationStatus($status){
+        if($status == 0){
+            return '<span class="label label-important">Not Active</span>';
+        }
+
+        return '<span class="label label-success">Active</span>';
     }
 }
 
