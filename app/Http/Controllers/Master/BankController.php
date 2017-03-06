@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Master;
 use App\Bank;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\GlobalHelper;
 
@@ -14,7 +13,6 @@ class BankController extends Controller
     /**
      * @var
      */
-    const table = 'banks';
     const limit = 1;
 
     /**
@@ -24,7 +22,7 @@ class BankController extends Controller
      */
     public function index()
     {
-        $rows = DB::table(self::table)->paginate(self::limit);
+        $rows = Bank::paginate(self::limit);
         $data['rows'] = $rows;
         return view('master.bank.index', $data);
     }
