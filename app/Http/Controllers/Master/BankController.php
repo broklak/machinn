@@ -13,7 +13,7 @@ class BankController extends Controller
     /**
      * @var
      */
-    const limit = 1;
+    const limit = 20;
 
     /**
      * Display a listing of the resource.

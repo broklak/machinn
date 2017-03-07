@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('js_name', 'sites/js.'.$view->getName());
         View::share('css_name', 'sites/css.'.$view->getName());
         View::share('banner_title', $this->formatUrlToTitle(Route::current()->uri()));
+        View::share('menu', config('app.menu'));
     }
 
     protected function formatUrlToTitle ($url) {

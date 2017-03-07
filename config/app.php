@@ -228,4 +228,10 @@ return [
 
     ],
 
+    'menu' => [
+        'master' => [
+            'bank'
+        ]
+    ]
+
 ];
