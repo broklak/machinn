@@ -230,6 +230,8 @@ return [
 
     'limitPerPage' => 20,
 
+    'defaultRoute'  => 'bank',
+
     'menu' => [
         'master' => [
             'bank',

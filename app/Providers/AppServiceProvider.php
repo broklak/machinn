@@ -56,12 +56,17 @@ class AppServiceProvider extends ServiceProvider
 
     protected function getMasterModuleName (){
         $name = Request::segment(2);
-
+        if($name == null){
+            $name = config('app.defaultRoute');
+        }
         return ucwords(str_replace('-', ' ', $name));
     }
 
     protected function getRoutingModule(){
         $route = Route::currentRouteName();
+        if($route == null){
+            return config('app.defaultRoute');
+        }
         $name = explode('.', $route);
         return $name[0];
     }

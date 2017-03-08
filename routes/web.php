@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'Master\BankController@index');
 
 Route::resource('master/room-number', 'Master\RoomNumberController');
 
@@ -24,5 +25,3 @@ Route::resource('master/banquet', 'Master\BanquetController');
 
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
-
-Route::get('/', 'Master\RoomNumberController@index');
