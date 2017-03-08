@@ -228,9 +228,13 @@ return [
 
     ],
 
+    'limitPerPage' => 20,
+
     'menu' => [
         'master' => [
-            'bank'
+            'bank',
+            'banquet-event',
+            'banquet'
         ]
     ]
 

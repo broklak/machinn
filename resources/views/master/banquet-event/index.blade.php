@@ -1,3 +1,5 @@
+@php
+@endphp
 @extends('layout.main')
 
 @section('title', 'Home')
@@ -28,14 +30,14 @@
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
-                                        <td>{{$val->bank_name}}</td>
-                                        <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->bank_status)!!}</td>
+                                        <td>{{$val->event_name}}</td>
+                                        <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->event_status)!!}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->bank_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            @if($val->bank_status == 0)
-                                                <a onclick="return confirm('You will activate {{$val->bank_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->bank_id, 'status' => $val->bank_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->event_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            @if($val->event_status == 0)
+                                                <a onclick="return confirm('You will activate {{$val->event_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->event_id, 'status' => $val->event_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
                                             @else
-                                                <a onclick="return confirm('You will deactivate {{$val->bank_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->bank_id, 'status' => $val->bank_status])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>
+                                                <a onclick="return confirm('You will deactivate {{$val->event_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->event_id, 'status' => $val->event_status])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>
                                             @endif
                                         </td>
                                     </tr>

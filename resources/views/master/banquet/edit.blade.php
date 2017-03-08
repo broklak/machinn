@@ -22,13 +22,25 @@
                         <h5>Edit {{$master_module}} Data</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->bank_id])}}" method="post">
+                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->banquet_id])}}" method="post">
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input id="name" required type="text" value="{{$row->bank_name}}" name="bank_name" />
+                                        <input id="name" required type="text" value="{{$row->banquet_name}}" name="banquet_name" />
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">{{$master_module}} Start Time</label>
+                                        <div class="controls">
+                                            <input style="width: 30em" required value="{{$row->banquet_start}}"  type="text" name="banquet_start" />
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">{{$master_module}} End Time</label>
+                                        <div class="controls">
+                                            <input style="width: 30em" required type="text" value="{{$row->banquet_end}}"  name="banquet_end" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -1,3 +1,5 @@
+@php
+@endphp
 @extends('layout.main')
 
 @section('title', 'Home')
@@ -20,6 +22,8 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -28,14 +32,16 @@
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
-                                        <td>{{$val->bank_name}}</td>
-                                        <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->bank_status)!!}</td>
+                                        <td>{{$val->banquet_name}}</td>
+                                        <td>{{$val->banquet_start}}</td>
+                                        <td>{{$val->banquet_end}}</td>
+                                        <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->banquet_status)!!}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->bank_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            @if($val->bank_status == 0)
-                                                <a onclick="return confirm('You will activate {{$val->bank_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->bank_id, 'status' => $val->bank_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->banquet_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            @if($val->banquet_status == 0)
+                                                <a onclick="return confirm('You will activate {{$val->banquet_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->banquet_id, 'status' => $val->banquet_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
                                             @else
-                                                <a onclick="return confirm('You will deactivate {{$val->bank_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->bank_id, 'status' => $val->bank_status])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>
+                                                <a onclick="return confirm('You will deactivate {{$val->banquet_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->banquet_id, 'status' => $val->banquet_status])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>
                                             @endif
                                         </td>
                                     </tr>

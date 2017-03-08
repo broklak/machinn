@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\Bank;
+use App\BanquetEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 
-class BankController extends Controller
+class BanquetEventController extends Controller
 {
-    /**
-     * @var
-     */
-
     /**
      * Display a listing of the resource.
      *
@@ -20,9 +16,9 @@ class BankController extends Controller
      */
     public function index()
     {
-        $rows = Bank::paginate(config('app.limitPerPage'));
+        $rows = BanquetEvent::paginate(config('app.limitPerPage'));
         $data['rows'] = $rows;
-        return view("master.bank.index", $data);
+        return view('master.banquet-event.index', $data);
     }
 
     /**
@@ -32,7 +28,7 @@ class BankController extends Controller
      */
     public function create()
     {
-        return view('master.bank.create');
+        return view('master.banquet-event.create');
     }
 
     /**
@@ -44,15 +40,15 @@ class BankController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'bank_name'  => 'required|max:75|min:3'
+            'event_name'  => 'required|max:75|min:3'
         ]);
 
-        Bank::create([
-           'bank_name'   => $request->input('bank_name')
+        BanquetEvent::create([
+            'event_name'   => $request->input('event_name')
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
-        return redirect(route('bank.index'))->with('displayMessage', $message);
+        return redirect(route('banquet-event.index'))->with('displayMessage', $message);
     }
 
     /**
@@ -74,8 +70,8 @@ class BankController extends Controller
      */
     public function edit($id)
     {
-        $data['row'] = Bank::find($id);
-        return view('master.bank.edit', $data);
+        $data['row'] = BanquetEvent::find($id);
+        return view('master.banquet-event.edit', $data);
     }
 
     /**
@@ -88,17 +84,17 @@ class BankController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'bank_name'  => 'required|max:75|min:3'
+            'event_name'  => 'required|max:75|min:3'
         ]);
 
-        $bank = Bank::find($id);
+        $event = BanquetEvent::find($id);
 
-        $bank->bank_name = $request->input('bank_name');
+        $event->event_name = $request->input('event_name');
 
-        $bank->save();
+        $event->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
-        return redirect(route('bank.index'))->with('displayMessage', $message);
+        return redirect(route('banquet-event.index'))->with('displayMessage', $message);
     }
 
     /**
@@ -118,7 +114,7 @@ class BankController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
-        $bank = Bank::find($id);
+        $event = BanquetEvent::find($id);
 
         if($status == 1){
             $active = 0;
@@ -126,11 +122,11 @@ class BankController extends Controller
             $active = 1;
         }
 
-        $bank->bank_status = $active;
+        $event->event_status = $active;
 
-        $bank->save();
+        $event->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$bank->bank_name);
-        return redirect(route('bank.index'))->with('displayMessage', $message);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$event->event_name);
+        return redirect(route('banquet-event.index'))->with('displayMessage', $message);
     }
 }
