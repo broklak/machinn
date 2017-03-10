@@ -23,6 +23,10 @@ class GlobalHelper
         return $money;
     }
 
+    public static function dateFormat ($date){
+        return date('j F Y', strtotime($date));
+    }
+
     public static function setActivationStatus($status){
         if($status == 0){
             return '<span class="label label-important">Not Active</span>';

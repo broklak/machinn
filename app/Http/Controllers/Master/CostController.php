@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\BanquetEvent;
+use App\Cost;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
+use App\Http\Controllers\Controller;
 
-class BanquetEventController extends Controller
+class CostController extends Controller
 {
     /**
      * @var
@@ -19,13 +19,17 @@ class BanquetEventController extends Controller
      */
     private $module;
 
+    private $type;
+
     public function __construct()
     {
         $this->middleware('auth');
 
-        $this->model = new BanquetEvent();
+        $this->model = new Cost();
 
-        $this->module = 'banquet-event';
+        $this->module = 'cost';
+
+        $this->type = ['1' => 'Fix Cost', '2' => 'Variable Cost'];
     }
 
     /**
@@ -47,7 +51,8 @@ class BanquetEventController extends Controller
      */
     public function create()
     {
-        return view("master.".$this->module.".create");
+        $data['type'] = $this->type;
+        return view("master.".$this->module.".create", $data);
     }
 
     /**
@@ -59,11 +64,14 @@ class BanquetEventController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'cost_name'  => 'required|max:75|min:3',
+            'cost_date'  => 'required'
         ]);
 
         $this->model->create([
-            'event_name'   => $request->input('event_name')
+            'cost_name'   => $request->input('cost_name'),
+            'cost_date'   => $request->input('cost_date'),
+            'cost_type'   => $request->input('cost_type'),
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -89,6 +97,7 @@ class BanquetEventController extends Controller
      */
     public function edit($id)
     {
+        $data['type'] = $this->type;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
     }
@@ -103,12 +112,15 @@ class BanquetEventController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'cost_name'  => 'required|max:75|min:3',
+            'cost_date'  => 'required'
         ]);
 
         $data = $this->model->find($id);
 
-        $data->event_name = $request->input('event_name');
+        $data->cost_name = $request->input('cost_name');
+        $data->cost_type = $request->input('cost_type');
+        $data->cost_date = $request->input('cost_date');
 
         $data->save();
 
@@ -141,11 +153,11 @@ class BanquetEventController extends Controller
             $active = 1;
         }
 
-        $data->event_status = $active;
+        $data->cost_status = $active;
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->event_name);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->cost_name);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\BanquetEvent;
+use App\CreditCardType;
+use App\Helpers\GlobalHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Helpers\GlobalHelper;
 
-class BanquetEventController extends Controller
+class CreditCardTypeController extends Controller
 {
     /**
      * @var
@@ -23,9 +23,9 @@ class BanquetEventController extends Controller
     {
         $this->middleware('auth');
 
-        $this->model = new BanquetEvent();
+        $this->model = new CreditCardType();
 
-        $this->module = 'banquet-event';
+        $this->module = 'credit-card-type';
     }
 
     /**
@@ -59,11 +59,11 @@ class BanquetEventController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'cc_type_name'  => 'required|max:75|min:3'
         ]);
 
         $this->model->create([
-            'event_name'   => $request->input('event_name')
+            'cc_type_name'   => $request->input('cc_type_name')
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -103,12 +103,12 @@ class BanquetEventController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'cc_type_name'  => 'required|max:75|min:3'
         ]);
 
         $data = $this->model->find($id);
 
-        $data->event_name = $request->input('event_name');
+        $data->cc_type_name = $request->input('cc_type_name');
 
         $data->save();
 
@@ -141,11 +141,11 @@ class BanquetEventController extends Controller
             $active = 1;
         }
 
-        $data->event_status = $active;
+        $data->cc_type_status = $active;
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->event_name);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->cc_type_name);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

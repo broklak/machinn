@@ -236,7 +236,12 @@ return [
         'master' => [
             'bank',
             'banquet-event',
-            'banquet'
+            'banquet',
+            'cash-account',
+            'credit-card-type',
+            'cost',
+            'country',
+            'department'
         ]
     ]
 

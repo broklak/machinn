@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\BanquetEvent;
+use App\CashAccount;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 
-class BanquetEventController extends Controller
+class CashAccountController extends Controller
 {
     /**
      * @var
@@ -23,9 +23,9 @@ class BanquetEventController extends Controller
     {
         $this->middleware('auth');
 
-        $this->model = new BanquetEvent();
+        $this->model = new CashAccount();
 
-        $this->module = 'banquet-event';
+        $this->module = 'cash-account';
     }
 
     /**
@@ -59,11 +59,15 @@ class BanquetEventController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'cash_account_name'  => 'required|max:75|min:3',
+            'cash_account_desc'  => 'max:255|min:3',
+            'cash_account_amount'  => 'required|numeric',
         ]);
 
         $this->model->create([
-            'event_name'   => $request->input('event_name')
+            'cash_account_name'   => $request->input('cash_account_name'),
+            'cash_account_desc'   => $request->input('cash_account_desc'),
+            'cash_account_amount' => $request->input('cash_account_amount'),
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -103,12 +107,16 @@ class BanquetEventController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'cash_account_name'  => 'required|max:75|min:3',
+            'cash_account_desc'  => 'max:255|min:3',
+            'cash_account_amount'  => 'required|numeric',
         ]);
 
         $data = $this->model->find($id);
 
-        $data->event_name = $request->input('event_name');
+        $data->cash_account_name = $request->input('cash_account_name');
+        $data->cash_account_desc = $request->input('cash_account_desc');
+        $data->cash_account_amount = $request->input('cash_account_amount');
 
         $data->save();
 
@@ -132,20 +140,21 @@ class BanquetEventController extends Controller
      * @param $status
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function changeStatus($id, $status) {
+    public function changeStatus($id, $status)
+    {
         $data = $this->model->find($id);
 
-        if($status == 1){
+        if ($status == 1) {
             $active = 0;
         } else {
             $active = 1;
         }
 
-        $data->event_status = $active;
+        $data->cash_account_status = $active;
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->event_name);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of ' . $data->cash_account_name);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

@@ -3,16 +3,29 @@
 namespace App\Http\Controllers\Master;
 
 use App\Banquet;
-use App\BanquetEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 
 class BanquetController extends Controller
 {
+    /**
+     * @var
+     */
+    private $model;
+
+    /**
+     * @var
+     */
+    private $module;
+
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->model = new Banquet();
+
+        $this->module = 'banquet';
     }
 
     /**
@@ -22,9 +35,9 @@ class BanquetController extends Controller
      */
     public function index()
     {
-        $rows = Banquet::paginate(config('app.limitPerPage'));
+        $rows = $this->model->paginate();
         $data['rows'] = $rows;
-        return view('master.banquet.index', $data);
+        return view("master.".$this->module.".index", $data);
     }
 
     /**
@@ -34,7 +47,7 @@ class BanquetController extends Controller
      */
     public function create()
     {
-        return view('master.banquet.create');
+        return view("master.".$this->module.".create");
     }
 
     /**
@@ -52,7 +65,7 @@ class BanquetController extends Controller
 
         ]);
 
-        Banquet::create([
+        $this->model->create([
             'banquet_name'   => $request->input('banquet_name'),
             'banquet_start'   => $request->input('banquet_start'),
             'banquet_end'   => $request->input('banquet_end'),
@@ -60,7 +73,7 @@ class BanquetController extends Controller
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
-        return redirect(route('banquet.index'))->with('displayMessage', $message);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -82,8 +95,8 @@ class BanquetController extends Controller
      */
     public function edit($id)
     {
-        $data['row'] = Banquet::find($id);
-        return view('master.banquet.edit', $data);
+        $data['row'] = $this->model->find($id);
+        return view("master.".$this->module.".edit", $data);
     }
 
     /**
@@ -102,16 +115,16 @@ class BanquetController extends Controller
 
         ]);
 
-        $banquet = Banquet::find($id);
+        $data = $this->model->find($id);
 
-        $banquet->banquet_name = $request->input('banquet_name');
-        $banquet->banquet_start = $request->input('banquet_start');
-        $banquet->banquet_end = $request->input('banquet_end');
+        $data->banquet_name = $request->input('banquet_name');
+        $data->banquet_start = $request->input('banquet_start');
+        $data->banquet_end = $request->input('banquet_end');
 
-        $banquet->save();
+        $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
-        return redirect(route('banquet.index'))->with('displayMessage', $message);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -131,7 +144,7 @@ class BanquetController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
-        $banquet = Banquet::find($id);
+        $data = $this->model->find($id);
 
         if($status == 1){
             $active = 0;
@@ -139,11 +152,11 @@ class BanquetController extends Controller
             $active = 1;
         }
 
-        $banquet->banquet_status = $active;
+        $data->banquet_status = $active;
 
-        $banquet->save();
+        $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$banquet->banquet_name);
-        return redirect(route('banquet.index'))->with('displayMessage', $message);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->banquet_name);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

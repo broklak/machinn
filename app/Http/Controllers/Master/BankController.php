@@ -9,14 +9,24 @@ use App\Helpers\GlobalHelper;
 
 class BankController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * @var
      */
+    private $model;
+
+    /**
+     * @var
+     */
+    private $module;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->model = new Bank();
+
+        $this->module = 'bank';
+    }
 
     /**
      * Display a listing of the resource.
@@ -25,9 +35,9 @@ class BankController extends Controller
      */
     public function index()
     {
-        $rows = Bank::paginate(config('app.limitPerPage'));
+        $rows = $this->model->paginate();
         $data['rows'] = $rows;
-        return view("master.bank.index", $data);
+        return view("master.".$this->module.".index", $data);
     }
 
     /**
@@ -37,7 +47,7 @@ class BankController extends Controller
      */
     public function create()
     {
-        return view('master.bank.create');
+        return view("master.".$this->module.".create");
     }
 
     /**
@@ -52,12 +62,12 @@ class BankController extends Controller
             'bank_name'  => 'required|max:75|min:3'
         ]);
 
-        Bank::create([
+        $this->model->create([
            'bank_name'   => $request->input('bank_name')
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
-        return redirect(route('bank.index'))->with('displayMessage', $message);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -79,8 +89,8 @@ class BankController extends Controller
      */
     public function edit($id)
     {
-        $data['row'] = Bank::find($id);
-        return view('master.bank.edit', $data);
+        $data['row'] = $this->model->find($id);
+        return view("master.".$this->module.".edit", $data);
     }
 
     /**
@@ -96,14 +106,14 @@ class BankController extends Controller
             'bank_name'  => 'required|max:75|min:3'
         ]);
 
-        $bank = Bank::find($id);
+        $data = $this->model->find($id);
 
-        $bank->bank_name = $request->input('bank_name');
+        $data->bank_name = $request->input('bank_name');
 
-        $bank->save();
+        $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
-        return redirect(route('bank.index'))->with('displayMessage', $message);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -123,7 +133,7 @@ class BankController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
-        $bank = Bank::find($id);
+        $data = $this->model->find($id);
 
         if($status == 1){
             $active = 0;
@@ -131,11 +141,11 @@ class BankController extends Controller
             $active = 1;
         }
 
-        $bank->bank_status = $active;
+        $data->bank_status = $active;
 
-        $bank->save();
+        $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$bank->bank_name);
-        return redirect(route('bank.index'))->with('displayMessage', $message);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->bank_name);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

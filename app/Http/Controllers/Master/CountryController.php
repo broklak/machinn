@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\BanquetEvent;
+use App\Country;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 
-class BanquetEventController extends Controller
+class CountryController extends Controller
 {
     /**
      * @var
@@ -23,9 +23,9 @@ class BanquetEventController extends Controller
     {
         $this->middleware('auth');
 
-        $this->model = new BanquetEvent();
+        $this->model = new Country();
 
-        $this->module = 'banquet-event';
+        $this->module = 'country';
     }
 
     /**
@@ -59,11 +59,11 @@ class BanquetEventController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'country_name'  => 'required|max:75|min:3'
         ]);
 
         $this->model->create([
-            'event_name'   => $request->input('event_name')
+            'country_name'   => $request->input('country_name')
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -103,12 +103,12 @@ class BanquetEventController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'event_name'  => 'required|max:75|min:3'
+            'country_name'  => 'required|max:75|min:3'
         ]);
 
         $data = $this->model->find($id);
 
-        $data->event_name = $request->input('event_name');
+        $data->country_name = $request->input('country_name');
 
         $data->save();
 
@@ -141,11 +141,11 @@ class BanquetEventController extends Controller
             $active = 1;
         }
 
-        $data->event_status = $active;
+        $data->country_status = $active;
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->event_name);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->country_name);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }
