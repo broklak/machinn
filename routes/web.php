@@ -53,5 +53,11 @@ Route::resource('master/extracharge-group', 'Master\ExtrachargeGroupController')
 Route::get('master/extracharge/change-status/{id}/{status}', 'Master\ExtrachargeController@changeStatus')->name('extracharge.change-status');
 Route::resource('master/extracharge', 'Master\ExtrachargeController');
 
+Route::get('master/income/change-status/{id}/{status}', 'Master\IncomeController@changeStatus')->name('income.change-status');
+Route::resource('master/income', 'Master\IncomeController');
+
+Route::get('master/partner-group/change-status/{id}/{status}', 'Master\PartnerGroupController@changeStatus')->name('partner-group.change-status');
+Route::resource('master/partner-group', 'Master\PartnerGroupController');
+
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

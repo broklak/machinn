@@ -246,7 +246,9 @@ return [
             'employee-status',
             'employee-type',
             'extracharge-group',
-            'extracharge'
+            'extracharge',
+            'income',
+            'partner-group'
         ]
     ]
 
