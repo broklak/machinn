@@ -77,7 +77,9 @@ class ExtrachargeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'extracharge_name'  => 'required|max:75|min:3'
+            'extracharge_name'  => 'required|max:75|min:3',
+            'extracharge_type'  => 'required',
+            'extracharge_group_id'  => 'required',
         ]);
 
         $this->model->create([

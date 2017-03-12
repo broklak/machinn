@@ -28,15 +28,16 @@
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input id="name" required type="text" name="extracharge_name" />
+                                        <input value="{{old('extracharge_name')}}" id="name" required type="text" name="extracharge_name" />
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Group</label>
                                     <div class="controls">
                                         <select name="extracharge_group_id">
+                                            <option disabled selected>Choose {{$master_module}} Group</option>
                                             @foreach($group as $key => $val)
-                                                <option value="{{$val['extracharge_group_id']}}">{{$val['extracharge_group_name']}}</option>
+                                                <option @if(old('extracharge_group_id') == $val['extracharge_group_id']) selected="selected" @endif value="{{$val['extracharge_group_id']}}">{{$val['extracharge_group_name']}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -45,8 +46,9 @@
                                     <label class="control-label">{{$master_module}} Type</label>
                                     <div class="controls">
                                         <select name="extracharge_type">
+                                            <option disabled selected>Choose {{$master_module}} Type</option>
                                             @foreach($type as $key => $val)
-                                                <option value="{{$key}}">{{$val}}</option>
+                                                <option @if(old('extracharge_type') == $key) selected="selected" @endif value="{{$key}}">{{$val}}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -28,19 +28,19 @@
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input id="name" required type="text" style="width: 30em" name="cash_account_name" />
+                                        <input value="{{old('cash_account_name')}}" id="name" required type="text" style="width: 30em" name="cash_account_name" />
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Description</label>
                                     <div class="controls">
-                                        <textarea rows="5" name="cash_account_desc" id="desc"></textarea>
+                                        <textarea rows="5" name="cash_account_desc" id="desc">{{old('cash_account_desc')}}</textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Amount</label>
                                     <div class="controls">
-                                        <input id="amount" required type="text" style="width: 30em" name="cash_account_amount" />
+                                        <input value="{{old('cash_account_amount')}}" id="amount" required type="text" style="width: 30em" name="cash_account_amount" />
                                     </div>
                                 </div>
                             </div>

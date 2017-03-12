@@ -28,19 +28,19 @@
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input style="width: 30em" required type="text" name="banquet_name" />
+                                        <input value="{{old('banquet_name')}}" style="width: 30em" required type="text" name="banquet_name" />
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Start Time</label>
                                     <div class="controls">
-                                        <input style="width: 30em" required type="text" name="banquet_start" />
+                                        <input value="{{old('banquet_start')}}" style="width: 30em" required type="text" name="banquet_start" />
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} End Time</label>
                                     <div class="controls">
-                                        <input style="width: 30em" required type="text" name="banquet_end" />
+                                        <input value="{{old('banquet_end')}}" style="width: 30em" required type="text" name="banquet_end" />
                                     </div>
                                 </div>
                             </div>

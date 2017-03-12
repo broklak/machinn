@@ -65,7 +65,8 @@ class CostController extends Controller
     {
         $this->validate($request,[
             'cost_name'  => 'required|max:75|min:3',
-            'cost_date'  => 'required'
+            'cost_date'  => 'required',
+            'cost_type'  => 'required'
         ]);
 
         $this->model->create([

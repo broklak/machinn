@@ -28,7 +28,7 @@
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input id="name" required type="text" name="cost_name" />
+                                        <input value="{{old('cost_name')}}" id="name" required type="text" name="cost_name" />
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Date</label>
                                     <div class="controls">
-                                        <input type="text" name="cost_date" data-date-format="yyyy-mm-dd" class="datepicker">
+                                        <input value="{{old('cost_date')}}" type="text" name="cost_date" data-date-format="yyyy-mm-dd" class="datepicker">
                                 </div>
                                 </div>
                             </div>
@@ -45,8 +45,9 @@
                                     <label class="control-label">{{$master_module}} Type</label>
                                     <div class="controls">
                                         <select name="cost_type">
+                                            <option disabled selected>Choose {{$master_module}} Type</option>
                                             @foreach($type as $key => $val)
-                                                <option value="{{$key}}">{{$val}}</option>
+                                                <option @if(old('cost_type') == $key) selected="selected" @endif value="{{$key}}">{{$val}}</option>
                                             @endforeach
                                         </select>
                                     </div>
