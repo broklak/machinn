@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <input id="next" class="btn btn-primary" type="submit" value="Next" />
+                                <input id="next" class="btn btn-primary" type="submit" value="Save" />
                                 <div id="status"></div>
                             </div>
                             <div id="submitted"></div>

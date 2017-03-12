@@ -42,6 +42,14 @@
                             </div>
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
+                                    <label class="control-label">{{$master_module}} Amount</label>
+                                    <div class="controls">
+                                        <input value="{{empty(old('cost_amount')) ? 0 : old('cost_amount')}}" type="number" name="cost_amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="form-wizard-1" class="step">
+                                <div class="control-group">
                                     <label class="control-label">{{$master_module}} Type</label>
                                     <div class="controls">
                                         <select name="cost_type">
@@ -54,7 +62,7 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <input id="next" class="btn btn-primary" type="submit" value="Next" />
+                                <input id="next" class="btn btn-primary" type="submit" value="Save" />
                                 <div id="status"></div>
                             </div>
                             <div id="submitted"></div>

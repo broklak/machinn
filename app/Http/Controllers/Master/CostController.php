@@ -66,13 +66,15 @@ class CostController extends Controller
         $this->validate($request,[
             'cost_name'  => 'required|max:75|min:3',
             'cost_date'  => 'required',
-            'cost_type'  => 'required'
+            'cost_type'  => 'required',
+            'cost_amount'  => 'required',
         ]);
 
         $this->model->create([
             'cost_name'   => $request->input('cost_name'),
             'cost_date'   => $request->input('cost_date'),
             'cost_type'   => $request->input('cost_type'),
+            'cost_amount'   => $request->input('cost_amount'),
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -121,6 +123,7 @@ class CostController extends Controller
 
         $data->cost_name = $request->input('cost_name');
         $data->cost_type = $request->input('cost_type');
+        $data->cost_amount = $request->input('cost_amount');
         $data->cost_date = $request->input('cost_date');
 
         $data->save();

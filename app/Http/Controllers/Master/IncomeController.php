@@ -63,12 +63,14 @@ class IncomeController extends Controller
     {
         $this->validate($request,[
             'income_name'  => 'required|max:75|min:3',
-            'income_date'  => 'required'
+            'income_date'  => 'required',
+            'income_amount' => 'required'
         ]);
 
         $this->model->create([
             'income_name'   => $request->input('income_name'),
-            'income_date'   => $request->input('income_date')
+            'income_date'   => $request->input('income_date'),
+            'income_amount'   => $request->input('income_amount')
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -117,6 +119,7 @@ class IncomeController extends Controller
 
         $data->income_name = $request->input('income_name');
         $data->income_date = $request->input('income_date');
+        $data->income_amount = $request->input('income_amount');
 
         $data->save();
 

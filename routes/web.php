@@ -59,5 +59,23 @@ Route::resource('master/income', 'Master\IncomeController');
 Route::get('master/partner-group/change-status/{id}/{status}', 'Master\PartnerGroupController@changeStatus')->name('partner-group.change-status');
 Route::resource('master/partner-group', 'Master\PartnerGroupController');
 
+Route::get('master/partner/change-status/{id}/{status}', 'Master\PartnerController@changeStatus')->name('partner.change-status');
+Route::resource('master/partner', 'Master\PartnerController');
+
+Route::get('master/property-attribute/change-status/{id}/{status}', 'Master\PropertyAttributeController@changeStatus')->name('property-attribute.change-status');
+Route::resource('master/property-attribute', 'Master\PropertyAttributeController');
+
+Route::get('master/property-floor/change-status/{id}/{status}', 'Master\PropertyFloorController@changeStatus')->name('property-floor.change-status');
+Route::resource('master/property-floor', 'Master\PropertyFloorController');
+
+Route::get('master/province/change-status/{id}/{status}', 'Master\ProvinceController@changeStatus')->name('province.change-status');
+Route::resource('master/province', 'Master\ProvinceController');
+
+Route::get('master/tax/change-status/{id}/{status}', 'Master\TaxController@changeStatus')->name('tax.change-status');
+Route::resource('master/tax', 'Master\TaxController');
+
+Route::get('master/settlement/change-status/{id}/{status}', 'Master\SettlementController@changeStatus')->name('settlement.change-status');
+Route::resource('master/settlement', 'Master\SettlementController');
+
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

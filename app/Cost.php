@@ -15,7 +15,7 @@ class Cost extends Model
      * @var array
      */
     protected $fillable = [
-        'cost_name', 'cost_status', 'cost_type', 'cost_date'
+        'cost_name', 'cost_status', 'cost_type', 'cost_amount', 'cost_date'
     ];
 
     /**

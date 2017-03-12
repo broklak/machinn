@@ -248,7 +248,13 @@ return [
             'extracharge-group',
             'extracharge',
             'income',
-            'partner-group'
+            'partner-group',
+            'partner',
+            'property-attribute',
+            'property-floor',
+            'province',
+            'tax',
+            'settlement'
         ]
     ]
 

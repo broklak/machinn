@@ -21,6 +21,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Date</th>
+                                <th>Amount</th>
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -32,6 +33,7 @@
                                     <tr class="odd gradeX">
                                         <td>{{$val->cost_name}}</td>
                                         <td>{{\App\Helpers\GlobalHelper::dateFormat($val->cost_date)}}</td>
+                                        <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->cost_amount)}}</td>
                                         <td>{{\App\Cost::setTypeName($val->cost_type)}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->cost_status)!!}</td>
                                         <td>

@@ -21,6 +21,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Date</th>
+                                <th>Income</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -31,6 +32,7 @@
                                     <tr class="odd gradeX">
                                         <td>{{$val->income_name}}</td>
                                         <td>{{\App\Helpers\GlobalHelper::dateFormat($val->income_date)}}</td>
+                                        <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->income_amount)}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->income_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->income_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
