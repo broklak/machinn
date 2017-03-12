@@ -241,7 +241,12 @@ return [
             'credit-card-type',
             'cost',
             'country',
-            'department'
+            'department',
+            'employee-shift',
+            'employee-status',
+            'employee-type',
+            'extracharge-group',
+            'extracharge'
         ]
     ]
 

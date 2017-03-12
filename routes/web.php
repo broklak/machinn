@@ -38,5 +38,20 @@ Route::resource('master/country', 'Master\CountryController');
 Route::get('master/department/change-status/{id}/{status}', 'Master\DepartmentController@changeStatus')->name('department.change-status');
 Route::resource('master/department', 'Master\DepartmentController');
 
+Route::get('master/employee-shift/change-status/{id}/{status}', 'Master\EmployeeShiftController@changeStatus')->name('employee-shift.change-status');
+Route::resource('master/employee-shift', 'Master\EmployeeShiftController');
+
+Route::get('master/employee-status/change-status/{id}/{status}', 'Master\EmployeeStatusController@changeStatus')->name('employee-status.change-status');
+Route::resource('master/employee-status', 'Master\EmployeeStatusController');
+
+Route::get('master/employee-type/change-status/{id}/{status}', 'Master\EmployeeTypeController@changeStatus')->name('employee-type.change-status');
+Route::resource('master/employee-type', 'Master\EmployeeTypeController');
+
+Route::get('master/extracharge-group/change-status/{id}/{status}', 'Master\ExtrachargeGroupController@changeStatus')->name('extracharge-group.change-status');
+Route::resource('master/extracharge-group', 'Master\ExtrachargeGroupController');
+
+Route::get('master/extracharge/change-status/{id}/{status}', 'Master\ExtrachargeController@changeStatus')->name('extracharge.change-status');
+Route::resource('master/extracharge', 'Master\ExtrachargeController');
+
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

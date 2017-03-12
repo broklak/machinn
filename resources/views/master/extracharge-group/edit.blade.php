@@ -22,33 +22,13 @@
                         <h5>Edit {{$master_module}} Data</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->cost_id])}}" method="post">
+                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->extracharge_group_id])}}" method="post">
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input id="name" required type="text" value="{{$row->cost_name}}" name="cost_name" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="form-wizard-1" class="step">
-                                <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Date</label>
-                                    <div class="controls">
-                                        <input type="text" name="cost_date" value="{{$row->cost_date}}" data-date-format="yyyy-mm-dd" class="datepicker">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="form-wizard-1" class="step">
-                                <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Type</label>
-                                    <div class="controls">
-                                        <select name="cost_type">
-                                            @foreach($type as $key => $val)
-                                                <option @if($row->cost_type == $key) selected="selected" @endif value="{{$key}}">{{$val}}</option>
-                                            @endforeach
-                                        </select>
+                                        <input id="name" required type="text" value="{{$row->extracharge_group_name}}" name="extracharge_group_name" />
                                     </div>
                                 </div>
                             </div>
