@@ -12,8 +12,6 @@
 */
 Route::get('/', 'Master\BankController@index');
 
-Route::resource('master/room-number', 'Master\RoomNumberController');
-
 Route::get('master/bank/change-status/{id}/{status}', 'Master\BankController@changeStatus')->name('bank.change-status');
 Route::resource('master/bank', 'Master\BankController');
 
@@ -76,6 +74,18 @@ Route::resource('master/tax', 'Master\TaxController');
 
 Route::get('master/settlement/change-status/{id}/{status}', 'Master\SettlementController@changeStatus')->name('settlement.change-status');
 Route::resource('master/settlement', 'Master\SettlementController');
+
+Route::get('master/room-attribute/change-status/{id}/{status}', 'Master\RoomAttributeController@changeStatus')->name('room-attribute.change-status');
+Route::resource('master/room-attribute', 'Master\RoomAttributeController');
+
+Route::get('master/room-rate-day-type/change-status/{id}/{status}', 'Master\RoomRateDayTypeController@changeStatus')->name('room-rate-day-type.change-status');
+Route::resource('master/room-rate-day-type', 'Master\RoomRateDayTypeController');
+
+Route::get('master/room-type/change-status/{id}/{status}', 'Master\RoomTypeController@changeStatus')->name('room-type.change-status');
+Route::resource('master/room-type', 'Master\RoomTypeController');
+
+Route::get('master/room-number/change-status/{id}/{status}', 'Master\RoomNumberController@changeStatus')->name('room-number.change-status');
+Route::resource('master/room-number', 'Master\RoomNumberController');
 
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

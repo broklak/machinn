@@ -34,5 +34,13 @@ class GlobalHelper
 
         return '<span class="label label-success">Active</span>';
     }
+
+    public static function setYesOrNo($status){
+        if($status == 0){
+            return 'No';
+        }
+
+        return 'Yes';
+    }
 }
 

@@ -232,6 +232,8 @@ return [
 
     'defaultRoute'  => 'bank',
 
+    'roomStatus' => ['1' => 'Vacant', '2' => 'Occupied', '3' => 'Guaranteed Booking', '4' => 'Tentative Booking', '5' => 'Dirty', '6' => 'Out of Order'],
+
     'menu' => [
         'master' => [
             'bank',
@@ -254,7 +256,11 @@ return [
             'property-floor',
             'province',
             'tax',
-            'settlement'
+            'settlement',
+            'room-attribute',
+            'room-rate-day-type',
+            'room-type',
+            'room-number'
         ]
     ]
 

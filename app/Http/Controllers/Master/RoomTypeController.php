@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\PropertyFloor;
-use App\RoomNumber;
+use App\RoomAttribute;
 use App\RoomType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 
-class RoomNumberController extends Controller
+class RoomTypeController extends Controller
 {
-
     /**
      * @var
      */
@@ -25,24 +23,17 @@ class RoomNumberController extends Controller
     /**
      * @var
      */
-    private $floor;
-
-    /**
-     * @var
-     */
-    private $type;
+    private $attribute;
 
     public function __construct()
     {
         $this->middleware('auth');
 
-        $this->model = new RoomNumber();
+        $this->model = new RoomType();
 
-        $this->module = 'room-number';
+        $this->module = 'room-type';
 
-        $this->floor = PropertyFloor::where('property_floor_status', 1)->get();
-
-        $this->type = RoomType::where('room_type_status', 1)->get();
+        $this->attribute = RoomAttribute::where('room_attribute_status', 1)->get();
     }
 
     /**
@@ -66,8 +57,7 @@ class RoomNumberController extends Controller
      */
     public function create()
     {
-        $data['type'] = $this->type;
-        $data['floor'] = $this->floor;
+        $data['attribute'] = $this->attribute;
         return view("master.".$this->module.".create", $data);
     }
 
@@ -80,15 +70,18 @@ class RoomNumberController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'room_number_code'  => 'required|max:75|min:3',
-            'room_type_id'  => 'required|numeric',
-            'room_floor_id'  => 'required|numeric',
+            'room_type_name'  => 'required|max:75|min:3',
+            'room_type_max_adult'  => 'required|numeric',
+            'room_type_max_child'  => 'required|numeric',
+            'room_type_attributes' => 'required'
         ]);
 
         $this->model->create([
-            'room_number_code'   => $request->input('room_number_code'),
-            'room_type_id'   => $request->input('room_type_id'),
-            'room_floor_id'   => $request->input('room_floor_id')
+            'room_type_name'   => $request->input('room_type_name'),
+            'room_type_max_adult'   => $request->input('room_type_max_adult'),
+            'room_type_max_child'   => $request->input('room_type_max_child'),
+            'room_type_banquet' => $request->input('room_type_banquet'),
+            'room_type_attributes' => implode(',',$request->input('room_type_attributes'))
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -114,8 +107,7 @@ class RoomNumberController extends Controller
      */
     public function edit($id)
     {
-        $data['type'] = $this->type;
-        $data['floor'] = $this->floor;
+        $data['attribute'] = $this->attribute;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
     }
@@ -130,16 +122,19 @@ class RoomNumberController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'room_number_code'  => 'required|max:75|min:3',
-            'room_type_id'  => 'required|numeric',
-            'room_floor_id'  => 'required|numeric',
+            'room_type_name'  => 'required|max:75|min:3',
+            'room_type_max_adult'  => 'required|numeric',
+            'room_type_max_child'  => 'required|numeric',
+            'room_type_attributes' => 'required'
         ]);
 
         $data = $this->model->find($id);
 
-        $data->room_number_code = $request->input('room_number_code');
-        $data->room_type_id = $request->input('room_type_id');
-        $data->room_floor_id = $request->input('room_floor_id');
+        $data->room_type_name = $request->input('room_type_name');
+        $data->room_type_max_adult = $request->input('room_type_max_adult');
+        $data->room_type_max_child = $request->input('room_type_max_child');
+        $data->room_type_banquet = $request->input('room_type_banquet');
+        $data->room_type_attributes = implode(',',$request->input('room_type_attributes'));
 
         $data->save();
 
@@ -166,11 +161,17 @@ class RoomNumberController extends Controller
     public function changeStatus($id, $status) {
         $data = $this->model->find($id);
 
-        $data->room_number_status = $status;
+        if($status == 1){
+            $active = 0;
+        } else {
+            $active = 1;
+        }
+
+        $data->room_type_status = $active;
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of room '.$data->room_number_code);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->room_type_name);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

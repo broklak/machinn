@@ -28,7 +28,7 @@
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input id="name" required type="text" name="bank_name" />
+                                        <input id="name" required type="text" name="room_attribute_name" />
                                     </div>
                                 </div>
                             </div>

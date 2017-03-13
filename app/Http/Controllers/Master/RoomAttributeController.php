@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\PropertyFloor;
-use App\RoomNumber;
-use App\RoomType;
+use App\RoomAttribute;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 
-class RoomNumberController extends Controller
+class RoomAttributeController extends Controller
 {
-
     /**
      * @var
      */
@@ -22,27 +19,13 @@ class RoomNumberController extends Controller
      */
     private $module;
 
-    /**
-     * @var
-     */
-    private $floor;
-
-    /**
-     * @var
-     */
-    private $type;
-
     public function __construct()
     {
         $this->middleware('auth');
 
-        $this->model = new RoomNumber();
+        $this->model = new RoomAttribute();
 
-        $this->module = 'room-number';
-
-        $this->floor = PropertyFloor::where('property_floor_status', 1)->get();
-
-        $this->type = RoomType::where('room_type_status', 1)->get();
+        $this->module = 'room-attribute';
     }
 
     /**
@@ -52,8 +35,6 @@ class RoomNumberController extends Controller
      */
     public function index()
     {
-        $data['status'] = config('app.roomStatus');
-        $data['model'] = $this->model;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
         return view("master.".$this->module.".index", $data);
@@ -66,9 +47,7 @@ class RoomNumberController extends Controller
      */
     public function create()
     {
-        $data['type'] = $this->type;
-        $data['floor'] = $this->floor;
-        return view("master.".$this->module.".create", $data);
+        return view("master.".$this->module.".create");
     }
 
     /**
@@ -80,15 +59,11 @@ class RoomNumberController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'room_number_code'  => 'required|max:75|min:3',
-            'room_type_id'  => 'required|numeric',
-            'room_floor_id'  => 'required|numeric',
+            'room_attribute_name'  => 'required|max:75|min:3'
         ]);
 
         $this->model->create([
-            'room_number_code'   => $request->input('room_number_code'),
-            'room_type_id'   => $request->input('room_type_id'),
-            'room_floor_id'   => $request->input('room_floor_id')
+            'room_attribute_name'   => $request->input('room_attribute_name')
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -114,8 +89,6 @@ class RoomNumberController extends Controller
      */
     public function edit($id)
     {
-        $data['type'] = $this->type;
-        $data['floor'] = $this->floor;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
     }
@@ -130,16 +103,12 @@ class RoomNumberController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'room_number_code'  => 'required|max:75|min:3',
-            'room_type_id'  => 'required|numeric',
-            'room_floor_id'  => 'required|numeric',
+            'room_attribute_name'  => 'required|max:75|min:3'
         ]);
 
         $data = $this->model->find($id);
 
-        $data->room_number_code = $request->input('room_number_code');
-        $data->room_type_id = $request->input('room_type_id');
-        $data->room_floor_id = $request->input('room_floor_id');
+        $data->room_attribute_name = $request->input('room_attribute_name');
 
         $data->save();
 
@@ -166,11 +135,17 @@ class RoomNumberController extends Controller
     public function changeStatus($id, $status) {
         $data = $this->model->find($id);
 
-        $data->room_number_status = $status;
+        if($status == 1){
+            $active = 0;
+        } else {
+            $active = 1;
+        }
+
+        $data->room_attribute_status = $active;
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of room '.$data->room_number_code);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->room_attribute_name);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }
