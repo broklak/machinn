@@ -45,6 +45,9 @@ Route::resource('master/employee-status', 'Master\EmployeeStatusController');
 Route::get('master/employee-type/change-status/{id}/{status}', 'Master\EmployeeTypeController@changeStatus')->name('employee-type.change-status');
 Route::resource('master/employee-type', 'Master\EmployeeTypeController');
 
+Route::get('master/employee/change-status/{id}/{status}', 'Master\EmployeeController@changeStatus')->name('employee.change-status');
+Route::resource('master/employee', 'Master\EmployeeController');
+
 Route::get('master/extracharge-group/change-status/{id}/{status}', 'Master\ExtrachargeGroupController@changeStatus')->name('extracharge-group.change-status');
 Route::resource('master/extracharge-group', 'Master\ExtrachargeGroupController');
 
@@ -86,6 +89,9 @@ Route::resource('master/room-type', 'Master\RoomTypeController');
 
 Route::get('master/room-number/change-status/{id}/{status}', 'Master\RoomNumberController@changeStatus')->name('room-number.change-status');
 Route::resource('master/room-number', 'Master\RoomNumberController');
+
+Route::get('master/room-plan/change-status/{id}/{status}', 'Master\RoomPlanController@changeStatus')->name('room-plan.change-status');
+Route::resource('master/room-plan', 'Master\RoomPlanController');
 
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

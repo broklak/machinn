@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Master;
 
 use App\RoomAttribute;
+use App\RoomRate;
+use App\RoomRateDateType;
 use App\RoomType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,6 +27,11 @@ class RoomTypeController extends Controller
      */
     private $attribute;
 
+    /**
+     * @var
+     */
+    private $rate;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -34,6 +41,8 @@ class RoomTypeController extends Controller
         $this->module = 'room-type';
 
         $this->attribute = RoomAttribute::where('room_attribute_status', 1)->get();
+
+        $this->rate = new RoomRate();
     }
 
     /**
@@ -73,15 +82,29 @@ class RoomTypeController extends Controller
             'room_type_name'  => 'required|max:75|min:3',
             'room_type_max_adult'  => 'required|numeric',
             'room_type_max_child'  => 'required|numeric',
-            'room_type_attributes' => 'required'
+            'room_type_attributes' => 'required',
+            'day_type_1'           => 'required|numeric',
+            'day_type_2'           => 'required|numeric'
         ]);
 
-        $this->model->create([
+        $create = $this->model->create([
             'room_type_name'   => $request->input('room_type_name'),
             'room_type_max_adult'   => $request->input('room_type_max_adult'),
             'room_type_max_child'   => $request->input('room_type_max_child'),
             'room_type_banquet' => $request->input('room_type_banquet'),
             'room_type_attributes' => implode(',',$request->input('room_type_attributes'))
+        ]);
+
+        $this->rate->create([
+            'room_rate_day_type_id' => 1,
+            'room_rate_type_id'     => $create->room_type_id,
+            'room_price'            => $request->input('day_type_1')
+        ]);
+
+        $this->rate->create([
+            'room_rate_day_type_id' => 2,
+            'room_rate_type_id'     => $create->room_type_id,
+            'room_price'            => $request->input('day_type_2')
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -107,6 +130,8 @@ class RoomTypeController extends Controller
      */
     public function edit($id)
     {
+        $data['weekday'] = $this->rate->where('room_rate_day_type_id', 1)->where('room_rate_type_id', $id)->first();
+        $data['weekend'] = $this->rate->where('room_rate_day_type_id', 2)->where('room_rate_type_id', $id)->first();
         $data['attribute'] = $this->attribute;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
@@ -125,7 +150,9 @@ class RoomTypeController extends Controller
             'room_type_name'  => 'required|max:75|min:3',
             'room_type_max_adult'  => 'required|numeric',
             'room_type_max_child'  => 'required|numeric',
-            'room_type_attributes' => 'required'
+            'room_type_attributes' => 'required',
+            'day_type_1'           => 'required|numeric',
+            'day_type_2'           => 'required|numeric'
         ]);
 
         $data = $this->model->find($id);
@@ -137,6 +164,14 @@ class RoomTypeController extends Controller
         $data->room_type_attributes = implode(',',$request->input('room_type_attributes'));
 
         $data->save();
+
+        $weekday = $this->rate->where('room_rate_day_type_id', 1)->where('room_rate_type_id', $id)->first();
+        $weekday->room_price = $request->input('day_type_1');
+        $weekday->save();
+
+        $weekend = $this->rate->where('room_rate_day_type_id', 2)->where('room_rate_type_id', $id)->first();
+        $weekend->room_price = $request->input('day_type_2');
+        $weekend->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

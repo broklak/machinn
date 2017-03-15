@@ -247,6 +247,7 @@ return [
             'employee-shift',
             'employee-status',
             'employee-type',
+            'employee',
             'extracharge-group',
             'extracharge',
             'income',
@@ -260,7 +261,8 @@ return [
             'room-attribute',
             'room-rate-day-type',
             'room-type',
-            'room-number'
+            'room-number',
+            'room-plan'
         ]
     ]
 

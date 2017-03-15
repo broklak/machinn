@@ -43,6 +43,18 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">Weekday Price</label>
+                                    <div class="controls">
+                                        <input value="{{empty(old('day_type_1')) ? 0 : old('day_type_1')}}" id="day_type_1" required type="number" name="day_type_1" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Weekend Price</label>
+                                    <div class="controls">
+                                        <input value="{{empty(old('day_type_2')) ? 0 : old('day_type_2')}}" id="day_type_2" required type="number" name="day_type_2" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">Max Adult</label>
                                     <div class="controls">
                                         <input value="{{empty(old('room_type_max_adult')) ? 2 : old('room_type_max_adult')}}" id="room_type_max_adult" required type="number" name="room_type_max_adult" />

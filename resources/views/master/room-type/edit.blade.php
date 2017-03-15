@@ -44,6 +44,18 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">Weekday Price</label>
+                                    <div class="controls">
+                                        <input value="{{$weekday->room_price}}" id="day_type_1" required type="number" name="day_type_1" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Weekend Price</label>
+                                    <div class="controls">
+                                        <input value="{{$weekend->room_price}}" id="day_type_2" required type="number" name="day_type_2" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">Max Adult</label>
                                     <div class="controls">
                                         <input value="{{$row->room_type_max_adult}}" id="room_type_max_adult" required type="number" name="room_type_max_adult" />

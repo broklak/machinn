@@ -19,9 +19,9 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Number</th>
+                                <th>Username</th>
                                 <th>Type</th>
-                                <th>Floor</th>
+                                <th>Department</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -30,20 +30,17 @@
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
-                                        <td>{{$val->room_number_code}}</td>
-                                        <td>{{$model->getTypeName($val->room_type_id)}}</td>
-                                        <td>{{$model->getFloorName($val->room_floor_id)}}</td>
-                                        <td><span class="label label-{{$model->setButtonStatus($val->room_number_status)}}">{{$model->setStatusName($val->room_number_status)}}</span></td>
+                                        <td>{{$val->name}}</td>
+                                        <td>{{$model->getTypeName($val->employee_type_id)}}</td>
+                                        <td>{{$model->getDepartmentName($val->department_id)}}</td>
+                                        <td>{{$model->getStatusName($val->employee_status_id)}}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->room_number_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            <div class="btn-group">
-                                                <button data-toggle="dropdown" class="btn dropdown-toggle">Change Status <span class="caret"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    @foreach($status as $key => $val_status)
-                                                        <li><a href="{{route($route_name.'.change-status', ['id' => $val->room_number_id, 'status' => $key])}}">{{$val_status}}</a></li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            {{--@if($val->partner_status == 0)--}}
+                                                {{--<a onclick="return confirm('You will activate {{$val->partner_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->partner_id, 'status' => $val->partner_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>--}}
+                                            {{--@else--}}
+                                                {{--<a onclick="return confirm('You will deactivate {{$val->partner_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->partner_id, 'status' => $val->partner_status])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>--}}
+                                            {{--@endif--}}
                                         </td>
                                     </tr>
                                 @endforeach
