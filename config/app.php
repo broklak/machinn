@@ -230,40 +230,7 @@ return [
 
     'limitPerPage' => 20,
 
-    'defaultRoute'  => 'bank',
+    'defaultRoute'  => 'room-number',
 
     'roomStatus' => ['1' => 'Vacant', '2' => 'Occupied', '3' => 'Guaranteed Booking', '4' => 'Tentative Booking', '5' => 'Dirty', '6' => 'Out of Order'],
-
-    'menu' => [
-        'master' => [
-            'bank',
-            'banquet-event',
-            'banquet',
-            'cash-account',
-            'credit-card-type',
-            'cost',
-            'country',
-            'department',
-            'employee-shift',
-            'employee-status',
-            'employee-type',
-            'employee',
-            'extracharge-group',
-            'extracharge',
-            'income',
-            'partner-group',
-            'partner',
-            'property-attribute',
-            'property-floor',
-            'province',
-            'tax',
-            'settlement',
-            'room-attribute',
-            'room-rate-day-type',
-            'room-type',
-            'room-number',
-            'room-plan'
-        ]
-    ]
-
 ];

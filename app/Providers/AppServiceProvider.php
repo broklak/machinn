@@ -74,7 +74,6 @@ class AppServiceProvider extends ServiceProvider
 
     protected function getMenu () {
         $menu = Cache::get('menu');
-//        echo json_encode($menu); die;
         return $menu;
     }
 }
