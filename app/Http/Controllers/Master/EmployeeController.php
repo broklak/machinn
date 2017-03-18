@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -102,7 +103,7 @@ class EmployeeController extends Controller
         $this->model->create([
             'username'   => $request->input('username'),
             'name'   => $request->input('username'),
-            'password'   => bcrypt($request->input('name')),
+            'password'   => bcrypt($request->input('password')),
             'email'     => $request->input('email'),
             'nik'     => $request->input('nik'),
             'ktp'     => $request->input('ktp'),
@@ -170,7 +171,6 @@ class EmployeeController extends Controller
 
         $data->username   = $request->input('username');
         $data->name   = $request->input('username');
-        $data->password   = bcrypt($request->input('name'));
         $data->email     = $request->input('email');
         $data->nik     = $request->input('nik');
         $data->ktp     = $request->input('ktp');
@@ -220,5 +220,33 @@ class EmployeeController extends Controller
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->employee_type_name);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function changePassword (Request $request) {
+        $submit = $request->input('submit');
+        $userId = Auth::id();
+
+        if($submit != null) {
+            $this->validate($request, [
+                'newpass' => 'required|min:6',
+                'conpass' => 'required|same:newpass',
+            ]);
+            $newpass = $request->input('newpass');
+
+            $user = User::find($userId);
+
+            $user->password = bcrypt($newpass);
+
+            $user->save();
+
+            $message = GlobalHelper::setDisplayMessage('success', 'Success to change your password');
+            return redirect(route('change-password'))->with('displayMessage', $message);
+        }
+        return view('master.'.$this->module.'.change-password');
     }
 }

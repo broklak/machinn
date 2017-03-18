@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -40,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('js_name', 'sites/js.'.$view->getName());
         View::share('css_name', 'sites/css.'.$view->getName());
         View::share('banner_title', $this->formatUrlToTitle(Route::current()->uri()));
-        View::share('menu', config('app.menu'));
+        View::share('menu', $this->getMenu());
         View::share('user', Auth::user());
         View::share('master_module', $this->getMasterModuleName());
         View::share('route_name', $this->getRoutingModule());
@@ -69,5 +70,11 @@ class AppServiceProvider extends ServiceProvider
         }
         $name = explode('.', $route);
         return $name[0];
+    }
+
+    protected function getMenu () {
+        $menu = Cache::get('menu');
+//        echo json_encode($menu); die;
+        return $menu;
     }
 }

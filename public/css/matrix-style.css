@@ -53,17 +53,20 @@ hr{ border-top-color:#dadada;}
 	z-index: -9;
 }
 #header h1 {
-	background: url("../img/matrix/logo.png") no-repeat scroll 0 0 transparent;
-	height: 31px;
+	/*background: url("../img/matrix/hotel-logo.png") no-repeat scroll 0 0 transparent;*/
+	/*height: 31px;*/
 	left: 20px;
-	line-height: 600px;
+	/*line-height: 600px;*/
 	overflow: hidden;
+	color: #fff;
 	position: relative;
 	top: 26px;
 	width: 191px;
+	font-size: 26px;
 }
 #header h1 a {
 	display: block;
+	color: #fff;
 }
 /* Search input */
 #search {
@@ -174,7 +177,7 @@ hr{ border-top-color:#dadada;}
 	float: right;
 	padding: 3px 5px 2px;
 }
-#sidebar > ul li ul {
+#sidebar > ul li ul, #sidebar > ul li ul li.submenu2 ul {
 	display: none;
 	margin: 0;
 	padding: 0;
@@ -186,6 +189,14 @@ hr{ border-top-color:#dadada;}
 	padding: 10px 0 10px 25px;
 	display: block;
 	color: #777777;
+}
+#sidebar > ul li ul li ul li a {
+	padding: 10px 0 10px 45px;
+	display: block;
+	color: #999;
+}
+#sidebar > ul li ul li ul li {
+	background-color: #000;
 }
 #sidebar > ul li ul li:first-child a {
 	border-top: 0;

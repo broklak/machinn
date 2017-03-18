@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Bank;
+use App\Menu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;

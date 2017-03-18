@@ -15,7 +15,7 @@
 <div id="loginbox">
     <form id="loginform" class="form-vertical" method="POST" action="{{ route('login') }}">
         {{csrf_field()}}
-        <div class="control-group normal_text"> <h3><img src="{{ asset("img/matrix") }}/logo.png" alt="Logo" /></h3></div>
+        <div class="control-group normal_text"> <h1>HOTEL ADMIN</h1></div>
 
         @if (count($errors) > 0)
             @foreach ($errors->all() as $error)

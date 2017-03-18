@@ -1,0 +1,9 @@
+[
+  {"submodule_id":1, "submodule_name":"Rooms", "module_id":1},
+  {"submodule_id":2, "submodule_name":"Employees", "module_id":1},
+  {"submodule_id":3, "submodule_name":"Cash Flow", "module_id":1},
+  {"submodule_id":4, "submodule_name":"Payment", "module_id":1},
+  {"submodule_id":5, "submodule_name":"Location", "module_id":1},
+  {"submodule_id":6, "submodule_name":"Business Partner", "module_id":1},
+  {"submodule_id":7, "submodule_name":"Property", "module_id":1}
+]
