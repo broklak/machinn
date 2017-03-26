@@ -25,5 +25,6 @@
   {"class_id":24, "class_name":"room-rate-day-type", "submodule_id":1},
   {"class_id":25, "class_name":"room-type", "submodule_id":1},
   {"class_id":26, "class_name":"room-number", "submodule_id":1},
-  {"class_id":27, "class_name":"room-plan", "submodule_id":1}
+  {"class_id":27, "class_name":"room-plan", "submodule_id":1},
+  {"class_id":28, "class_name":"booking", "submodule_id":8}
 ]

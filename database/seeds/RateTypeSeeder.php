@@ -11,7 +11,7 @@ class RateTypeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('room_rate_day_types')->delete();
+        DB::table('room_rate_day_types')->truncate();
         DB::table('room_rate_day_types')->insert([
             'room_rate_day_type_name' => 'Weekdays',
             'room_rate_day_type_list' => 'monday,tuesday,wednesday,thursday,sunday',

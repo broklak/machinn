@@ -57,7 +57,7 @@ class EmployeeController extends Controller
 
         $this->status = EmployeeStatus::where('employee_status_active', 1)->get();
 
-        $this->religion = ['islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Budha', 'Konghucu'];
+        $this->religion = config('app.religion');
     }
 
     /**
@@ -97,7 +97,9 @@ class EmployeeController extends Controller
     {
         $this->validate($request,[
             'username' => 'required|max:50|unique:users',
-            'password' => 'required|min:4'
+            'password' => 'required|min:4',
+            'department_id' => 'required',
+            'employee_type_id' => 'required'
         ]);
 
         $this->model->create([

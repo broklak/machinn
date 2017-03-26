@@ -228,9 +228,15 @@ return [
 
     ],
 
+    'buildNumber' => 1,
+
     'limitPerPage' => 20,
 
     'defaultRoute'  => 'room-number',
+
+    'religion'      => ['islam', 'kristen protestan', 'kristen katolik', 'hindu', 'budha', 'kong hu cu'],
+
+    'paymentMethod' => [1 => 'Cash (FO)', 2 => 'Cash (BO)', 3 => 'Credit Card', 4 => 'Bank Transfer'],
 
     'roomStatus' => ['1' => 'Vacant', '2' => 'Occupied', '3' => 'Guaranteed Booking', '4' => 'Tentative Booking', '5' => 'Dirty', '6' => 'Out of Order'],
 ];

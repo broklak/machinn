@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('user', Auth::user());
         View::share('master_module', $this->getMasterModuleName());
         View::share('route_name', $this->getRoutingModule());
+        View::share('build_number', config('app.buildNumber'));
     }
 
     protected function formatUrlToTitle ($url) {

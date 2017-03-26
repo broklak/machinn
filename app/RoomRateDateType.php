@@ -22,4 +22,14 @@ class RoomRateDateType extends Model
      * @var string
      */
     protected $primaryKey = 'room_rate_day_type_id';
+
+    /**
+     * @param $type
+     * @return mixed
+     */
+    public static function getListDay ($type) {
+        $getList = parent::find($type);
+
+        return explode(',',$getList->room_rate_day_type_list);
+    }
 }

@@ -11,7 +11,7 @@ class MasterMenuSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('modules')->delete();
+        DB::table('modules')->truncate();
         $json = File::get("database/data/Modules.json");
         $data = json_decode($json);
         foreach ($data as $obj) {
@@ -21,7 +21,7 @@ class MasterMenuSeeder extends Seeder
             ]);
         }
 
-        DB::table('submodules')->delete();
+        DB::table('submodules')->truncate();
         $json = File::get("database/data/Submodules.json");
         $data = json_decode($json);
         foreach ($data as $obj) {
@@ -32,7 +32,7 @@ class MasterMenuSeeder extends Seeder
             ]);
         }
 
-        DB::table('classes')->delete();
+        DB::table('classes')->truncate();
         $json = File::get("database/data/Classes.json");
         $data = json_decode($json);
         foreach ($data as $obj) {

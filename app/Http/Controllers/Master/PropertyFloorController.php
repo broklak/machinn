@@ -59,7 +59,7 @@ class PropertyFloorController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'property_floor_name'  => 'required|max:75|min:3'
+            'property_floor_name'  => 'required|max:25'
         ]);
 
         $this->model->create([
@@ -103,7 +103,7 @@ class PropertyFloorController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'property_floor_name'  => 'required|max:75|min:3'
+            'property_floor_name'  => 'required|max:25'
         ]);
 
         $data = $this->model->find($id);

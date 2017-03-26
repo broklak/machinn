@@ -1597,3 +1597,10 @@ div.dataTables_wrapper .ui-widget-header {
 }
 #sidebar .content{ display:none;}
 }
+
+@media (min-width: 980px) {
+	.modal.large {
+		width: 80%; /* respsonsive width */
+		margin-left:-40%; /* width/2) */
+	}
+}
