@@ -25,6 +25,10 @@ class BookingHeader extends Model
      */
     protected $primaryKey = 'booking_id';
 
+    /**
+     * @param array $filter
+     * @return mixed
+     */
     public static function getBooking($filter = array()){
         $where = [];
         $orWhere = [];

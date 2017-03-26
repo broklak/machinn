@@ -10,12 +10,10 @@
     </div>
     <div class="container-fluid"><hr>
         <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
-        @foreach($errors->all() as $message)
-            <div style="margin: 20px 0" class="alert alert-error">
-                {{$message}}
-            </div>
-        @endforeach
-        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.store")}}" method="post">
+        <div id="error_messages" style="margin-top: 20px">
+
+        </div>
+        <form id="form-booking" class="form-horizontal" action="{{route("$route_name.store")}}" method="post">
             {{csrf_field()}}
             <div class="row-fluid">
                 <div class="span6">
@@ -35,8 +33,8 @@
                                     <div class="control-group">
                                         <label class="control-label">Room Plan</label>
                                         <div class="controls">
-                                            <select name="room_plan_id">
-                                                <option disabled selected>Choose Room Plan</option>
+                                            <select id="room_plan_id" name="room_plan_id">
+                                                <option value="0" disabled selected>Choose Room Plan</option>
                                                 @foreach($plan as $key => $val)
                                                     <option @if(old('room_plan_id') == $val['room_plan_id']) selected="selected" @endif value="{{$val['room_plan_id']}}">{{$val['room_plan_name']}}</option>
                                                 @endforeach
@@ -46,8 +44,8 @@
                                     <div class="control-group">
                                         <label class="control-label">Source</label>
                                         <div class="controls">
-                                            <select name="partner_id">
-                                                <option disabled selected>Choose Source</option>
+                                            <select id="partner_id" name="partner_id">
+                                                <option value="0" disabled selected>Choose Source</option>
                                                 @foreach($source as $key => $val)
                                                     <option @if(old('partner_id') == $val['partner_id']) selected="selected" @endif value="{{$val['partner_id']}}">{{$val['partner_name']}}</option>
                                                 @endforeach
@@ -69,13 +67,13 @@
                                     <div class="control-group">
                                         <label class="control-label">Adult Numbers</label>
                                         <div class="controls">
-                                            <input value="{{old('adult_num')}}" id="adult" type="number" name="adult_num" />
+                                            <input value="2" max="2" id="adult" type="number" name="adult_num" />
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Child Numbers</label>
                                         <div class="controls">
-                                            <input value="{{old('child_num')}}" id="child" type="number" name="child_num" />
+                                            <input value="0" max="2" id="child" type="number" name="child_num" />
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -127,7 +125,7 @@
                                     <label class="control-label">Payment Method</label>
                                     <div class="controls">
                                         <select id="payment_method" name="payment_method">
-                                            <option disabled selected>Choose Payment Method</option>
+                                            <option value="0" disabled selected>Choose Payment Method</option>
                                             @foreach($payment_method as $key => $val)
                                                 <option @if(old('payment_method') == $val) selected="selected" @endif value="{{$key}}">{{$val}}</option>
                                             @endforeach
@@ -256,7 +254,7 @@
                                     <label class="control-label">ID Type</label>
                                     <div class="controls">
                                         <select id="id_type" name="id_type">
-                                            <option disabled selected>Choose ID Type</option>
+                                            <option value="0" disabled selected>Choose ID Type</option>
                                             @foreach($idType as $key => $val)
                                                 <option @if(old('id_type') == $key) selected="selected" @endif value="{{$key}}">{{$val}}</option>
                                             @endforeach
@@ -310,7 +308,7 @@
                                     <label class="control-label">Religion</label>
                                     <div class="controls">
                                         <select id="religion" name="religion">
-                                            <option disabled selected>Select Religion</option>
+                                            <option value="0" disabled selected>Select Religion</option>
                                             @foreach($religion as $val)
                                                 <option @if(old('religiom') == $val) selected="selected" @endif value="{{$val}}">{{ucwords($val)}}</option>
                                             @endforeach
@@ -333,7 +331,7 @@
                                     <label class="control-label">Country</label>
                                     <div class="controls">
                                         <select id="country_id" name="country_id">
-                                            <option disabled selected>Choose Country</option>
+                                            <option value="0" disabled selected>Choose Country</option>
                                             @foreach($country as $key => $val)
                                                 <option @if(old('country') == $val['country_id']) selected="selected" @endif value="{{$val['country_id']}}">{{$val['country_name']}}</option>
                                             @endforeach

@@ -48,6 +48,28 @@
 
         $('#createGuestButton').click(function(){
             $('#first_name').focus();
+            $('#guest_id').val('');
+            $('#first_name').val('');
+            $('#last_name').val('');
+            $('#mr').prop('checked', false);
+            $('#mrs').prop('checked', false);
+            $('#miss').prop('checked', false);
+            $('#reg').prop('checked', false);
+            $('#vip').prop('checked', false);
+            $('#id_type').val('0');
+            $('#id_number').val('');
+            $('#email').val('');
+            $('#homephone').val('');
+            $('#handphone').val('');
+            $('#birthplace').val('');
+            $('#birthdate').val('');
+            $('#male').prop('checked', false);
+            $('#female').prop('checked', false);
+            $('#religion').val('0');
+            $('#job').val('');
+            $('#address').val('');
+            $('#country_id').val('0');
+            $('#provinceContainer').show();
         });
 
         $('input[type=radio][name=type]').change(function() { // GUARANTEDD OR TENTATIVE BOOKING
@@ -223,6 +245,12 @@
         }
     });
 
+    $('#form-booking').submit(function(){
+        $('#error_messages').html("");
+        return validateOnSubmit();
+
+    });
+
     function getAvailableRoom (dateIn, dateOut, type, floor) {
         var listRoom = [];
         $.ajax({
@@ -330,6 +358,109 @@
         $('#booking_rate').val("");
         $('#selectedRoomContainer').html("");
         $('#room_number').val("");
+    }
+
+    function validateOnSubmit(){
+        var err = 0;
+        var type = $('input[type=radio][name=type]:checked').val();
+        var room_plan = $('#room_plan_id').val();
+        var partner_id = $('#partner_id').val();
+        var checkin = $('#checkin').val();
+        var checkout = $('#checkout').val();
+        var room = $('#room_number').val();
+        var guest = $('#guest_id').val();
+
+        if(type == undefined){
+            err = 1;
+            $('#error_messages').append('<div class="alert alert-error">Please choose booking type</div>');
+        }
+        if(room_plan == 0){
+            err = 1;
+            $('#error_messages').append('<div class="alert alert-error">Please choose room plan</div>');
+        }
+        if(partner_id == 0){
+            err = 1;
+            $('#error_messages').append('<div class="alert alert-error">Please choose source</div>');
+        }
+        if(checkin == ''){
+            err = 1;
+            $('#error_messages').append('<div class="alert alert-error">Please input checkin date</div>');
+        }
+        if(checkout == ''){
+            err = 1;
+            $('#error_messages').append('<div class="alert alert-error">Please input checkout date</div>');
+        }
+        if(room == '' || room.length < 2){
+            err = 1;
+            $('#error_messages').append('<div class="alert alert-error">Please select room</div>');
+        }
+
+        if(guest == ''){
+            var title = $('input[type=radio][name=guest_title]:checked').val();
+            var first_name = $('#first_name').val();
+            var id_type = $('#id_type').val();
+            var id_number = $('#id_number').val();
+            var handphone = $('#handphone').val();
+            var gender = $('input[type=radio][name=gender]:checked').val();
+            var country_id = $('#country_id').val();
+
+            if(title == undefined){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please choose guest title name</div>');
+            }
+            if(first_name == ''){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please input guest first name</div>');
+            }
+            if(id_type == 0){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please input guest ID type</div>');
+            }
+            if(id_number == ''){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please input guest ID number</div>');
+            }
+            if(handphone == ''){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please input guest handphone number</div>');
+            }
+            if(gender == undefined){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please input guest gender</div>');
+            }
+            if(country_id == 0){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please select guest country</div>');
+            }
+        }
+
+        if(type == 1){
+            var payment_method = $('#payment_method').val();
+            var down_payment_amount = $('#down_payment_amount').val();
+
+            if(payment_method == 0){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please select payment method</div>');
+            }
+            if(down_payment_amount == ''){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please input down payment amount</div>');
+            }
+
+        }
+        if(err == 1){
+            $('#error_messages').goTo();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    $.fn.goTo = function() {
+        $('html, body').animate({
+            scrollTop: $(this).offset().top - 80 + 'px'
+        }, 'slow');
+        return this; // for chaining...
     }
 
 </script>
