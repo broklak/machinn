@@ -11,10 +11,30 @@
     <div class="container-fluid">
         <hr>
         <a class="btn btn-primary" href="{{route("$route_name.create")}}">Create New {{$master_module}}</a>
+        <div class="filter-data">
+
+        </div>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
                 <div class="widget-box">
+                    <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+                        <h5>Booking List</h5>
+                        <div class="filter-data">
+                            <form>
+                                <select name="status" id="booking-status">
+                                    <option @if($filter['status'] == null || $filter['status'] == 0) selected @endif value="0">All Booking Status</option>
+                                    <option @if($filter['status'] == 1) selected @endif value="1">Active</option>
+                                    <option @if($filter['status'] == 3) selected @endif value="3">No Showing</option>
+                                    <option @if($filter['status'] == 4) selected @endif value="4">Void</option>
+                                </select>
+
+                                <input id="guest" name="guest" placeholder="Search By Guest Name" value="{{$filter['guest']}}" type="text" />
+                                <input type="submit" class="btn btn-primary" value="Search">
+                            </form>
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
                     <div class="widget-content nopadding">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -62,7 +82,7 @@
                         </table>
                     </div>
                 </div>
-                {{--{{ $rows->links() }}--}}
+                {{ $link }}
             </div>
         </div>
     </div>

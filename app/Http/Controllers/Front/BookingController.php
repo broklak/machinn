@@ -120,8 +120,11 @@ class BookingController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
-        $getBook = BookingHeader::getBooking();
+    public function index(Request $request) {
+        $filter['guest'] = $request->input('guest');
+        $filter['status'] = $request->input('status');
+        $getBook = BookingHeader::getBooking($filter);
+        $data['filter'] = $filter;
         $data['rows'] = $getBook['booking'];
         $data['link'] = $getBook['link'];
         $data['guest_model'] = new Guest();

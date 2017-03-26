@@ -26,12 +26,23 @@ class BookingHeader extends Model
     protected $primaryKey = 'booking_id';
 
     public static function getBooking($filter = array()){
+        $where = [];
+        $orWhere = [];
+
+        if(isset($filter['status']) && $filter['status'] != 0) {
+            $where[] = ['booking_header.booking_status', '=', $filter['status']];
+        }
+        $guest = $filter['guest'];
+
         $getBooking = DB::table('booking_header')
                         ->select(DB::raw('booking_header.guest_id, first_name, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
                             (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, partner_name, booking_header.type,
                             (select total_payment from booking_payment where booking_id = booking_header.booking_id and type = 1 limit 1) as down_payment'))
                         ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
                         ->join('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
+                        ->orderBy('booking_header.booking_id', 'desc')
+                        ->where($where)
+                        ->whereRaw("(last_name LIKE '%$guest%' OR first_name LIKE '%$guest%')")
                         ->paginate(config('app.limitPerPage'));
 
         $booking = array();
