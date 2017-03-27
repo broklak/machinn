@@ -238,5 +238,5 @@ return [
 
     'paymentMethod' => [1 => 'Cash (FO)', 2 => 'Cash (BO)', 3 => 'Credit Card', 4 => 'Bank Transfer'],
 
-    'roomStatus' => ['1' => 'Vacant', '2' => 'Occupied', '3' => 'Guaranteed Booking', '4' => 'Tentative Booking', '5' => 'Dirty', '6' => 'Out of Order'],
+    'roomStatus' => ['1' => 'Vacant', '2' => 'Occupied', '3' => 'Guaranteed Booking', '4' => 'Tentative Booking', '5' => 'Dirty', '6' => 'Out of Order', '7' => 'No Showed Booked', '8' => 'Void Booked'],
 ];

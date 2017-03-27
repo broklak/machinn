@@ -17,7 +17,7 @@ class BookingHeader extends Model
      */
     protected $fillable = [
         'guest_id', 'room_plan_id', 'partner_id', 'type', 'checkin_date', 'checkout_date', 'adult_num','room_list', 'booking_code',
-        'child_num', 'is_banquet', 'booking_status', 'payment_status', 'created_by', 'updated_by', 'grand_total', 'notes'
+        'child_num', 'is_banquet', 'booking_status', 'payment_status', 'created_by', 'updated_by', 'grand_total', 'notes', 'void_reason'
     ];
 
     /**
@@ -39,8 +39,8 @@ class BookingHeader extends Model
         $guest = $filter['guest'];
 
         $getBooking = DB::table('booking_header')
-                        ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, room_list, first_name, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
-                            (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, partner_name, booking_header.type,
+                        ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, booking_code, room_list, first_name, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
+                            (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, partner_name, booking_header.type, booking_status,
                             (select total_payment from booking_payment where booking_id = booking_header.booking_id and type = 1 limit 1) as down_payment'))
                         ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
                         ->join('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
@@ -86,5 +86,25 @@ class BookingHeader extends Model
             return 'Guaranteed';
         }
         return 'Tentative';
+    }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function getBookingStatus($status){
+        switch($status){
+            case 1:
+                return 'Wait to Checkin';
+                break;
+            case 2:
+                return 'Already Check In';
+                break;
+            case 3:
+                return 'No Showing';
+                break;
+            case 4:
+                return 'Void';
+        }
     }
 }

@@ -125,6 +125,7 @@ class BookingController extends Controller
         $filter['status'] = $request->input('status');
         $getBook = BookingHeader::getBooking($filter);
         $data['filter'] = $filter;
+        $data['payment_method'] = config('app.paymentMethod');
         $data['rows'] = $getBook['booking'];
         $data['link'] = $getBook['link'];
         $data['guest_model'] = new Guest();
@@ -239,9 +240,41 @@ class BookingController extends Controller
     public function showdownPayment($bookingId){
         $data['header'] = BookingHeader::getBookingDetail($bookingId);
         $data['payment'] = BookingPayment::where('booking_id', $bookingId)->get();
-
-//        var_dump($data['payment']); die;
         return view("front.".$this->module.".list_payment", $data);
+    }
+
+    /**
+     * @param Request $request
+     * @param $bookingId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function voidBooking(Request $request, $bookingId){
+        BookingHeader::find($bookingId)->update([
+            'booking_status' => 4,
+            'payment_status' => ($request->input('void_type') == 1) ? 4 : 1,
+            'updated_by' => Auth::id(),
+            'void_reason' => $request->input('void_desc')
+        ]);
+
+        BookingRoom::where('booking_id', $bookingId)->update([
+            'status' => 8,
+            'updated_by' => Auth::id()
+        ]);
+
+        if($request->input('void_type') == 1){
+            BookingPayment::create([
+                'booking_id'    => $bookingId,
+                'guest_id'      => $request->input('void_guest_id'),
+                'payment_method' => $request->input('void_payment_method'),
+                'type'          => 5,
+                'total_payment' => $request->input('void_dp_refund'),
+                'flow_type'     => 2,
+                'created_by'    => Auth::id()
+            ]);
+        }
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -334,6 +367,7 @@ class BookingController extends Controller
             foreach($room_number as $val){
                 $bookingRoom = [
                     "booking_id"    => $header->booking_id,
+                    "guest_id"      => $header->guest_id,
                     "room_number_id" => $val,
                     "room_transaction_date" => date('Y-m-d', $nextDay),
                     "status"        => ($input['type'] == 1) ? 3 : 4,
@@ -366,6 +400,7 @@ class BookingController extends Controller
                                         ->first();
             $paymentData = [
                 'booking_id'        => $header->booking_id,
+                'guest_id'          => $header->guest_id,
                 'payment_method'    => isset($input['payment_method']) ? $input['payment_method'] : 1,
                 'type'              => 1, // down payment
                 'total_payment'     => isset($input['down_payment_amount']) ? $input['down_payment_amount'] : 0,

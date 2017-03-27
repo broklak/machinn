@@ -49,7 +49,7 @@ class GlobalHelper
         $len = strlen($guestId.$now);
         $rand = str_random($char - $len);
 
-        return $guestId.$rand.$now;
+        return strtoupper($guestId.$rand.$now);
     }
 }
 

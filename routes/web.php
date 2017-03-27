@@ -17,6 +17,7 @@ Route::get('ajax/searchProvince', 'Front\AjaxController@searchProvince')->name("
 Route::get('ajax/searchRoom', 'Front\AjaxController@searchRoom')->name("ajax.searchRoom");
 Route::get('ajax/getTotalRoomRates', 'Front\AjaxController@getTotalRoomRates')->name("ajax.getTotalRoomRates");
 
+Route::post('front/booking/void/{bookingId}', 'Front\BookingController@voidBooking')->name("booking.void");
 Route::get('front/booking/showdownpayment/{bookingId}', 'Front\BookingController@showDownPayment')->name("booking.showdownpayment");
 Route::resource('front/booking', 'Front\BookingController');
 
