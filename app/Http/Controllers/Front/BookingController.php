@@ -166,14 +166,82 @@ class BookingController extends Controller
             $guest_id = $guest->guest_id;
         }
 
-        $insertHeader = $this->insertHeader($request->input(), $guest_id);
+        $header = $this->processHeader($request->input(), $guest_id);
 
-        $this->insertBookingRoom($request->input(), $insertHeader);
+        $this->processBookingRoom($request->input(), $header);
 
-        $this->insertPayment($request->input(), $insertHeader);
+        $this->processPayment($request->input(), $header);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to create new booking');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $header = BookingHeader::find($id);
+        $guest_id = $request->input('guest_id');
+        if(!$guest_id){
+            $guest = $this->insertGuest($request->input());
+            $guest_id = $guest->guest_id;
+        }
+
+        $this->processHeader($request->input(), $guest_id, $id);
+
+        $this->processBookingRoom($request->input(), $header);
+
+        $this->processPayment($request->input(), $header);
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $detail = BookingHeader::getBookingDetail($id);
+        $detail->room_data = RoomNumber::getRoomDataList($detail->room_list);
+        $data['id'] = $id;
+        $data['row'] = $detail;
+        $data['floor'] = $this->floor;
+        $data['room_type'] = $this->roomType;
+        $data['cash_account'] = $this->cash_account;
+        $data['cc_type'] = $this->ccType;
+        $data['bank']   = $this->bank;
+        $data['settlement'] = $this->settlement;
+        $data['payment_method'] = config('app.paymentMethod');
+        $data['guestModel'] = new Guest();
+        $data['guest'] = $this->guest;
+        $data['country'] = $this->country;
+        $data['religion'] = config('app.religion');
+        $data['idType'] = $this->idType;
+        $data['plan'] = $this->roomPlan;
+        $data['source'] = $this->source;
+
+        return view("front.".$this->module.".edit", $data);
+    }
+
+    /**
+     * @param $bookingId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showdownPayment($bookingId){
+        $data['header'] = BookingHeader::getBookingDetail($bookingId);
+        $data['payment'] = BookingPayment::where('booking_id', $bookingId)->get();
+
+//        var_dump($data['payment']); die;
+        return view("front.".$this->module.".list_payment", $data);
     }
 
     /**
@@ -208,14 +276,19 @@ class BookingController extends Controller
     /**
      * @param $input
      * @param $guestId
+     * @param null $existingId
      * @return array
      */
-    protected function insertHeader ($input, $guestId) {
+    protected function processHeader ($input, $guestId, $existingId = null) {
+        $room_number = explode(',',$input['room_number']);
+        $room_number = array_filter($room_number);
+
         $bookingHeader = [
             'guest_id'      => $guestId,
             'room_plan_id'  => $input['room_plan_id'],
             'partner_id'  => $input['partner_id'],
             'type'      => $input['type'],
+            'room_list' => implode(',', $room_number),
             'checkin_date'      => $input['checkin_date'],
             'checkout_date'      => $input['checkout_date'],
             'adult_num'      => isset($input['adult_num']) ? $input['adult_num'] : 2,
@@ -227,7 +300,12 @@ class BookingController extends Controller
             'payment_status'    => ($input['type'] == 1) ? 2 : 1,
             'created_by'        => Auth::id()
         ];
-        $bookingHeader = BookingHeader::create($bookingHeader);
+
+        if($existingId == null){
+            $bookingHeader['booking_code'] = GlobalHelper::generateBookingId($guestId);
+        }
+
+        $bookingHeader = ($existingId == null) ? BookingHeader::create($bookingHeader) : BookingHeader::find($existingId)->update($bookingHeader);
         return $bookingHeader;
     }
 
@@ -236,7 +314,10 @@ class BookingController extends Controller
      * @param $header
      * @return int
      */
-    protected function insertBookingRoom($input, $header) {
+    protected function processBookingRoom($input, $header) {
+        // DELETE FIRST
+        BookingRoom::where('booking_id', $header->booking_id)->delete();
+
         $checkin = strtotime($input['checkin_date']);
         $checkout = strtotime($input['checkout_date']);
         $datediff = floor(abs($checkin - $checkout)) / (60 * 60 * 24);
@@ -278,9 +359,12 @@ class BookingController extends Controller
      * @param $header
      * @return int
      */
-    protected function insertPayment($input, $header) {
+    protected function processPayment($input, $header) {
         if($input['type'] == 1){ // INSERT DOWN PAYMENT IF GUARANTEED
-            $insertPayment = [
+            $payment = BookingPayment::where('booking_id', $header->booking_id) // CHECK IF DOWNPAYMENT EXIST
+                                        ->where('type', 1)
+                                        ->first();
+            $paymentData = [
                 'booking_id'        => $header->booking_id,
                 'payment_method'    => isset($input['payment_method']) ? $input['payment_method'] : 1,
                 'type'              => 1, // down payment
@@ -296,7 +380,15 @@ class BookingController extends Controller
                 'bank_transfer_recipient' => $input['cash_account_id'],
                 'created_by'        => Auth::id()
             ];
-            BookingPayment::create($insertPayment);
+
+            if(count($payment) == 0){
+                BookingPayment::create($paymentData);
+            } else {
+                BookingPayment::find($payment->booking_payment_id)->update($paymentData);
+            }
+        } else { // DELETE ALL DOWNPAYMENT IF TENTATIVE
+            $payment = BookingPayment::where('booking_id', $header->booking_id)
+            ->where('type', 1)->delete();
         }
         return 1;
     }

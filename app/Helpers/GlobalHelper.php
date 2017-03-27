@@ -42,5 +42,14 @@ class GlobalHelper
 
         return 'Yes';
     }
+
+    public static function generateBookingId ($guestId){
+        $char = 10;
+        $now = substr(time(), -4);
+        $len = strlen($guestId.$now);
+        $rand = str_random($char - $len);
+
+        return $guestId.$rand.$now;
+    }
 }
 

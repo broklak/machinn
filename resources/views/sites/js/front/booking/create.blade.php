@@ -10,6 +10,11 @@
                     date.setDate(date.getDate() + 1);
                 }
                 $('#checkout').datepicker('option', 'minDate', date);
+
+                var checkin = $('#checkin').val();
+                var checkout = $('#checkout').val();
+
+                getAvailableRoom(checkin, checkout);
             }
         });
         $('#checkout').datepicker({

@@ -41,4 +41,40 @@ class Guest extends Model
                 break;
         }
     }
+
+    /**
+     * @param $idType
+     * @return string
+     */
+    public static function getIdType ($idType) {
+        switch ($idType) {
+            case 1:
+                return 'KTP';
+                break;
+            case 2:
+                return "SIM";
+                break;
+            case 3:
+                return "Passport";
+                break;
+        }
+    }
+
+    /**
+     * @param $title
+     * @return string
+     */
+    public static function getTitleName ($title) {
+        switch ($title) {
+            case 1:
+                return 'Mr.';
+                break;
+            case 2:
+                return "Mrs.";
+                break;
+            case 3:
+                return "Miss.";
+                break;
+        }
+    }
 }

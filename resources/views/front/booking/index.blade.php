@@ -40,7 +40,7 @@
                             <thead>
                                 <tr>
                                     <th>Guest Name</th>
-                                    <th>Handphone Number</th>
+                                    <th>Room Number</th>
                                     <th>Check In Date</th>
                                     <th>Check Out Date</th>
                                     <th>Business Source</th>
@@ -54,7 +54,7 @@
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
                                         <td>{{$val->first_name .' '.$val->last_name}} <br/>({{$val->id_number}}) ({{$guest_model->getIdTypeName($val->id_type)}})</td>
-                                        <td>{{$val->handphone}}</td>
+                                        <td>{{\App\RoomNumber::getRoomCodeList($val->room_list)}}</td>
                                         <td>{{date('j F Y', strtotime($val->checkin_date))}}</td>
                                         <td>{{date('j F Y', strtotime($val->checkout_date))}}</td>
                                         <td>{{$val->partner_name}}</td>
@@ -64,9 +64,11 @@
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="#"><i class="icon-money"></i> Down Payment</a></li>
+                                                    @if($val->type == 1)
+                                                        <li><a href="{{route("$route_name.showdownpayment", ['id' => $val->booking_id])}}"><i class="icon-money"></i> Down Payment</a></li>
+                                                    @endif
                                                     <li><a href="#"><i class="icon-signout"></i> Check In</a></li>
-                                                    <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
+                                                    <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> Edit</a></li>
                                                     <li><a href="#"><i class="icon-remove"></i> Void</a></li>
                                                 </ul>
                                             </div>

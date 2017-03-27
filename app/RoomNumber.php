@@ -119,6 +119,11 @@ class RoomNumber extends Model
         return $getRoom;
     }
 
+    /**
+     * @param $roomId
+     * @param $rateTypeId
+     * @return mixed
+     */
     public static function getRoomRatesById($roomId, $rateTypeId) {
         $getprice = DB::table('room_rates')
                     ->join('room_numbers', 'room_numbers.room_type_id', '=', 'room_rates.room_rate_type_id')
@@ -127,6 +132,37 @@ class RoomNumber extends Model
                     ->value('room_price');
 
         return $getprice;
+    }
+
+    /**
+     * @param $roomIdList
+     * @return array
+     */
+    public static function getRoomDataList($roomIdList){
+        $roomList = explode(',', $roomIdList);
+        $roomData = [];
+        foreach($roomList as $val){
+            $getCode = parent::find($val);
+            $roomData[$val]['code'] = $getCode->room_number_code;
+            $roomData[$val]['type'] = $getCode->room_type_id;
+            $roomData[$val]['rateWeekdays'] = self::getRoomRatesById($val, 1);
+            $roomData[$val]['rateWeekends'] = self::getRoomRatesById($val, 2);
+        }
+        return $roomData;
+    }
+
+    /**
+     * @param $roomIdList
+     * @return string
+     */
+    public static function getRoomCodeList ($roomIdList){
+        $roomList = explode(',', $roomIdList);
+        $roomData = [];
+        foreach($roomList as $val){
+            $getCode = parent::find($val);
+            $roomData[] = $getCode->room_number_code;
+        }
+        return implode(', ', $roomData);
     }
 
 }
