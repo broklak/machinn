@@ -33,7 +33,7 @@
                                         <td>{{$val->room_number_code}}</td>
                                         <td>{{$model->getTypeName($val->room_type_id)}}</td>
                                         <td>{{$model->getFloorName($val->room_floor_id)}}</td>
-                                        <td><span class="label label-{{$model->setButtonStatus($val->room_number_status)}}">{{$model->setStatusName($val->room_number_status)}}</span></td>
+                                        <td><span class="label label-{{\App\Helpers\GlobalHelper::setButtonStatus($val->hk_status)}}">{{\App\Helpers\GlobalHelper::setStatusName($val->hk_status)}}</span></td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->room_number_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
                                             <div class="btn-group">

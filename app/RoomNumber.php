@@ -49,48 +49,10 @@ class RoomNumber extends Model
     }
 
     /**
-     * @param $status
-     * @return string
-     */
-    public static function setButtonStatus($status){
-        if($status == 1){
-            return 'success';
-        } elseif($status == 2){
-            return 'primary';
-        } elseif($status == 3){
-            return 'warning';
-        } elseif ($status == 4){
-            return 'info';
-        } elseif($status == 5){
-            return 'inverse';
-        } else{
-            return 'important';
-        }
-    }
-
-    /**
-     * @param $status
-     * @return string
-     */
-    public static function setStatusName($status){
-        if($status == 1){
-            return 'Vacant';
-        } elseif($status == 2){
-            return 'Occupied';
-        } elseif($status == 3){
-            return 'Guaranteed Booking';
-        } elseif ($status == 4){
-            return 'Tentative Booking';
-        } elseif($status == 5){
-            return 'Dirty';
-        } else{
-            return 'Out of Order';
-        }
-    }
-
-    /**
-     * @param string $checkinDate
-     * @param string $checkoutDate
+     * @param $checkinDate
+     * @param $checkoutDate
+     * @param array $filter
+     * @return mixed
      */
     public static function getRoomAvailable ($checkinDate, $checkoutDate, $filter = array()){
         $checkoutDate = date('Y-m-d', strtotime($checkoutDate) - 3600); // ROOM CAN BE USED ON CHECKOUT DATE (kurangi 1 hari dari jadwal checkout)

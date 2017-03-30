@@ -51,5 +51,105 @@ class GlobalHelper
 
         return strtoupper($guestId.$rand.$now);
     }
+
+    /**
+     * @param $type
+     * @return string
+     */
+    public static function getBookingTypeName ($type) {
+        if($type == 1){
+            return 'Guaranteed';
+        } else if($type == 2) {
+            return 'Tentative';
+        } else {
+            return 'Checked In';
+        }
+    }
+
+    /**
+     * @param $type
+     * @return string
+     */
+    public static function getBookingTypeLabel ($type) {
+        if($type == 1){
+            return 'info';
+        } else if($type == 2) {
+            return 'warning';
+        } else {
+            return 'success';
+        }
+    }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function getBookingStatus($status){
+        switch($status){
+            case 1:
+                return 'Wait to Checkin';
+                break;
+            case 2:
+                return 'Already Check In';
+                break;
+            case 3:
+                return 'No Showing';
+                break;
+            case 4:
+                return 'Void';
+        }
+    }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function setStatusName($status){
+        if($status == 1){
+            return 'Ready';
+        } elseif($status == 2){
+            return 'Dirty';
+        } else {
+            return 'Not Ready';
+        }
+    }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function setButtonStatus($status){
+        if($status == 1){
+            return 'success';
+        } elseif($status == 2){
+            return 'warning';
+        } elseif($status == 3){
+            return 'important';
+        }
+    }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function getBookingRoomStatusColor($status){
+        switch($status){
+            case 1:
+                return 'vacant';
+                break;
+            case 2:
+                return 'occupied';
+                break;
+            case 3:
+                return 'guaranteed';
+                break;
+            case 4:
+                return 'tentative';
+                break;
+            case 5:
+                return 'ooo';
+                break;
+        }
+    }
 }
 

@@ -52,7 +52,6 @@ class RoomTypeController extends Controller
      */
     public function index()
     {
-        $data['status'] = config('app.roomStatus');
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;

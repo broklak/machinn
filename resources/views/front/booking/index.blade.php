@@ -40,12 +40,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th>Booking Code</th>
                                     <th>Guest Name</th>
                                     <th>Room Number</th>
                                     <th>Check In Date</th>
                                     <th>Check Out Date</th>
                                     <th>Business Source</th>
-                                    <th>Down Payment</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -54,13 +54,15 @@
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
-                                        <td>{{$val->first_name .' '.$val->last_name}} <br/>({{$val->id_number}}) ({{$guest_model->getIdTypeName($val->id_type)}})<br /><label class="label label-{{($val->type == 1) ? 'info' : 'warning'}}">{{\App\BookingHeader::getBookingTypeName($val->type)}}</label></td>
+                                        <td>{{$val->booking_code}}</td>
+                                        <td>{{$val->first_name .' '.$val->last_name}} <br/>({{$val->id_number}}) ({{$guest_model->getIdTypeName($val->id_type)}})
+                                            <br /><label class="label label-{{\App\Helpers\GlobalHelper::getBookingTypeLabel($val->type)}}">{{\App\Helpers\GlobalHelper::getBookingTypeName($val->type)}}</label>
+                                        </td>
                                         <td>{{\App\RoomNumber::getRoomCodeList($val->room_list)}}</td>
                                         <td>{{date('j F Y', strtotime($val->checkin_date))}}</td>
                                         <td>{{date('j F Y', strtotime($val->checkout_date))}}</td>
-                                        <td>{{$val->partner_name}}</td>
-                                        <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->down_payment)}}</td>
-                                        <td>{{\App\BookingHeader::getBookingStatus($val->booking_status)}}</td>
+                                        <td>{{($val->partner_id == 0) ? 'Walk In' : $val->partner_name}}</td>
+                                        <td>{{\App\Helpers\GlobalHelper::getBookingStatus($val->booking_status)}}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" @if($val->booking_status == 4 || $val->booking_status == 3) disabled @endif class="btn dropdown-toggle">Action <span class="caret"></span></button>
@@ -69,7 +71,11 @@
                                                         @if($val->type == 1)
                                                             <li><a href="{{route("$route_name.showdownpayment", ['id' => $val->booking_id])}}"><i class="icon-money"></i> Down Payment</a></li>
                                                         @endif
-                                                        <li><a href="#"><i class="icon-signout"></i> Check In</a></li>
+                                                        @if($val->booking_status != 2)
+                                                            <li><a onclick="return confirm('Check In Booking #{{$val->booking_code}}?')" href="{{route('checkin.book', ['id' => $val->booking_id])}}">
+                                                                <i class="icon-signout"></i> Check In</a>
+                                                            </li>
+                                                        @endif
                                                         <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> Edit</a></li>
                                                         <li><a href="#modalVoid-{{$val->booking_id}}" data-toggle="modal" href="#"><i class="icon-remove"></i> Void</a></li>
                                                     @endif

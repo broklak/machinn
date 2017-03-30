@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\GlobalHelper;
+use Illuminate\Support\Facades\Auth;
 
 class BookingHeader extends Model
 {
@@ -31,7 +33,6 @@ class BookingHeader extends Model
      */
     public static function getBooking($filter = array()){
         $where = [];
-        $orWhere = [];
 
         if(isset($filter['status']) && $filter['status'] != 0) {
             $where[] = ['booking_header.booking_status', '=', $filter['status']];
@@ -40,10 +41,10 @@ class BookingHeader extends Model
 
         $getBooking = DB::table('booking_header')
                         ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, booking_code, room_list, first_name, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
-                            (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, partner_name, booking_header.type, booking_status,
+                            (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, booking_header.partner_id, partner_name, booking_header.type, booking_status,
                             (select total_payment from booking_payment where booking_id = booking_header.booking_id and type = 1 limit 1) as down_payment'))
                         ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
-                        ->join('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
+                        ->leftJoin('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
                         ->orderBy('booking_header.booking_id', 'desc')
                         ->where($where)
                         ->whereRaw("(last_name LIKE '%$guest%' OR first_name LIKE '%$guest%')")
@@ -78,33 +79,71 @@ class BookingHeader extends Model
     }
 
     /**
-     * @param $type
-     * @return string
+     * @param $input
+     * @param $guestId
+     * @param null $existingId
+     * @param string $source
+     * @return array
      */
-    public static function getBookingTypeName ($type) {
-        if($type == 1){
-            return 'Guaranteed';
+    public static function processHeader ($input, $guestId, $existingId = null, $source = 'booking') {
+        $room_number = explode(',',$input['room_number']);
+        $room_number = array_filter($room_number);
+
+        if($source == 'booking'){
+            $payment_status = ($input['type'] == 1) ? 2 : 1;
+        } else {
+            $payment_status = 1;
         }
-        return 'Tentative';
+
+        $bookingHeader = [
+            'guest_id'      => $guestId,
+            'room_plan_id'  => $input['room_plan_id'],
+            'partner_id'  => ($source == 'booking') ? $input['partner_id'] : 0,
+            'type'      => ($source == 'booking') ? $input['type'] : 3, // 3 MEANS FROM CHECKIN
+            'room_list' => implode(',', $room_number),
+            'checkin_date'      => $input['checkin_date'],
+            'checkout_date'      => $input['checkout_date'],
+            'adult_num'      => isset($input['adult_num']) ? $input['adult_num'] : 2,
+            'grand_total'   => $input['total_rates'],
+            'child_num'      => isset($input['child_num']) ? $input['child_num'] : 0,
+            'notes'      => $input['notes'],
+            'is_banquet'      => $input['is_banquet'],
+            'booking_status'      => ($source == 'booking') ? 1 : 2,
+            'payment_status'    => $payment_status,
+            'created_by'        => Auth::id()
+        ];
+
+        if($existingId == null){
+            $bookingHeader['booking_code'] = GlobalHelper::generateBookingId($guestId);
+        }
+
+        $bookingHeader = ($existingId == null) ? parent::create($bookingHeader) : parent::find($existingId)->update($bookingHeader);
+        return $bookingHeader;
     }
 
     /**
-     * @param $status
-     * @return string
+     * @param string $status
+     * @return mixed
      */
-    public static function getBookingStatus($status){
-        switch($status){
-            case 1:
-                return 'Wait to Checkin';
-                break;
-            case 2:
-                return 'Already Check In';
-                break;
-            case 3:
-                return 'No Showing';
-                break;
-            case 4:
-                return 'Void';
+    public static function getBookingReport($status = 'all'){
+        $where = [];
+
+        $where[] = ['booking_header.type', '<>', 3];
+        if($status != 'all') {
+            $where[] = ['booking_header.booking_status', '=', $status];
         }
+
+        $getBooking = DB::table('booking_header')
+            ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, booking_code, room_list, first_name, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
+                            DAY(checkout_date) - DAY(checkin_date) as total_night,
+                            (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, booking_header.partner_id, partner_name, booking_header.type, booking_status,
+                            (select total_payment from booking_payment where booking_id = booking_header.booking_id and type = 1 limit 1) as down_payment, booking_header.created_at'))
+            ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
+            ->leftJoin('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
+            ->orderBy('booking_header.booking_id', 'desc')
+            ->where($where)
+            ->get();
+
+        return $getBooking;
     }
 }

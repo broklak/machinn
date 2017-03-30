@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\BookingRoom;
 use App\PropertyFloor;
 use App\RoomNumber;
 use App\RoomType;
@@ -172,5 +173,27 @@ class RoomNumberController extends Controller
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of room '.$data->room_number_code);
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    public function viewRoom (Request $request){
+        $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d');
+        $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d', strtotime("+14 days"));
+
+        $datediff = floor(abs(strtotime($start) - strtotime($end))) / (60 * 60 * 24);
+
+        $room = BookingRoom::getAllRoomBooked($start, $end);
+
+        $modifiedKey = array();
+        foreach($room as $key => $val){
+            $modifiedKey[$val->room_number_id.':'.$val->room_transaction_date] = $val;
+        }
+
+        $data['room'] = $modifiedKey;
+        $data['start'] = $start;
+        $data['end'] = $end;
+        $data['date_diff'] = $datediff;
+        $data['room_type'] = RoomType::where('room_type_status', 1)->get();
+
+        return view("master.".$this->module.".view", $data);
     }
 }

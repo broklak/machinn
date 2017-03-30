@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\GlobalHelper;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class BookingController
@@ -98,7 +99,7 @@ class BookingController extends Controller
 
         $this->source = Partner::where('partner_status', 1)->get();
 
-        $this->idType = [1 => 'KTP', 2 => 'SIM', 3 => 'PASSPORT'];
+        $this->idType = config('app.guestIdentificationType');
 
         $this->country = Country::where('country_status', 1)->get();
 
@@ -163,15 +164,15 @@ class BookingController extends Controller
     public function store(Request $request){
         $guest_id = $request->input('guest_id');
         if(!$guest_id){
-            $guest = $this->insertGuest($request->input());
+            $guest = Guest::insertGuest($request->input());
             $guest_id = $guest->guest_id;
         }
 
-        $header = $this->processHeader($request->input(), $guest_id);
+        $header = BookingHeader::processHeader($request->input(), $guest_id);
 
-        $this->processBookingRoom($request->input(), $header);
+        BookingRoom::processBookingRoom($request->input(), $header);
 
-        $this->processPayment($request->input(), $header);
+        BookingPayment::processPayment($request->input(), $header);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to create new booking');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -189,15 +190,15 @@ class BookingController extends Controller
         $header = BookingHeader::find($id);
         $guest_id = $request->input('guest_id');
         if(!$guest_id){
-            $guest = $this->insertGuest($request->input());
+            $guest = Guest::insertGuest($request->input());
             $guest_id = $guest->guest_id;
         }
 
-        $this->processHeader($request->input(), $guest_id, $id);
+        BookingHeader::processHeader($request->input(), $guest_id, $id);
 
-        $this->processBookingRoom($request->input(), $header);
+        BookingRoom::processBookingRoom($request->input(), $header);
 
-        $this->processPayment($request->input(), $header);
+        BookingPayment::processPayment($request->input(), $header);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -278,153 +279,55 @@ class BookingController extends Controller
     }
 
     /**
-     * @param $input
-     * @return mixed
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function insertGuest($input){
-        $guestData = [
-            'id_type'       => $input['id_type'],
-            'id_number'     => $input['id_number'],
-            'type'          => isset($input['guest_type']) ? $input['guest_type'] : 1,
-            'title'         => $input['guest_title'],
-            'first_name'    => $input['first_name'],
-            'last_name'    => $input['last_name'],
-            'birthdate'    => $input['birthdate'],
-            'birthplace'    => $input['birthplace'],
-            'religion'    => isset($input['religion']) ? $input['religion'] : null,
-            'gender'    => $input['gender'],
-            'job'    => $input['job'],
-            'address'    => $input['address'],
-            'country_id'    => $input['country_id'],
-            'province_id'    => isset($input['province_id']) ? $input['province_id'] : null,
-            'homephone'    => $input['homephone'],
-            'handphone'    => $input['handphone'],
-            'email'    => $input['email'],
-            'created_by' => Auth::id()
+    public function report(Request $request){
+        $month = ($request->input('month')) ? $request->input('month') : date('m');
+        $year = ($request->input('year')) ? $request->input('year') : date('Y');
+        $start = date("$year-$month-01");
+        $end = date("$year-$month-t");
+
+        $data['partner'] = Partner::all();
+        $data['month_list'] = [
+            '1' => 'January',
+            '2' => 'February',
+            '3' => 'March',
+            '4' => 'April',
+            '5' => 'May',
+            '6' => 'June',
+            '7' => 'July',
+            '8' => 'August',
+            '9' => 'September',
+            '10' => 'October',
+            '11' => 'November',
+            '12' => 'December',
         ];
-        $guest = Guest::create($guestData);
-        return $guest;
-    }
+        $data['year_list'] = 5;
+        $data['month'] = date('F', strtotime(date("$year-$month-1")));
+        $data['year'] = date('Y', strtotime(date("$year-$month-1")));
+        $data['start'] = $start;
+        $data['end'] = $end;
 
-    /**
-     * @param $input
-     * @param $guestId
-     * @param null $existingId
-     * @return array
-     */
-    protected function processHeader ($input, $guestId, $existingId = null) {
-        $room_number = explode(',',$input['room_number']);
-        $room_number = array_filter($room_number);
+        $data['bookActiveNum'] = BookingHeader::where('booking_status', 1)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->count();
+        $data['bookCheckinNum'] = BookingHeader::where('booking_status', 2)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->count();
+        $data['bookNoShowNum'] = BookingHeader::where('booking_status', 3)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->count();
+        $data['bookVoidNum'] = BookingHeader::where('booking_status', 4)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->count();
 
-        $bookingHeader = [
-            'guest_id'      => $guestId,
-            'room_plan_id'  => $input['room_plan_id'],
-            'partner_id'  => $input['partner_id'],
-            'type'      => $input['type'],
-            'room_list' => implode(',', $room_number),
-            'checkin_date'      => $input['checkin_date'],
-            'checkout_date'      => $input['checkout_date'],
-            'adult_num'      => isset($input['adult_num']) ? $input['adult_num'] : 2,
-            'grand_total'   => $input['total_rates'],
-            'child_num'      => isset($input['child_num']) ? $input['child_num'] : 0,
-            'notes'      => $input['notes'],
-            'is_banquet'      => $input['is_banquet'],
-            'booking_status'      => 1, // 1 NOT CHECKIN YET,
-            'payment_status'    => ($input['type'] == 1) ? 2 : 1,
-            'created_by'        => Auth::id()
-        ];
+        $data['activeRoomNum'] = BookingRoom::select(DB::raw('distinct(room_number_id)'))->whereIn('status', [3,4])->whereBetween('room_transaction_date', [$start, $end])->get();
+        $data['voidRoomNum'] = BookingRoom::select(DB::raw('distinct(room_number_id)'))->where('status', 8)->whereBetween('room_transaction_date', [$start, $end])->get();
+        $data['noShowRoomNum'] = BookingRoom::select(DB::raw('distinct(room_number_id)'))->where('status', 7)->whereBetween('room_transaction_date', [$start, $end])->get();
+        $data['checkInRoomNum'] = BookingRoom::select(DB::raw('distinct(room_number_id)'))->where('status', 2)->whereBetween('room_transaction_date', [$start, $end])->get();
 
-        if($existingId == null){
-            $bookingHeader['booking_code'] = GlobalHelper::generateBookingId($guestId);
-        }
+        $data['activeNightNum'] = BookingHeader::select(DB::raw('SUM(DAY(checkout_date) - DAY(checkin_date)) as total_night'))->where('booking_status', 1)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->value('total_night');
+        $data['checkInNightNum'] = BookingHeader::select(DB::raw('SUM(DAY(checkout_date) - DAY(checkin_date)) as total_night'))->where('booking_status', 2)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->value('total_night');
+        $data['noShowNightNum'] = BookingHeader::select(DB::raw('SUM(DAY(checkout_date) - DAY(checkin_date)) as total_night'))->where('booking_status', 3)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->value('total_night');
+        $data['voidNightNum'] = BookingHeader::select(DB::raw('SUM(DAY(checkout_date) - DAY(checkin_date)) as total_night'))->where('booking_status', 4)->where('partner_id', '<>', 0)->whereBetween('checkin_date', [$start, $end])->value('total_night');
 
-        $bookingHeader = ($existingId == null) ? BookingHeader::create($bookingHeader) : BookingHeader::find($existingId)->update($bookingHeader);
-        return $bookingHeader;
-    }
-
-    /**
-     * @param $input
-     * @param $header
-     * @return int
-     */
-    protected function processBookingRoom($input, $header) {
-        // DELETE FIRST
-        BookingRoom::where('booking_id', $header->booking_id)->delete();
-
-        $checkin = strtotime($input['checkin_date']);
-        $checkout = strtotime($input['checkout_date']);
-        $datediff = floor(abs($checkin - $checkout)) / (60 * 60 * 24);
-        $weekdayList = RoomRateDateType::getListDay(1);
-
-        $getRoomPlan = RoomPlan::find($input['room_plan_id']);
-        $cost = $getRoomPlan->room_plan_additional_cost;
-
-        for($i = 0;$i < $datediff; $i++){
-            $nextDay = $checkin + (86400 * $i);
-            $room_number = explode(',',$input['room_number']);
-            $room_number = array_filter($room_number);
-
-            foreach($room_number as $val){
-                $bookingRoom = [
-                    "booking_id"    => $header->booking_id,
-                    "guest_id"      => $header->guest_id,
-                    "room_number_id" => $val,
-                    "room_transaction_date" => date('Y-m-d', $nextDay),
-                    "status"        => ($input['type'] == 1) ? 3 : 4,
-                    "created_by"    => Auth::id(),
-                    "room_plan_rate" => $cost
-                ];
-                $dayCheckin = date('l', $nextDay);
-                if(in_array(strtolower($dayCheckin), $weekdayList)){
-                    $bookingRoom['room_rate'] = RoomNumber::getRoomRatesById($val, 1);
-                } else {
-                    $bookingRoom['room_rate'] = RoomNumber::getRoomRatesById($val, 2);
-                }
-
-                BookingRoom::create($bookingRoom);
-            }
-        }
-
-        return 1;
-    }
-
-    /**
-     * @param $input
-     * @param $header
-     * @return int
-     */
-    protected function processPayment($input, $header) {
-        if($input['type'] == 1){ // INSERT DOWN PAYMENT IF GUARANTEED
-            $payment = BookingPayment::where('booking_id', $header->booking_id) // CHECK IF DOWNPAYMENT EXIST
-                                        ->where('type', 1)
-                                        ->first();
-            $paymentData = [
-                'booking_id'        => $header->booking_id,
-                'guest_id'          => $header->guest_id,
-                'payment_method'    => isset($input['payment_method']) ? $input['payment_method'] : 1,
-                'type'              => 1, // down payment
-                'total_payment'     => isset($input['down_payment_amount']) ? $input['down_payment_amount'] : 0,
-                'card_type'         => isset($input['card_type']) ? $input['card_type'] : null,
-                'card_number'       => $input['card_number'],
-                'card_name'         => $input['card_holder'],
-                'cc_type_id'        => $input['cc_type'],
-                'bank'              => $input['bank'],
-                'settlement_id'     => $input['settlement'],
-                'card_expiry_month' => (int) substr($input['card_expired_date'], 0, 2),
-                'card_expiry_year' => (int) substr($input['card_expired_date'], -4),
-                'bank_transfer_recipient' => $input['cash_account_id'],
-                'created_by'        => Auth::id()
-            ];
-
-            if(count($payment) == 0){
-                BookingPayment::create($paymentData);
-            } else {
-                BookingPayment::find($payment->booking_payment_id)->update($paymentData);
-            }
-        } else { // DELETE ALL DOWNPAYMENT IF TENTATIVE
-            $payment = BookingPayment::where('booking_id', $header->booking_id)
-            ->where('type', 1)->delete();
-        }
-        return 1;
+        $data['bookActiveList'] = BookingHeader::getBookingReport($status = 1);
+        $data['bookCheckInList'] = BookingHeader::getBookingReport($status = 2);
+        $data['bookNoShowList'] = BookingHeader::getBookingReport($status = 3);
+        $data['bookVoidList'] = BookingHeader::getBookingReport($status = 4);
+        return view("front.".$this->module.".report", $data);
     }
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class BookingPayment extends Model
 {
@@ -71,5 +72,45 @@ class BookingPayment extends Model
             $bank = CashAccount::find($bankRecipient);
             return 'Bank Transfer to '.$bank->cash_account_name. '<br />' . $bank->cash_account_desc;
         }
+    }
+
+    /**
+     * @param $input
+     * @param $header
+     * @return int
+     */
+    public static function processPayment($input, $header) {
+        if($input['type'] == 1){ // INSERT DOWN PAYMENT IF GUARANTEED
+            $payment = parent::where('booking_id', $header->booking_id) // CHECK IF DOWNPAYMENT EXIST
+            ->where('type', 1)
+                ->first();
+            $paymentData = [
+                'booking_id'        => $header->booking_id,
+                'guest_id'          => $header->guest_id,
+                'payment_method'    => isset($input['payment_method']) ? $input['payment_method'] : 1,
+                'type'              => 1, // down payment
+                'total_payment'     => isset($input['down_payment_amount']) ? $input['down_payment_amount'] : 0,
+                'card_type'         => isset($input['card_type']) ? $input['card_type'] : null,
+                'card_number'       => $input['card_number'],
+                'card_name'         => $input['card_holder'],
+                'cc_type_id'        => $input['cc_type'],
+                'bank'              => $input['bank'],
+                'settlement_id'     => $input['settlement'],
+                'card_expiry_month' => (int) substr($input['card_expired_date'], 0, 2),
+                'card_expiry_year' => (int) substr($input['card_expired_date'], -4),
+                'bank_transfer_recipient' => $input['cash_account_id'],
+                'created_by'        => Auth::id()
+            ];
+
+            if(count($payment) == 0){
+                parent::create($paymentData);
+            } else {
+                parent::find($payment->booking_payment_id)->update($paymentData);
+            }
+        } else { // DELETE ALL DOWNPAYMENT IF TENTATIVE
+            $payment = parent::where('booking_id', $header->booking_id)
+                ->where('type', 1)->delete();
+        }
+        return 1;
     }
 }

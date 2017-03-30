@@ -77,6 +77,7 @@ Route::resource('master/room-rate-day-type', 'Master\RoomRateDayTypeController')
 Route::get('master/room-type/change-status/{id}/{status}', 'Master\RoomTypeController@changeStatus')->name('room-type.change-status');
 Route::resource('master/room-type', 'Master\RoomTypeController');
 
+Route::get('front/room-number/view/', 'Master\RoomNumberController@viewRoom')->name('room-number.view-room');
 Route::get('master/room-number/change-status/{id}/{status}', 'Master\RoomNumberController@changeStatus')->name('room-number.change-status');
 Route::resource('master/room-number', 'Master\RoomNumberController');
 

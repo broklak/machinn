@@ -232,11 +232,13 @@ return [
 
     'limitPerPage' => 20,
 
+    'guestIdentificationType' => [1 => 'KTP', 2 => 'SIM', 3 => 'PASSPORT'],
+
     'defaultRoute'  => 'room-number',
 
     'religion'      => ['islam', 'kristen protestan', 'kristen katolik', 'hindu', 'budha', 'kong hu cu'],
 
     'paymentMethod' => [1 => 'Cash (FO)', 2 => 'Cash (BO)', 3 => 'Credit Card', 4 => 'Bank Transfer'],
 
-    'roomStatus' => ['1' => 'Vacant', '2' => 'Occupied', '3' => 'Guaranteed Booking', '4' => 'Tentative Booking', '5' => 'Dirty', '6' => 'Out of Order', '7' => 'No Showed Booked', '8' => 'Void Booked'],
+    'roomStatus' => ['1' => 'Ready', '2' => 'Dirty', '3' => 'Not Ready'],
 ];

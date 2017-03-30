@@ -412,9 +412,11 @@
             var first_name = $('#first_name').val();
             var id_type = $('#id_type').val();
             var id_number = $('#id_number').val();
+            var birthdate = $('#birthdate').val();
             var handphone = $('#handphone').val();
             var gender = $('input[type=radio][name=gender]:checked').val();
             var country_id = $('#country_id').val();
+            var religion = $('#religion').val();
 
             if(title == undefined){
                 err = 1;
@@ -432,6 +434,10 @@
                 err = 1;
                 $('#error_messages').append('<div class="alert alert-error">Please input guest ID number</div>');
             }
+            if(birthdate == ''){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">Please input guest birthdate</div>');
+            }
             if(handphone == ''){
                 err = 1;
                 $('#error_messages').append('<div class="alert alert-error">Please input guest handphone number</div>');
@@ -440,9 +446,9 @@
                 err = 1;
                 $('#error_messages').append('<div class="alert alert-error">Please input guest gender</div>');
             }
-            if(country_id == 0){
+            if(religion == 0){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please select guest country</div>');
+                $('#error_messages').append('<div class="alert alert-error">Please select guest religion</div>');
             }
         }
 

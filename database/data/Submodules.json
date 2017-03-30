@@ -6,5 +6,5 @@
   {"submodule_id":5, "submodule_name":"Location", "module_id":1},
   {"submodule_id":6, "submodule_name":"Business Partner", "module_id":1},
   {"submodule_id":7, "submodule_name":"Property", "module_id":1},
-  {"submodule_id":8, "submodule_name":"Booking", "module_id":2}
+  {"submodule_id":8, "submodule_name":"Room Transaction", "module_id":2}
 ]
