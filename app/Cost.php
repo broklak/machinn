@@ -29,4 +29,8 @@ class Cost extends Model
         }
         return 'Variable Cost';
     }
+
+    public static function getCostName ($cost_id){
+        return parent::find($cost_id)->value('cost_name');
+    }
 }

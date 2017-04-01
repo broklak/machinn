@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Extracharge;
 use App\Province;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,6 +23,19 @@ class AjaxController extends Controller
         $getGuest = Guest::where('first_name', 'LIKE', "%$filter%")
             ->orWhere('last_name', 'LIKE', "%$filter%")
             ->orWhere('id_number', 'LIKE', "%$filter%")
+            ->get();
+
+        return json_encode($getGuest);
+    }
+
+    /**
+     * @param Request $request
+     * @return array|string
+     */
+    public function searchItem(Request $request){
+        $filter = $request->input('query');
+
+        $getGuest = Extracharge::where('extracharge_name', 'LIKE', "%$filter%")
             ->get();
 
         return json_encode($getGuest);

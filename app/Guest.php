@@ -80,6 +80,12 @@ class Guest extends Model
         }
     }
 
+    public static function getFullName ($id){
+        $data = parent::find($id);
+
+        return ($data) ? $data->first_name. ' '.$data->last_name : '';
+    }
+
     /**
      * @param $input
      * @return mixed

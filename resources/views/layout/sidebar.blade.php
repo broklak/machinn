@@ -163,6 +163,9 @@
                 </li>
                 <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Guest</span></a>
                     <ul >
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'guest.inhouse') class="active" @endif>
+                            <a href="{{route('guest.inhouse')}}">In House Guest</a>
+                        </li>
                         <li
                                 @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'guest.index'
                                 || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'guest.create'
@@ -187,6 +190,16 @@
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'logbook') class="active" @endif>
                             <a href="{{route('logbook.index')}}">Log Book</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Cashier</span></a>
+                    <ul >
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'transaction.index') class="active" @endif>
+                            <a href="{{route('transaction.index')}}">Expense</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'pos') class="active" @endif>
+                            <a href="{{route('pos.create')}}">Outlet Posting</a>
                         </li>
                     </ul>
                 </li>

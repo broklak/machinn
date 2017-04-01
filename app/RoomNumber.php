@@ -39,6 +39,16 @@ class RoomNumber extends Model
     }
 
     /**
+     * @param $typeId
+     * @return mixed
+     */
+    public static function getPlanName ($planId) {
+        $plan = RoomPlan::find($planId);
+
+        return $plan->room_plan_name;
+    }
+
+    /**
      * @param $floorId
      * @return mixed
      */

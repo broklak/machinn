@@ -14,12 +14,15 @@ Route::get('/', 'Master\RoomNumberController@index');
 
 Route::get('front/guest/checkin-report', 'Front\GuestController@checkinReport')->name("guest.checkin");
 Route::get('front/guest/statistic', 'Front\GuestController@statistic')->name("guest.statistic");
+Route::get('front/guest/inhouse', 'Front\GuestController@inhouse')->name("guest.inhouse");
 Route::post('ajax/searchGuest', 'Front\AjaxController@searchGuest')->name("ajax.searchGuest");
 Route::resource('front/guest', 'Front\GuestController');
 Route::resource('front/staff', 'Front\StaffController');
 
 Route::get('ajax/searchProvince', 'Front\AjaxController@searchProvince')->name("ajax.searchProvince");
+Route::get('ajax/searchProvince', 'Front\AjaxController@searchProvince')->name("ajax.searchProvince");
 Route::get('ajax/searchRoom', 'Front\AjaxController@searchRoom')->name("ajax.searchRoom");
+Route::post('ajax/searchItem', 'Front\AjaxController@searchItem')->name("ajax.searchItem");
 Route::get('ajax/getTotalRoomRates', 'Front\AjaxController@getTotalRoomRates')->name("ajax.getTotalRoomRates");
 
 Route::post('front/booking/void/{bookingId}', 'Front\BookingController@voidBooking')->name("booking.void");
@@ -39,6 +42,12 @@ Route::resource('front/contact', 'Master\ContactController');
 
 Route::get('front/logbook/change-status/{id}/{status}', 'Master\LogbookController@changeStatus')->name('logbook.change-status');
 Route::resource('front/logbook', 'Master\LogbookController');
+
+Route::get('front/transaction/change-status/{id}/{status}', 'Front\TransactionController@changeStatus')->name('transaction.change-status');
+Route::resource('front/transaction', 'Front\TransactionController');
+
+Route::get('front/pos/change-status/{id}/{status}', 'Front\PosController@changeStatus')->name('pos.change-status');
+Route::resource('front/pos', 'Front\PosController');
 
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

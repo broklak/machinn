@@ -78,12 +78,14 @@ class ExtrachargeController extends Controller
     {
         $this->validate($request,[
             'extracharge_name'  => 'required|max:75|min:3',
+            'extracharge_price'  => 'required|numeric',
             'extracharge_type'  => 'required',
             'extracharge_group_id'  => 'required',
         ]);
 
         $this->model->create([
             'extracharge_name'   => $request->input('extracharge_name'),
+            'extracharge_price'   => $request->input('extracharge_price'),
             'extracharge_type'   => $request->input('extracharge_type'),
             'extracharge_group_id'   => $request->input('extracharge_group_id'),
 
@@ -128,12 +130,14 @@ class ExtrachargeController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'extracharge_name'  => 'required|max:75|min:3'
+            'extracharge_name'  => 'required|max:75|min:3',
+            'extracharge_price'  => 'required|numeric'
         ]);
 
         $data = $this->model->find($id);
 
         $data->extracharge_name = $request->input('extracharge_name');
+        $data->extracharge_price = $request->input('extracharge_price');
         $data->extracharge_group_id = $request->input('extracharge_group_id');
         $data->extracharge_type = $request->input('extracharge_type');
 

@@ -15,7 +15,7 @@ class Extracharge extends Model
      * @var array
      */
     protected $fillable = [
-        'extracharge_name', 'extracharge_group_id', 'extracharge_type'
+        'extracharge_name', 'extracharge_group_id', 'extracharge_type', 'extracharge_price'
     ];
 
     /**
@@ -29,6 +29,11 @@ class Extracharge extends Model
         }
 
         return 'Reoccuring';
+    }
+
+    public static function getName ($id){
+        $data = parent::find($id);
+        return $data->extracharge_name;
     }
 
     public static function getGroupName ($groupId) {

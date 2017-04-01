@@ -32,6 +32,12 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">{{$master_module}} Price</label>
+                                    <div class="controls">
+                                        <input id="price" required type="text" value="{{$row->extracharge_price}}" name="extracharge_price" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">{{$master_module}} Group</label>
                                     <div class="controls">
                                         <select name="extracharge_group_id">

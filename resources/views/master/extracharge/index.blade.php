@@ -20,6 +20,7 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Price</th>
                                 <th>Group</th>
                                 <th>Type</th>
                                 <th>Status</th>
@@ -31,6 +32,7 @@
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
                                         <td>{{$val->extracharge_name}}</td>
+                                        <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->extracharge_price)}}</td>
                                         <td>{{$model->getGroupName($val->extracharge_group_id)}}</td>
                                         <td>{{$model->getTypeName($val->extracharge_type)}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->extracharge_status)!!}</td>

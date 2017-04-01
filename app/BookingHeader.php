@@ -40,7 +40,7 @@ class BookingHeader extends Model
         $guest = $filter['guest'];
 
         $getBooking = DB::table('booking_header')
-                        ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, booking_code, room_list, first_name, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
+                        ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, booking_code, room_list, first_name, room_plan_id, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
                             (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, booking_header.partner_id, partner_name, booking_header.type, booking_status,
                             (select total_payment from booking_payment where booking_id = booking_header.booking_id and type = 1 limit 1) as down_payment'))
                         ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')

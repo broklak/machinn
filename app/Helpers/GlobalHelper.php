@@ -43,6 +43,10 @@ class GlobalHelper
         return 'Yes';
     }
 
+    /**
+     * @param $guestId
+     * @return string
+     */
     public static function generateBookingId ($guestId){
         $char = 10;
         $now = substr(time(), -4);
@@ -50,6 +54,23 @@ class GlobalHelper
         $rand = str_random($char - $len);
 
         return strtoupper($guestId.$rand.$now);
+    }
+
+    /**
+     * @param $guestId
+     * @return string
+     */
+    public static function generateBillNumber ($guestId){
+        if($guestId == null){
+            $guestId = 0;
+        }
+        $prefix = 'OP-';
+        $char = 7;
+        $now = substr(time(), -3);
+        $len = strlen($guestId.$now);
+        $rand = str_random($char - $len);
+
+        return $prefix.strtoupper($guestId.$rand.$now);
     }
 
     /**

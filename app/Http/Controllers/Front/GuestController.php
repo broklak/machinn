@@ -212,4 +212,17 @@ class GuestController extends Controller
         return view("master.".$this->module.".statistic", $data);
     }
 
+    public function inhouse (Request $request){
+        $filter['guest'] = $request->input('guest');
+        $filter['room_number'] = $request->input('room_number');
+        $filter['status']      = 2; // ALREAY CHECKIN
+        $getBook = BookingHeader::getBooking($filter);
+        $data['filter'] = $filter;
+        $data['payment_method'] = config('app.paymentMethod');
+        $data['rows'] = $getBook['booking'];
+        $data['link'] = $getBook['link'];
+        $data['guest_model'] = new Guest();
+        return view('front.booking.inhouse', $data);
+    }
+
 }
