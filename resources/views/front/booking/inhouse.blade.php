@@ -55,7 +55,7 @@
                                                 <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
                                                     <li><a><i class="icon-signout"></i> Checkout</a></li>
-                                                    <li><a><i class="icon-file"></i> View Detail</a></li>
+                                                    <li><a href="{{route('checkin.detail', ['id' => $val->booking_id])}}"><i class="icon-file"></i> View Detail</a></li>
                                                 </ul>
                                             </div>
                                         </td>

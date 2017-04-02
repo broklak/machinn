@@ -65,7 +65,7 @@
                                         <td>{{\App\Helpers\GlobalHelper::getBookingStatus($val->booking_status)}}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <button data-toggle="dropdown" @if($val->booking_status == 4 || $val->booking_status == 3) disabled @endif class="btn dropdown-toggle">Action <span class="caret"></span></button>
+                                                <button data-toggle="dropdown" @if($val->booking_status == 4 || $val->booking_status == 3 || $val->booking_status == 2) disabled @endif class="btn dropdown-toggle">Action <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
                                                     @if($val->booking_status != 4 && $val->booking_status != 3)
                                                         @if($val->type == 1)
@@ -75,9 +75,9 @@
                                                             <li><a onclick="return confirm('Check In Booking #{{$val->booking_code}}?')" href="{{route('checkin.book', ['id' => $val->booking_id])}}">
                                                                 <i class="icon-signout"></i> Check In</a>
                                                             </li>
+                                                            <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> Edit</a></li>
+                                                            <li><a href="#modalVoid-{{$val->booking_id}}" data-toggle="modal" href="#"><i class="icon-remove"></i> Void</a></li>
                                                         @endif
-                                                        <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> Edit</a></li>
-                                                        <li><a href="#modalVoid-{{$val->booking_id}}" data-toggle="modal" href="#"><i class="icon-remove"></i> Void</a></li>
                                                     @endif
                                                 </ul>
                                             </div>

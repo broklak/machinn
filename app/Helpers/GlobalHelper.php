@@ -10,23 +10,52 @@ use Illuminate\Support\Facades\Auth;
 
 class GlobalHelper
 {
+    /**
+     * @param string $messageType
+     * @param string $message
+     * @return string
+     */
     public static function setDisplayMessage($messageType = 'error', $message = 'Error Message')
     {
         $message = '<div style="margin:20px 0" class="alert alert-' . $messageType . '">' . $message . '</div>';
         return $message;
     }
 
+    /**
+     * @param $gender
+     * @return string
+     */
+    public static function getGender ($gender) {
+        if($gender == 1){
+            return 'Male';
+        }
+
+        return 'Female';
+    }
+
+    /**
+     * @param $money
+     * @return string
+     */
     public static function moneyFormat ($money) {
-        $currency = 'Rp ';
+        $currency = 'Rp. ';
         $money = $currency . number_format($money,0,',',',');
 
         return $money;
     }
 
+    /**
+     * @param $date
+     * @return bool|string
+     */
     public static function dateFormat ($date){
         return date('j F Y', strtotime($date));
     }
 
+    /**
+     * @param $status
+     * @return string
+     */
     public static function setActivationStatus($status){
         if($status == 0){
             return '<span class="label label-important">Not Active</span>';
@@ -35,6 +64,10 @@ class GlobalHelper
         return '<span class="label label-success">Active</span>';
     }
 
+    /**
+     * @param $status
+     * @return string
+     */
     public static function setYesOrNo($status){
         if($status == 0){
             return 'No';

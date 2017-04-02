@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Front;
 
 use App\Bank;
+use App\BookingExtracharge;
 use App\BookingHeader;
 use App\BookingPayment;
 use App\BookingRoom;
 use App\CashAccount;
 use App\Country;
 use App\CreditCardType;
+use App\Extracharge;
 use App\Guest;
 use App\Partner;
 use App\PropertyFloor;
@@ -112,7 +114,7 @@ class CheckinController extends Controller
         BookingRoom::processBookingRoom($request->input(), $header, $source = 'checkin');
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to check in');
-        return redirect(route("booking.index"))->with('displayMessage', $message);
+        return redirect(route("guest.inhouse"))->with('displayMessage', $message);
     }
 
     /**
@@ -131,8 +133,179 @@ class CheckinController extends Controller
                         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to check in');
-        return redirect(route("booking.index"))->with('displayMessage', $message);
+        return redirect(route("checkin.detail", ['id' => $bookingId]))->with('displayMessage', $message);
+    }
 
+    /**
+     * @param $bookingId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function detail ($bookingId){
+        $header = BookingHeader::find($bookingId);
+        $header->room_data = RoomNumber::getRoomDataList($header->room_list);
+
+        $guest = Guest::find($header->guest_id);
+        $detail = BookingRoom::where('booking_id', $bookingId)->get();
+        $payment = BookingPayment::where('booking_id', $bookingId)->get();
+        $history = Guest::getHistoryCheckin($header->guest_id);
+        $extra = BookingExtracharge::where('booking_id', $bookingId)->get();
+        $charge = Extracharge::where('extracharge_status', 1)->get();
+
+
+        $data = [
+            'header'    => $header,
+            'history'   => $history,
+            'guest'     => $guest,
+            'detail'    => $detail,
+            'payment'   => $payment,
+            'extra'     => $extra,
+            'idType'    => config('app.guestIdentificationType'),
+            'country'   => $this->country,
+            'floor'     => PropertyFloor::where('property_floor_status', 1)->get(),
+            'room_type' => RoomType::where('room_type_status', 1)->get(),
+            'plan'      => RoomPlan::where('room_plan_status', 1)->get(),
+            'source'    => Partner::where('partner_status', 1)->get(),
+            'religion'  => config('app.religion'),
+            'charge'    => $charge
+        ];
+
+        return view("front.".$this->module.".detail", $data);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function extracharge(Request $request, $id){
+        $room = $request->input('room_id');
+        $qty = $request->input('qty');
+        $price = $request->input('price');
+        $discount = $request->input('discount');
+        $subtotal = $request->input('subtotal');
+
+        BookingExtracharge::where('booking_id', $id)->delete();
+
+        if(count($room) > 0){
+            foreach ($room as $key => $item) {
+                BookingExtracharge::create([
+                    'booking_id'    => $id,
+                    'guest_id'      => $request->input('guest_id'),
+                    'booking_room_id' => $item,
+                    'extracharge_id' => $key,
+                    'price'         => $price[$key],
+                    'qty'           => $qty[$key],
+                    'discount'      => isset($discount[$key]) ? $discount[$key] : 0,
+                    'total_payment' => $subtotal[$key],
+                    'status'        => 1, // BELUM BAYAR,
+                    'created_by'    => Auth::id()
+                ]);
+            }
+        }
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to save extracharges');
+        return redirect(route("checkin.detail", ['id' => $id]))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function rate(Request $request, $id){
+        $room_rate = $request->input('room_rate');
+        $plan_rate = $request->input('plan_rate');
+        $discount = $request->input('discount');
+        $subtotal = $request->input('subtotal');
+        $grand_total = $request->input('grand_total');
+
+        foreach ($room_rate as $key => $item) {
+            BookingRoom::find($key)->update([
+                'room_rate'     => $item,
+                'room_plan_rate' => $plan_rate[$key],
+                'discount' => $discount[$key],
+                'subtotal' => $subtotal[$key],
+                'updated_by' => Auth::id()
+            ]);
+        }
+
+        BookingHeader::find($id)->update([
+            'grand_total'   => $grand_total,
+            'updated_by'    => Auth::id()
+        ]);
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to save rate');
+        return redirect(route("checkin.detail", ['id' => $id]))->with('displayMessage', $message);
+    }
+
+    public function updateRoom (Request $request, $id) {
+        $header = BookingHeader::find($id);
+        $input = $request->input();
+        $room_number_list = explode(',',$input['room_number']);
+        $room_number_list = array_filter($room_number_list);
+        $room_new = '';
+
+        $checkin = strtotime($input['checkin_date']);
+        $checkout = strtotime($input['checkout_date']);
+        $datediff = floor(abs($checkin - $checkout)) / (60 * 60 * 24);
+        $weekdayList = RoomRateDateType::getListDay(1);
+
+        $getRoomPlan = RoomPlan::find($input['room_plan_id']);
+        $cost = $getRoomPlan->room_plan_additional_cost;
+        $grand_total = 0;
+
+        // DELETE FIRST
+        BookingRoom::where('booking_id', $id)->delete();
+        for($i = 0;$i < $datediff; $i++){
+            $nextDay = $checkin + (86400 * $i);
+            $room_number = explode(',',$input['room_number']);
+            $room_number = array_filter($room_number);
+
+            foreach($room_number as $val){
+                $bookingRoom = [
+                    "booking_id"    => $id,
+                    "guest_id"      => $header->guest_id,
+                    "room_number_id" => $val,
+                    "room_transaction_date" => date('Y-m-d', $nextDay),
+                    "status"        => 2,
+                    "created_by"    => Auth::id(),
+                    "room_plan_rate" => $cost
+                ];
+                $dayCheckin = date('l', $nextDay);
+                if(in_array(strtolower($dayCheckin), $weekdayList)){
+                    $rate = RoomNumber::getRoomRatesById($val, 1);
+                } else {
+                    $rate = RoomNumber::getRoomRatesById($val, 2);
+                }
+                $bookingRoom['room_rate'] = $rate;
+                $bookingRoom['subtotal'] = $rate + $cost;
+
+                BookingRoom::create($bookingRoom);
+
+                $grand_total = $grand_total + $bookingRoom['subtotal'];
+                $room_new = $val;
+            }
+        }
+
+        BookingHeader::find($id)->update([
+            'grand_total'   => $grand_total,
+            'checkout_date' => $input['checkout_date'],
+            'room_plan_id'  => $input['room_plan_id'],
+            'partner_id'    => $input['partner_id'],
+            'adult_num'     => $input['adult_num'],
+            'child_num'     => $input['child_num'],
+            'is_banquet'    => $input['is_banquet'],
+            'notes'         => $input['notes'],
+            'room_list'     => implode(',', $room_number_list),
+            'updated_by'    => Auth::id()
+        ]);
+
+        BookingExtracharge::where('booking_id', $id)->update([
+            'booking_room_id' => $room_new
+        ]);
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to save room information');
+        return redirect(route("checkin.detail", ['id' => $id]))->with('displayMessage', $message);
     }
 
 }

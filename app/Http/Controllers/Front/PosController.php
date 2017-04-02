@@ -228,7 +228,7 @@ class PosController extends Controller
                 'payment_method'     => $request->input('payment_method'),
                 'total_payment'     => $request->input('grand_total'),
                 'total_paid'        => $request->input('pay_paid'),
-                'total_change'        => $request->input('pay_change'),
+                'total_change'        => (int) $request->input('pay_paid') - (int) $request->input('grand_total'),
                 'created_by'        => Auth::id(),
                 'guest_id'          => ($request->input('guest_id')) ? $request->input('guest_id') : 0
             ]);

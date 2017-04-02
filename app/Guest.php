@@ -163,4 +163,19 @@ class Guest extends Model
         return $totalGuest;
     }
 
+    /**
+     * @param $guest_id
+     * @return mixed
+     */
+    public static function getHistoryCheckin($guest_id) {
+        $history = DB::table('booking_header')
+                    ->select('checkin_date', 'room_list', 'checkout_date', 'room_list', 'room_plan_name', 'grand_total')
+                    ->where('guest_id', $guest_id)
+                    ->join('room_plans', 'room_plans.room_plan_id', '=', 'booking_header.room_plan_id')
+                    ->orderBy('booking_id', 'desc')
+                    ->get();
+
+        return $history;
+    }
+
 }

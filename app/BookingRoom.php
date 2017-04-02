@@ -17,7 +17,8 @@ class BookingRoom extends Model
      * @var array
      */
     protected $fillable = [
-        'booking_id', 'room_number_id', 'room_rate', 'room_transaction_date', 'notes', 'checkout_date', 'status', 'created_by', 'updated_by', 'room_plan_rate', 'guest_id'
+        'booking_id', 'room_number_id', 'room_rate', 'room_transaction_date', 'notes', 'checkout_date', 'status',
+        'created_by', 'updated_by', 'room_plan_rate', 'guest_id', 'discount', 'subtotal'
     ];
 
     /**
@@ -70,6 +71,7 @@ class BookingRoom extends Model
                 } else {
                     $bookingRoom['room_rate'] = RoomNumber::getRoomRatesById($val, 2);
                 }
+                $bookingRoom['subtotal'] = $bookingRoom['room_rate'] + $bookingRoom['room_plan_rate'];
 
                 parent::create($bookingRoom);
             }

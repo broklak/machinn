@@ -42,7 +42,8 @@
                     '<td>'+name+'</td>' +
                     '<td>'+toMoney(price)+'</td>' +
                     '<td><input type="number" name="qty['+id+']" onchange="changeQty($(this))" onkeyup="changeQty($(this))" id="qty-'+id+'" data-id="'+id+'" class="qtyItem" value="1" size="1" style="width: 30px" /><input type="hidden" name="price['+id+']" id="price-'+id+'" value="'+price+'" /></td>' +
-                    '<td id="discount-'+id+'"><input type="number" name="discount['+id+']" onchange="changeDiscount($(this))" onkeyup="changeDiscount($(this))" data-id="'+id+'" value="0" style="width: 80px" /></td>' +
+                    '<td><input type="number" name="discount['+id+']" onchange="changeDiscount($(this))" onkeyup="changeDiscount($(this))" data-id="'+id+'" value="0" style="width: 80px" /></td>' +
+                    '<input type="hidden" id="discount-'+id+'" value="0" />' +
                     '<input type="hidden" name="subtotal['+id+']" id="subtotal-'+id+'" value="'+price+'" />' +
                     '<td><span id="total-'+id+'">'+toMoney(price)+' &nbsp;</span> <a id="deleteCart-'+id+'" onclick="deleteCart($(this))" data-id="'+id+'" data-price="'+price+'"><i class="icon-2x icon-remove"></i></a></td></tr>'
             );
@@ -225,7 +226,7 @@
             // DELETE CURRENT SUBTOTAL FIRST
             calculateGrandTotal(subtotal, 'minus');
 
-            var total = parseInt(elem.val()) * parseInt($('#price-'+id_item_qty).val());
+            var total = (parseInt(elem.val()) * parseInt($('#price-'+id_item_qty).val())) - parseInt($('#discount-'+id_item_qty).val());
             $('#total-'+id_item_qty).html(toMoney(total));
             $('#subtotal-'+id_item_qty).val(total);
             calculateGrandTotal(total, 'plus');
@@ -250,6 +251,7 @@
         var total = parseInt($('#qty-'+id_item_qty).val()) * parseInt($('#price-'+id_item_qty).val()) - parseInt(disc);
         $('#total-'+id_item_qty).html(toMoney(total));
         $('#subtotal-'+id_item_qty).val(total);
+        $('#discount-'+id_item_qty).val(disc);
         calculateGrandTotal(total, 'plus');
     }
 

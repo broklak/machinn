@@ -89,6 +89,13 @@ class BookingHeader extends Model
         $room_number = explode(',',$input['room_number']);
         $room_number = array_filter($room_number);
 
+        $checkin = strtotime($input['checkin_date']);
+        $checkout = strtotime($input['checkout_date']);
+        $datediff = floor(abs($checkin - $checkout)) / (60 * 60 * 24);
+
+        $getRoomPlan = RoomPlan::find($input['room_plan_id']);
+        $cost = $getRoomPlan->room_plan_additional_cost;
+
         if($source == 'booking'){
             $payment_status = ($input['type'] == 1) ? 2 : 1;
         } else {
@@ -104,7 +111,7 @@ class BookingHeader extends Model
             'checkin_date'      => $input['checkin_date'],
             'checkout_date'      => $input['checkout_date'],
             'adult_num'      => isset($input['adult_num']) ? $input['adult_num'] : 2,
-            'grand_total'   => $input['total_rates'],
+            'grand_total'   => $input['total_rates'] + ($datediff * count($room_number) * $cost),
             'child_num'      => isset($input['child_num']) ? $input['child_num'] : 0,
             'notes'      => $input['notes'],
             'is_banquet'      => $input['is_banquet'],

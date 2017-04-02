@@ -128,10 +128,11 @@
                                                                    id="qty-{{$val_detail->extracharge_id}}" data-id="{{$val_detail->extracharge_id}}" class="qtyItem" value="{{$val_detail->qty}}" style="width: 30px" />
                                                             <input type="hidden" name="price[{{$val_detail->extracharge_id}}]" id="price-{{$val_detail->extracharge_id}}" value="{{$val_detail->price}}" />
                                                         </td>
-                                                        <td id="discount-'+id+'">
+                                                        <td>
                                                             <input type="number" name="discount[{{$val_detail->extracharge_id}}]" onchange="changeDiscount($(this))"
                                                                    onkeyup="changeDiscount($(this))" data-id="{{$val_detail->extracharge_id}}" value="{{$val_detail->discount}}"
                                                                    style="width: 80px" />
+                                                            <input type="hidden" id="discount-{{$val_detail->extracharge_id}}" value="{{$val_detail->discount}}" />
                                                             <input type="hidden" name="subtotal[{{$val_detail->extracharge_id}}]" id="subtotal-{{$val_detail->extracharge_id}}" value="{{$val_detail->subtotal}}" />
                                                         </td>
                                                         <td>

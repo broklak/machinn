@@ -59,6 +59,15 @@ class RoomNumber extends Model
     }
 
     /**
+     * @param $id
+     * @return mixed
+     */
+    public static function getCode ($id){
+        $data = parent::find($id);
+        return $data->room_number_code;
+    }
+
+    /**
      * @param $checkinDate
      * @param $checkoutDate
      * @param array $filter

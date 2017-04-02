@@ -31,6 +31,10 @@ Route::get('front/booking/showdownpayment/{bookingId}', 'Front\BookingController
 Route::resource('front/booking', 'Front\BookingController');
 
 Route::get('front/checkin', 'Front\CheckinController@create')->name('checkin.index');
+Route::get('front/checkin/detail/{bookingId}', 'Front\CheckinController@detail')->name('checkin.detail');
+Route::post('front/checkin/extracharge/{bookingId}', 'Front\CheckinController@extracharge')->name('checkin.extracharge');
+Route::post('front/checkin/rate/{bookingId}', 'Front\CheckinController@rate')->name('checkin.rate');
+Route::post('front/checkin/room-edit/{bookingId}', 'Front\CheckinController@updateRoom')->name('checkin.room-edit');
 Route::get('front/checkin/book/{bookingId}', 'Front\CheckinController@book')->name('checkin.book');
 Route::post('front/checkin', 'Front\CheckinController@store')->name('checkin.store');
 

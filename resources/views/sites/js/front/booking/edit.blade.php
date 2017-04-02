@@ -260,7 +260,6 @@
     $('#form-booking').submit(function(){
         $('#error_messages').html("");
         return validateOnSubmit();
-
     });
 
     function getAvailableRoom (dateIn, dateOut, type, floor) {

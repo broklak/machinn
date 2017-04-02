@@ -28,4 +28,13 @@ class Partner extends Model
 
         return $group->partner_group_name;
     }
+
+    public static function getName ($id) {
+        if($id == 0){
+            return 'Walk In';
+        }
+
+        $name = parent::find($id);
+        return $name->partner_name;
+    }
 }
