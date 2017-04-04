@@ -37,7 +37,7 @@
                 <div class="widget-box">
                     <div class="widget-content nopadding">
                         <div style="overflow-x:auto;">
-                            <table class="table table-bordered table-striped view-room">
+                            <table class="table table-bordered view-room">
                                 <thead>
                                     <tr>
                                         <td>Room</td>
