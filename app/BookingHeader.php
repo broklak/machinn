@@ -37,7 +37,8 @@ class BookingHeader extends Model
         if(isset($filter['status']) && $filter['status'] != 0) {
             $where[] = ['booking_header.booking_status', '=', $filter['status']];
         }
-        $guest = $filter['guest'];
+
+        $guest = (isset($filter['guest'])) ? $filter['guest'] : '';
 
         $getBooking = DB::table('booking_header')
                         ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, booking_code, room_list, first_name, room_plan_id, last_name, id_number, id_type, handphone, checkin_date, checkout_date,

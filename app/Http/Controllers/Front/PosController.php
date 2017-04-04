@@ -55,6 +55,8 @@ class PosController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
+
         $this->settlement = Settlement::where('settlement_status', 1)->get();
 
         $this->ccType = CreditCardType::where('cc_type_status', 1)->get();

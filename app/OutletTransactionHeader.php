@@ -35,7 +35,10 @@ class OutletTransactionHeader extends Model
             $where[] = ['bill_number', '=', $filter['bill_number']];
         }
 
-        $list = parent::where($where)->whereBetween('date', [$filter['start'], $filter['end']])->paginate($limit);
+        $list = parent::where($where)
+                        ->whereBetween('date', [$filter['start'], $filter['end']])
+                        ->orderBy('transaction_id', 'desc')
+                        ->paginate($limit);
 
         return $list;
     }

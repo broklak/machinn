@@ -56,5 +56,11 @@ Route::resource('front/transaction', 'Front\TransactionController');
 Route::get('front/pos/change-status/{id}/{status}', 'Front\PosController@changeStatus')->name('pos.change-status');
 Route::resource('front/pos', 'Front\PosController');
 
+Route::get('front/report/guest-bill', 'Front\ReportController@guestBill')->name("report.guest-bill");
+Route::get('front/report/down-payment', 'Front\ReportController@downPayment')->name("report.down-payment");
+Route::get('front/report/cash-credit', 'Front\ReportController@cashCredit')->name("report.cash-credit");
+Route::get('front/report/front-pos', 'Front\ReportController@frontPos')->name("report.front-pos");
+Route::get('front/report/source', 'Front\ReportController@source')->name("report.source");
+
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

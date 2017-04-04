@@ -212,6 +212,10 @@ class GuestController extends Controller
         return view("master.".$this->module.".statistic", $data);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function inhouse (Request $request){
         $filter['guest'] = $request->input('guest');
         $filter['room_number'] = $request->input('room_number');

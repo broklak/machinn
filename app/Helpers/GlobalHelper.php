@@ -45,6 +45,16 @@ class GlobalHelper
     }
 
     /**
+     * @param $money
+     * @return string
+     */
+    public static function moneyFormatReport ($money) {
+        $money = number_format($money,0,',',',');
+
+        return $money;
+    }
+
+    /**
      * @param $date
      * @return bool|string
      */

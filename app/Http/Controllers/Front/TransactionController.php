@@ -182,4 +182,8 @@ class TransactionController extends Controller
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
+    public function open () {
+
+    }
+
 }

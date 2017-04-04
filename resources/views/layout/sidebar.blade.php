@@ -208,6 +208,21 @@
                         <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'booking.report') class="active" @endif>
                             <a href="{{route('booking.report')}}">Booking Report</a>
                         </li>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.guest-bill') class="active" @endif>
+                            <a href="{{route('report.guest-bill')}}">Guest Bill Report</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.down-payment') class="active" @endif>
+                            <a href="{{route('report.down-payment')}}">Deposit Report</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.cash-credit') class="active" @endif>
+                            <a href="{{route('report.cash-credit')}}">Cash and Credit Report</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.front-pos') class="active" @endif>
+                            <a href="{{route('report.front-pos')}}">Outlet Posting Report</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.source') class="active" @endif>
+                            <a href="{{route('report.source')}}">Business Source Report</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
