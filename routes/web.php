@@ -36,6 +36,9 @@ Route::post('front/checkin/extracharge/{bookingId}', 'Front\CheckinController@ex
 Route::post('front/checkin/rate/{bookingId}', 'Front\CheckinController@rate')->name('checkin.rate');
 Route::post('front/checkin/room-edit/{bookingId}', 'Front\CheckinController@updateRoom')->name('checkin.room-edit');
 Route::get('front/checkin/book/{bookingId}', 'Front\CheckinController@book')->name('checkin.book');
+Route::get('front/checkin/payment/{bookingId}', 'Front\CheckinController@payment')->name('checkin.payment');
+Route::get('front/checkin/checkout/{bookingId}', 'Front\CheckinController@checkout')->name('checkin.checkout');
+Route::post('front/checkin/make-payment/{bookingId}', 'Front\CheckinController@makePayment')->name('checkin.make-payment');
 Route::post('front/checkin', 'Front\CheckinController@store')->name('checkin.store');
 
 Route::get('master/contact-group/change-status/{id}/{status}', 'Master\ContactGroupController@changeStatus')->name('contact-group.change-status');

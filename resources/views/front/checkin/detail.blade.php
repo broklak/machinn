@@ -10,6 +10,14 @@
     </div>
     <div class="container-fluid">
         <hr>
+        @if($header->checkout == 0)
+        <a onclick="return confirm('Are you sure to checkout?')" class="btn-large btn-danger"
+           href="{{route('checkin.checkout', ['id' => $header->booking_id])}}">CHECKOUT NOW
+        </a>
+        @else
+            <a class="btn-large btn-info">ALREADY CHECKOUT
+            </a>
+        @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">

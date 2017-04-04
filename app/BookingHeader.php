@@ -19,7 +19,7 @@ class BookingHeader extends Model
      */
     protected $fillable = [
         'guest_id', 'room_plan_id', 'partner_id', 'type', 'checkin_date', 'checkout_date', 'adult_num','room_list', 'booking_code',
-        'child_num', 'is_banquet', 'booking_status', 'payment_status', 'created_by', 'updated_by', 'grand_total', 'notes', 'void_reason'
+        'child_num', 'is_banquet', 'booking_status', 'payment_status', 'created_by', 'updated_by', 'grand_total', 'notes', 'void_reason', 'checkout'
     ];
 
     /**
@@ -41,7 +41,7 @@ class BookingHeader extends Model
 
         $getBooking = DB::table('booking_header')
                         ->select(DB::raw('booking_header.booking_id,booking_header.guest_id, booking_code, room_list, first_name, room_plan_id, last_name, id_number, id_type, handphone, checkin_date, checkout_date,
-                            (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, booking_header.partner_id, partner_name, booking_header.type, booking_status,
+                            (select count(*) from booking_room where booking_id = booking_header.booking_id) as room_num, booking_header.partner_id, partner_name, booking_header.type, booking_status,checkout,
                             (select total_payment from booking_payment where booking_id = booking_header.booking_id and type = 1 limit 1) as down_payment'))
                         ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
                         ->leftJoin('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
@@ -152,5 +152,15 @@ class BookingHeader extends Model
             ->get();
 
         return $getBooking;
+    }
+
+    /**
+     * @param $total_header
+     * @param $total_paid
+     * @param $total_extra
+     * @return mixed
+     */
+    public static function getTotalUnpaid($total_header, $total_paid, $total_extra) {
+        return $total_header - $total_paid + $total_extra;
     }
 }

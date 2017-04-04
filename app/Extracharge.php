@@ -23,6 +23,14 @@ class Extracharge extends Model
      */
     protected $primaryKey = 'extracharge_id';
 
+    public static function getStatus ($status){
+        if($status == 1){
+            return 'Unpaid';
+        }
+
+        return 'Paid';
+    }
+
     public static function getTypeName($typeId){
         if($typeId == 1){
             return 'One Time';

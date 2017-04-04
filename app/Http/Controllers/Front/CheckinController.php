@@ -308,4 +308,114 @@ class CheckinController extends Controller
         return redirect(route("checkin.detail", ['id' => $id]))->with('displayMessage', $message);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function checkout ($id) {
+        BookingHeader::find($id)->update([
+            'checkout'  => 1
+        ]);
+
+        BookingRoom::where('booking_id', $id)->update([
+            'checkout'  => 1
+        ]);
+
+        BookingPayment::where('booking_id',$id)->update([
+            'checkout'  => 1
+        ]);
+
+        BookingExtracharge::where('booking_id', $id)->update([
+            'checkout'  => 1
+        ]);
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to checkout. Proceed to payment now');
+        return redirect(route("checkin.payment", ['id' => $id]))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param Request $request
+     * @param $bookingId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function payment(Request $request, $bookingId){
+        $header = BookingHeader::find($bookingId);
+        $header->room_data = RoomNumber::getRoomDataList($header->room_list);
+        $header->grand_total = ($header->payment_status == 3) ? 0 : $header->grand_total;
+
+        $guest = Guest::find($header->guest_id);
+        $detail = BookingRoom::where('booking_id', $bookingId)->get();
+        $payment = BookingPayment::where('booking_id', $bookingId)->get();
+        $history = Guest::getHistoryCheckin($header->guest_id);
+        $extra = BookingExtracharge::where('booking_id', $bookingId)->where('status', 1)->get();
+        $charge = Extracharge::where('extracharge_status', 1)->get();
+
+        $total_paid = BookingPayment::getTotalPaid($bookingId);
+        $total_unpaid_extra = BookingExtracharge::getTotalUnpaid($bookingId);
+        $total_unpaid_all = ($header->payment_status == 3) ? 0 : BookingHeader::getTotalUnpaid($header->grand_total, $total_paid, $total_unpaid_extra);
+
+
+        $data = [
+            'header'    => $header,
+            'history'   => $history,
+            'guest'     => $guest,
+            'detail'    => $detail,
+            'payment'   => $payment,
+            'extra'     => $extra,
+            'charge'    => $charge,
+            'cash_account' => CashAccount::where('cash_account_status', 1)->get(),
+            'cc_type'    => CreditCardType::where('cc_type_status', 1)->get(),
+            'bank' => Bank::where('bank_status', 1)->get(),
+            'settlement' => Settlement::where('settlement_status', 1)->get(),
+            'payment_method' => config('app.paymentMethod'),
+            'total_unpaid_all'  => $total_unpaid_all,
+            'total_unpaid_extra'  => $total_unpaid_extra,
+            'total_paid'  => $total_paid
+        ];
+
+        return view("front.".$this->module.".payment", $data);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function makePayment (Request $request, $id) {
+        BookingHeader::find($id)->update([
+            'payment_status'    => 3, // LUNAS
+            'updated_by'        => Auth::id(),
+
+        ]);
+
+        BookingExtracharge::where('booking_id', $id)
+                            ->where('status', 1)
+                            ->update([
+                                'status'    => 2,
+                                'updated_by' => Auth::id()
+                            ]);
+
+        BookingPayment::create([
+            'booking_id'        => $id,
+            'payment_method'    => $request->input('payment_method'),
+            'checkout'          => 1,
+            'type'              => 4, // PELUNASAN
+            'total_payment'     => $request->input('total_unpaid'),
+            'guest_id'          => $request->input('guest_id'),
+            'settlement_id'        => $request->input('settlement'),
+            'cc_type_id'        => $request->input('cc_type'),
+            'bank'              => $request->input('bank'),
+            'bank_transfer_recipient'  => ($request->input('cash_account_id') != 0) ? $request->input('cash_account_id') : null ,
+            'card_type'        => $request->input('card_type'),
+            'card_number'        => $request->input('card_number'),
+            'card_name'        => $request->input('card_holder'),
+            'card_expiry_month' => (int) substr($request->input('card_expired_date'), 0, 2),
+            'card_expiry_year' => (int) substr($request->input('card_expired_date'), -4),
+            'created_by'        => Auth::id()
+        ]);
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to make payment');
+        return redirect(route("checkin.payment", ['id' => $id]))->with('displayMessage', $message);
+    }
+
 }

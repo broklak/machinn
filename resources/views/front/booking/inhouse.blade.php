@@ -54,7 +54,9 @@
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a><i class="icon-signout"></i> Checkout</a></li>
+                                                    @if($val->checkout == 1)
+                                                        <li><a href="{{route('checkin.payment', ['id' => $val->booking_id])}}"><i class="icon-signout"></i> Payment</a></li>
+                                                    @endif
                                                     <li><a href="{{route('checkin.detail', ['id' => $val->booking_id])}}"><i class="icon-file"></i> View Detail</a></li>
                                                 </ul>
                                             </div>
