@@ -1,15 +1,12 @@
 <script>
     $('#checkin').datepicker({
         dateFormat : 'yy-mm-dd',
-        minDate: 0,
         onSelect: function(dateStr) {
             var date = $(this).datepicker('getDate');
-            var dateMax = $(this).datepicker('getDate');
             if (date) {
                 date.setDate(date.getDate() + 1);
-                dateMax.setDate(date.getDate() + 30);
             }
-            $('#checkout').datepicker('option', 'maxDate', dateMax);
+            $('#checkout').datepicker('option', 'minDate', date);
         }
     });
     $('#checkout').datepicker({
