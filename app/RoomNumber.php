@@ -76,7 +76,6 @@ class RoomNumber extends Model
     public static function getRoomAvailable ($checkinDate, $checkoutDate, $filter = array()){
         $checkoutDate = date('Y-m-d', strtotime($checkoutDate) - 3600); // ROOM CAN BE USED ON CHECKOUT DATE (kurangi 1 hari dari jadwal checkout)
 
-        $where[] = ['booking_room.is_checkout', '=', 1];
         $where = [];
         if(isset($filter['type']) && $filter['type'] != 0) {
             $where[] = ['room_numbers.room_type_id', '=', $filter['type']];
@@ -89,7 +88,7 @@ class RoomNumber extends Model
         $getRoom = DB::table('room_numbers')
                     ->select(DB::raw("room_number_id, room_numbers.room_type_id, room_number_code, room_type_name, property_floor_name,
                       (select count(*) from booking_room where room_number_id = room_numbers.room_number_id
-                      and room_transaction_date between '$checkinDate' and '$checkoutDate' and status NOT IN (1,5,7,8)) as room_available,
+                      and room_transaction_date between '$checkinDate' and '$checkoutDate' and status NOT IN (1,5,7,8) and checkout = 1) as room_available,
                       (select room_price from room_rates where room_rate_day_type_id = 1 and room_rate_type_id = room_numbers.room_type_id) as room_rate_weekdays,
                       (select room_price from room_rates where room_rate_day_type_id = 2 and room_rate_type_id = room_numbers.room_type_id) as room_rate_weekends"))
                     ->join('room_types', 'room_numbers.room_type_id', '=', 'room_types.room_type_id')

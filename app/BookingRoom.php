@@ -90,7 +90,7 @@ class BookingRoom extends Model
             ->select(DB::raw('booking_room.booking_id,booking_room.room_number_id, booking_room.status, first_name, last_name, room_transaction_date'))
             ->whereBetween('room_transaction_date', [$start, $end])
             ->whereIn('booking_room.status', [2,3,4,6])
-            ->where('booking_room.is_checkout', '=', 0)
+            ->where('booking_room.checkout', '=', 0)
             ->join('guests', 'booking_room.guest_id', '=', 'guests.guest_id')
             ->get();
 
