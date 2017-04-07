@@ -171,8 +171,17 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Card Expired Date</label>
-                                        <div class="controls">
-                                            <input value="{{old('card_expired_date')}}" id="card_expired_date" type="text" data-date-format="yyyy-mm-dd" name="card_expired_date" />
+                                        <div class="controls double-select">
+                                            <select class="month-select" name="month">
+                                                @foreach($month as $key => $val)
+                                                    <option value="{{$key}}">{{$val}}</option>
+                                                @endforeach
+                                            </select>
+                                            <select class="year-select" name="year">
+                                                @for($x=0; $x < $year_list; $x++)
+                                                    <option>{{date('Y') + $x}}</option>
+                                                @endfor
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="control-group">

@@ -334,11 +334,10 @@ class CheckinController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param $bookingId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function payment(Request $request, $bookingId){
+    public function payment($bookingId){
         $header = BookingHeader::find($bookingId);
         $header->room_data = RoomNumber::getRoomDataList($header->room_list);
         $header->grand_total = ($header->payment_status == 3) ? 0 : $header->grand_total;
@@ -353,7 +352,6 @@ class CheckinController extends Controller
         $total_paid = BookingPayment::getTotalPaid($bookingId);
         $total_unpaid_extra = BookingExtracharge::getTotalUnpaid($bookingId);
         $total_unpaid_all = ($header->payment_status == 3) ? 0 : BookingHeader::getTotalUnpaid($header->grand_total, $total_paid, $total_unpaid_extra);
-
 
         $data = [
             'header'    => $header,
@@ -372,6 +370,22 @@ class CheckinController extends Controller
             'total_unpaid_extra'  => $total_unpaid_extra,
             'total_paid'  => $total_paid
         ];
+
+        $data['month'] = [
+            '1' => 'January',
+            '2' => 'February',
+            '3' => 'March',
+            '4' => 'April',
+            '5' => 'May',
+            '6' => 'June',
+            '7' => 'July',
+            '8' => 'August',
+            '9' => 'September',
+            '10' => 'October',
+            '11' => 'November',
+            '12' => 'December',
+        ];
+        $data['year_list'] = 5;
 
         return view("front.".$this->module.".payment", $data);
     }
@@ -409,8 +423,8 @@ class CheckinController extends Controller
             'card_type'        => $request->input('card_type'),
             'card_number'        => $request->input('card_number'),
             'card_name'        => $request->input('card_holder'),
-            'card_expiry_month' => (int) substr($request->input('card_expired_date'), 0, 2),
-            'card_expiry_year' => (int) substr($request->input('card_expired_date'), -4),
+            'card_expiry_month' => $request->input('month'),
+            'card_expiry_year' => $request->input('year'),
             'created_by'        => Auth::id()
         ]);
 

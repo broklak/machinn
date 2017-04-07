@@ -1747,3 +1747,11 @@ label.large{
 	font-size: 20px;
 	font-weight: bold;
 }
+
+.control-group .controls.double-select .month-select{
+	width: 30%;
+}
+.control-group .controls.double-select .year-select{
+	width: 20%;
+}
+

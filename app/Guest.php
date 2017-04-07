@@ -145,6 +145,7 @@ class Guest extends Model
         } elseif($type == 'age') {
             $getAge = "(YEAR(CURRENT_TIMESTAMP) - YEAR(birthdate) - (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(birthdate, 5)))";
             $select = "CASE
+                                WHEN $getAge < 20 THEN '< 20'
                                 WHEN $getAge BETWEEN 20 and 30 THEN '20 - 30'
                                 WHEN $getAge BETWEEN 31 and 40 THEN '31 - 40'
                                 WHEN $getAge BETWEEN 41 and 50 THEN '41 - 50'

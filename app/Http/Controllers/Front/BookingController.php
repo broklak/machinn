@@ -140,6 +140,21 @@ class BookingController extends Controller
      */
     public function create()
     {
+        $data['month'] = [
+            '1' => 'January',
+            '2' => 'February',
+            '3' => 'March',
+            '4' => 'April',
+            '5' => 'May',
+            '6' => 'June',
+            '7' => 'July',
+            '8' => 'August',
+            '9' => 'September',
+            '10' => 'October',
+            '11' => 'November',
+            '12' => 'December',
+        ];
+        $data['year_list'] = 5;
         $data['floor'] = $this->floor;
         $data['room_type'] = $this->roomType;
         $data['cash_account'] = $this->cash_account;
@@ -212,6 +227,21 @@ class BookingController extends Controller
      */
     public function edit($id)
     {
+        $data['month'] = [
+            '1' => 'January',
+            '2' => 'February',
+            '3' => 'March',
+            '4' => 'April',
+            '5' => 'May',
+            '6' => 'June',
+            '7' => 'July',
+            '8' => 'August',
+            '9' => 'September',
+            '10' => 'October',
+            '11' => 'November',
+            '12' => 'December',
+        ];
+        $data['year_list'] = 5;
         $detail = BookingHeader::getBookingDetail($id);
         $detail->room_data = RoomNumber::getRoomDataList($detail->room_list);
         $data['id'] = $id;

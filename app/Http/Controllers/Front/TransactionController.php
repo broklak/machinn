@@ -181,9 +181,4 @@ class TransactionController extends Controller
         $message = GlobalHelper::setDisplayMessage('success', "Success to $action expenses");
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
-
-    public function open () {
-
-    }
-
 }

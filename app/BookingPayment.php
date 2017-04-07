@@ -96,8 +96,8 @@ class BookingPayment extends Model
                 'cc_type_id'        => $input['cc_type'],
                 'bank'              => $input['bank'],
                 'settlement_id'     => $input['settlement'],
-                'card_expiry_month' => (int) substr($input['card_expired_date'], 0, 2),
-                'card_expiry_year' => (int) substr($input['card_expired_date'], -4),
+                'card_expiry_month' => $input['month'],
+                'card_expiry_year' => $input['year'],
                 'bank_transfer_recipient' => $input['cash_account_id'],
                 'created_by'        => Auth::id()
             ];

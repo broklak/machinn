@@ -1,39 +1,9 @@
-{{--<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>--}}
-    {{--<ul>--}}
-        {{--@foreach($menu as $keyModule => $valModule)--}}
-            {{--<li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == strtolower($valModule['module_name'])) open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>{{ucfirst($valModule['module_name'])}}</span></a>--}}
-                {{--<ul>--}}
-                    {{--@if(isset($valModule['submodule']))--}}
-                        {{--@foreach($valModule['submodule'] as $keySubmodule => $valSubmodule)--}}
-                            {{--@php $submoduleActive = false; @endphp--}}
-                            {{--<li class="submenu2 @if($submoduleActive) open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>{{$valSubmodule['submodule_name']}}</span></a>--}}
-                                {{--<ul @if(in_array(\Illuminate\Support\Facades\Request::segment(2), array_column($valSubmodule['class'], 'class_name'))) style="display: block" @endif>--}}
-                                    {{--@foreach($valSubmodule['class'] as $keyClass => $valClass)--}}
-                                        {{--<li @if(\Illuminate\Support\Facades\Request::segment(2) == $valClass['class_name']) class="active" @endif>--}}
-                                            {{--<a href="{{route($valClass['class_name'].'.index')}}">{{ucwords(str_replace('-', ' ',$valClass['class_name']))}}</a>--}}
-                                        {{--</li>--}}
-                                    {{--@endforeach--}}
-                                {{--</ul>--}}
-                            {{--</li>--}}
-                        {{--@endforeach--}}
-                    {{--@endif--}}
-                {{--</ul>--}}
-            {{--</li>--}}
-        {{--@endforeach--}}
-    {{--</ul>--}}
-{{--</div>--}}
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
     <ul>
         <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'master') open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>Master</span></a>
             <ul>
                 <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Rooms</span></a>
                     <ul >
-                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'banquet-event') class="active" @endif>
-                            <a href="{{route('banquet-event.index')}}">Banquet Event</a>
-                        </li>
-                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'banquet') class="active" @endif>
-                            <a href="{{route('banquet.index')}}">Banquet</a>
-                        </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'room-attribute') class="active" @endif>
                             <a href="{{route('room-attribute.index')}}">Room Attribute</a>
                         </li>
@@ -48,6 +18,16 @@
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'room-plan') class="active" @endif>
                             <a href="{{route('room-plan.index')}}">Room Plan</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Banquet</span></a>
+                    <ul >
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'banquet-event') class="active" @endif>
+                            <a href="{{route('banquet-event.index')}}">Banquet Event</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'banquet') class="active" @endif>
+                            <a href="{{route('banquet.index')}}">Banquet Time</a>
                         </li>
                     </ul>
                 </li>
@@ -70,19 +50,23 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Cash Flow</span></a>
+                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Cost and Income</span></a>
                     <ul >
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'cost') class="active" @endif>
                             <a href="{{route('cost.index')}}">Cost</a>
                         </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'income') class="active" @endif>
+                            <a href="{{route('income.index')}}">Income</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Extracharge</span></a>
+                    <ul >
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'extracharge-group') class="active" @endif>
                             <a href="{{route('extracharge-group.index')}}">Extracharge Group</a>
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'extracharge') class="active" @endif>
                             <a href="{{route('extracharge.index')}}">Extracharge</a>
-                        </li>
-                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'income') class="active" @endif>
-                            <a href="{{route('income.index')}}">Income</a>
                         </li>
                     </ul>
                 </li>
@@ -92,7 +76,7 @@
                             <a href="{{route('bank.index')}}">Bank</a>
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'cash-account') class="active" @endif>
-                            <a href="{{route('cash-account.index')}}">Cash Account</a>
+                            <a href="{{route('cash-account.index')}}">Cash and Bank Account</a>
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'credit-card-type') class="active" @endif>
                             <a href="{{route('credit-card-type.index')}}">Credit Card Type</a>

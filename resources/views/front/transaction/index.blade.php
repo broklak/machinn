@@ -6,7 +6,7 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <h1>Expenses</h1>
     </div>
     <div class="container-fluid">
         <hr>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New Expense</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">

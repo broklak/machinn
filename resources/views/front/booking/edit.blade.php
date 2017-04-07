@@ -180,6 +180,21 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
+                                        <label class="control-label">Card Expired Date</label>
+                                        <div class="controls double-select">
+                                            <select class="month-select" name="month">
+                                                @foreach($month as $key => $val)
+                                                    <option @if($key == $row->card_expiry_month) selected @endif value="{{$key}}">{{$val}}</option>
+                                                @endforeach
+                                            </select>
+                                            <select class="year-select" name="year">
+                                                @for($x=0; $x < $year_list; $x++)
+                                                    <option @if(date('Y') + $x == $row->card_expiry_year) selected @endif>{{date('Y') + $x}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <label class="control-label">Credit Card Type</label>
                                         <div class="controls">
                                             <select name="cc_type">
