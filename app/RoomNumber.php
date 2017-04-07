@@ -76,7 +76,7 @@ class RoomNumber extends Model
     public static function getRoomAvailable ($checkinDate, $checkoutDate, $filter = array()){
         $checkoutDate = date('Y-m-d', strtotime($checkoutDate) - 3600); // ROOM CAN BE USED ON CHECKOUT DATE (kurangi 1 hari dari jadwal checkout)
 
-        $where[] = ['booking_room.is_checkout', '=', 0];
+        $where[] = ['booking_room.is_checkout', '=', 1];
         $where = [];
         if(isset($filter['type']) && $filter['type'] != 0) {
             $where[] = ['room_numbers.room_type_id', '=', $filter['type']];
