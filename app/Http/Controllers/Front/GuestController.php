@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\BookingHeader;
+use App\BookingRoom;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Guest;
@@ -38,6 +39,7 @@ class GuestController extends Controller
      */
     public function index()
     {
+        $data['parent_menu'] = $this->module;
         $rows = $this->model->paginate(config('app.limitPerPage'));
         $data['rows'] = $rows;
         return view("master.".$this->module.".index", $data);
@@ -50,6 +52,7 @@ class GuestController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->module;
         $data['country'] = Country::where('country_status', 1)->get();
         $data['religion'] = config('app.religion');
         $data['idType'] = config('app.guestIdentificationType');
@@ -119,6 +122,7 @@ class GuestController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->module;
         $data['country'] = Country::where('country_status', 1)->get();
         $data['religion'] = config('app.religion');
         $data['idType'] = config('app.guestIdentificationType');
@@ -187,6 +191,7 @@ class GuestController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function checkinReport(Request $request){
+        $data['parent_menu'] = $this->module;
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
 
@@ -201,6 +206,7 @@ class GuestController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function statistic(Request $request){
+        $data['parent_menu'] = $this->module;
         $type = ($request->input('type')) ? $request->input('type') : 'gender';
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
@@ -217,9 +223,13 @@ class GuestController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function inhouse (Request $request){
+        $now = BookingRoom::validateCheckoutTime('2017-04-09');
+        $data['parent_menu'] = $this->module;
         $filter['guest'] = $request->input('guest');
         $filter['room_number'] = $request->input('room_number');
         $filter['status']      = 2; // ALREAY CHECKIN
+        $filter['checkout']      = 0; // NOT CHECKOUT
+        $filter['paid']      = 1; // NOT PAID
         $getBook = BookingHeader::getBooking($filter);
         $data['filter'] = $filter;
         $data['payment_method'] = config('app.paymentMethod');
@@ -227,6 +237,16 @@ class GuestController extends Controller
         $data['link'] = $getBook['link'];
         $data['guest_model'] = new Guest();
         return view('front.booking.inhouse', $data);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
 }

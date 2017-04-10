@@ -53,6 +53,11 @@ class PosController extends Controller
      */
     private $cash_account;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -67,6 +72,8 @@ class PosController extends Controller
         $this->module = 'pos';
         $this->items = Extracharge::where('extracharge_status', 1)->get();
         $this->customer = Guest::all();
+
+        $this->parent = 'cashier';
     }
 
     /**
@@ -74,6 +81,7 @@ class PosController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
+        $data['parent_menu'] = $this->parent;
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 months'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
         $filter['bill_number'] = $request->input('bill_number');
@@ -91,6 +99,7 @@ class PosController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['cash_account'] = $this->cash_account;
         $data['cc_type'] = $this->ccType;
         $data['bank']   = $this->bank;
@@ -159,6 +168,7 @@ class PosController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['detail'] = OutletTransactionDetail::where('transaction_id', $id)->get();
         $data['payment'] = OutletTransactionPayment::where('transaction_id', $id)->first();
         $data['cash_account'] = $this->cash_account;

@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cost extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -23,6 +25,13 @@ class Cost extends Model
      */
     protected $primaryKey = 'cost_id';
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
     public static function setTypeName ($type){
         if($type == 1){
             return 'Fix Cost';
@@ -33,4 +42,5 @@ class Cost extends Model
     public static function getCostName ($cost_id){
         return parent::find($cost_id)->value('cost_name');
     }
+
 }

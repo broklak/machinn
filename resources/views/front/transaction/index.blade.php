@@ -59,17 +59,17 @@
                                                     <i class="icon-pencil" aria-hidden="true"></i> Edit
                                                 </a>
                                             @endif
-                                            <div class="btn-group">
-                                                <button @if($val->status == 1) disabled @endif data-toggle="dropdown" class="btn dropdown-toggle">Action
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    @if($val->status != 1)
-                                                        <li><a href="{{route($route_name.'.change-status', ['id' => $val->id, 'status' => 1])}}"><i class="icon-check"></i>Approve</a></li>
-                                                        <li><a href="{{route($route_name.'.change-status', ['id' => $val->id, 'status' => 3])}}"><i class="icon-remove"></i>Delete</a></li>
-                                                    @endif
-                                                </ul>
-                                            </div>
+                                            {{--<div class="btn-group">--}}
+                                                {{--<button @if($val->status == 1) disabled @endif data-toggle="dropdown" class="btn dropdown-toggle">Action--}}
+                                                    {{--<span class="caret"></span>--}}
+                                                {{--</button>--}}
+                                                {{--<ul class="dropdown-menu">--}}
+                                                    {{--@if($val->status != 1)--}}
+                                                        {{--<li><a href="{{route($route_name.'.change-status', ['id' => $val->id, 'status' => 1])}}"><i class="icon-check"></i>Approve</a></li>--}}
+                                                        {{--<li><a href="{{route($route_name.'.change-status', ['id' => $val->id, 'status' => 3])}}"><i class="icon-remove"></i>Delete</a></li>--}}
+                                                    {{--@endif--}}
+                                                {{--</ul>--}}
+                                            {{--</div>--}}
                                         </td>
                                     </tr>
                                 @endforeach

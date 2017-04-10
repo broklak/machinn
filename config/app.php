@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -241,4 +241,8 @@ return [
     'paymentMethod' => [1 => 'Cash (FO)', 2 => 'Cash (BO)', 3 => 'Credit Card', 4 => 'Bank Transfer'],
 
     'roomStatus' => ['1' => 'Ready', '2' => 'Dirty', '3' => 'Not Ready'],
+
+    'defaultCheckoutTime' => '14:00:00',
+
+    'defaultCheckInTime' => '14:00:00',
 ];

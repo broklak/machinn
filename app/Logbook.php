@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Logbook extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -23,8 +25,15 @@ class Logbook extends Model
      */
     protected $primaryKey = 'logbook_id';
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
     public static function getUserName ($userId) {
         $get_user = User::find($userId)->value('username');
-        return $get_user;
+        return ($get_user) ? $get_user : 'DELETED';
     }
 }

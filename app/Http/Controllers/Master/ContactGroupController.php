@@ -19,6 +19,11 @@ class ContactGroupController extends Controller
      */
     private $module;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -26,6 +31,8 @@ class ContactGroupController extends Controller
         $this->model = new ContactGroup();
 
         $this->module = 'contact-group';
+
+        $this->parent = 'partner';
     }
 
     /**
@@ -35,6 +42,7 @@ class ContactGroupController extends Controller
      */
     public function index()
     {
+        $data['parent_menu'] = $this->parent;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
         return view("master.".$this->module.".index", $data);
@@ -47,7 +55,8 @@ class ContactGroupController extends Controller
      */
     public function create()
     {
-        return view("master.".$this->module.".create");
+        $data['parent_menu'] = $this->parent;
+        return view("master.".$this->module.".create", $data);
     }
 
     /**
@@ -90,6 +99,7 @@ class ContactGroupController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
     }
@@ -148,6 +158,16 @@ class ContactGroupController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->contact_group_name);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

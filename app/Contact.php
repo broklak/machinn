@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -24,12 +26,15 @@ class Contact extends Model
     protected $primaryKey = 'contact_id';
 
     /**
-     * @param $groupId
-     * @return mixed
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
      */
+    protected $dates = ['deleted_at'];
+
     public static function getGroupName ($groupId) {
         $group = ContactGroup::find($groupId);
 
-        return $group->contact_group_name;
+        return isset($group->contact_group_name) ? $group->contact_group_name : 'DELETED';
     }
 }

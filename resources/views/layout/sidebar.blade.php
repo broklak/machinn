@@ -2,8 +2,8 @@
     <ul>
         <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'master') open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>Master</span></a>
             <ul>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Rooms</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'rooms') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Rooms</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'rooms') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'room-attribute') class="active" @endif>
                             <a href="{{route('room-attribute.index')}}">Room Attribute</a>
                         </li>
@@ -21,8 +21,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Banquet</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'banquet') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Banquet</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'banquet') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'banquet-event') class="active" @endif>
                             <a href="{{route('banquet-event.index')}}">Banquet Event</a>
                         </li>
@@ -31,8 +31,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Employees</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'employees') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Employees</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'employees') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'department') class="active" @endif>
                             <a href="{{route('department.index')}}">Department</a>
                         </li>
@@ -50,8 +50,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Cost and Income</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'cost') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Cost and Income</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'cost') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'cost') class="active" @endif>
                             <a href="{{route('cost.index')}}">Cost</a>
                         </li>
@@ -60,8 +60,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Extracharge</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'extracharge') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Extracharge</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'extracharge') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'extracharge-group') class="active" @endif>
                             <a href="{{route('extracharge-group.index')}}">Extracharge Group</a>
                         </li>
@@ -70,8 +70,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Payment</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'payment') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Payment</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'payment') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'bank') class="active" @endif>
                             <a href="{{route('bank.index')}}">Bank</a>
                         </li>
@@ -89,8 +89,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Location</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'location') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Location</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'location') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'country') class="active" @endif>
                             <a href="{{route('country.index')}}">Country</a>
                         </li>
@@ -99,8 +99,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Business Partner</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'partner') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Business Partner</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'partner') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'partner-group') class="active" @endif>
                             <a href="{{route('partner-group.index')}}">Partner Group</a>
                         </li>
@@ -115,8 +115,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Property</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'property') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Property</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'property') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'property-attribute') class="active" @endif>
                             <a href="{{route('property-attribute.index')}}">Property Attribute</a>
                         </li>
@@ -129,8 +129,8 @@
         </li>
         <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'front') open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>Front Office</span></a>
             <ul>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Room Transaction</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'room-transaction') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Room Transaction</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'room-transaction') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'checkin') class="active" @endif>
                             <a href="{{route('checkin.index')}}">Check In</a>
                         </li>
@@ -145,8 +145,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Guest</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'guest') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Guest</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'guest') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'guest.inhouse') class="active" @endif>
                             <a href="{{route('guest.inhouse')}}">In House Guest</a>
                         </li>
@@ -164,8 +164,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Info</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'info') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Info</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'info') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'staff.index') class="active" @endif>
                             <a href="{{route('staff.index')}}">Staff Contact</a>
                         </li>
@@ -177,9 +177,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Cashier</span></a>
-                    <ul >
-                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'transaction.index') class="active" @endif>
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'cashier') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Cashier</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'cashier') style="display: block" @endif>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'transaction') class="active" @endif>
                             <a href="{{route('transaction.index')}}">Expense</a>
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'pos') class="active" @endif>
@@ -187,8 +187,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="submenu2 "><a href="#"><i class="icon icon-list-alt"></i> <span>Report</span></a>
-                    <ul >
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'report-front') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Report</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'report-front') style="display: block" @endif>
                         <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'booking.report') class="active" @endif>
                             <a href="{{route('booking.report')}}">Booking Report</a>
                         </li>

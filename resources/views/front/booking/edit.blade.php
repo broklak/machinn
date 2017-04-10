@@ -15,6 +15,7 @@
         </div>
         <form id="form-booking" class="form-horizontal" action="{{route("$route_name.update", ['id' => $id])}}" method="post">
             {{csrf_field()}}
+            <input type="hidden" id="booking_id" value="{{$id}}">
             <div class="row-fluid">
                 <div class="span6">
                     <div class="widget-box">
@@ -83,12 +84,46 @@
                                         <input type="radio" @if($row->is_banquet == 1) checked @endif value="1" name="is_banquet" id="yes_ban"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="yes_ban">Yes</label>
                                     </div>
                                 </div>
+                                <div id="banquet-container" class="@if($row->banquet_time_id == null) hide @endif">
+                                    <div class="control-group">
+                                        <label class="control-label">Banquet Time</label>
+                                        <div class="controls">
+                                            <select id="banquet_time_id" name="banquet_time_id">
+                                                <option value="0" disabled selected>Choose Time</option>
+                                                @foreach($banquet_time as $key => $val)
+                                                    <option @if($row->banquet_time_id == $val['banquet_id']) selected="selected" @endif value="{{$val['banquet_id']}}">{{$val['banquet_name']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Banquet Event</label>
+                                        <div class="controls">
+                                            <select id="banquet_event_id" name="banquet_event_id">
+                                                <option value="0" disabled selected>Choose Event</option>
+                                                @foreach($banquet_event as $key => $val)
+                                                    <option @if($row->banquet_event_id == $val['event_id']) selected="selected" @endif value="{{$val['event_id']}}">{{$val['event_name']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Event Name</label>
+                                        <div class="controls">
+                                            <input value="{{$row->banquet_event_name}}" type="text" name="event_name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="banquet" name="banquet" value="{{($row->banquet_time_id == null) ? 0 : 1}}">
                                 <div class="control-group">
                                     <label class="control-label">Room Number</label>
                                     <div class="controls">
                                         <div id="selectedRoomContainer" style="margin-bottom: 15px">
                                             @foreach($row->room_data as $key => $val)
-                                                <a href="#" title="Click to remove room" class="badge badge-success tip-top removeRoom" data-id="{{$key}}" data-code="{{$val['code']}}" data-type="{{$val['type']}}" data-weekendrate="{{$val['rateWeekends']}}" data-weekdayrate="{{$val['rateWeekdays']}}" data-original-title="Click to remove room">{{$val['code']}}</a>
+                                                <a href="#" id="remove-{{$key}}" title="Click to remove room" class="badge badge-success tip-top"
+                                                   data-id="{{$key}}" data-code="{{$val['code']}}" data-type="{{$val['type']}}"
+                                                   data-weekendrate="{{$val['rateWeekends']}}" data-weekdayrate="{{$val['rateWeekdays']}}"
+                                                   data-original-title="Click to remove room">{{$val['code']}}</a>
                                             @endforeach
                                         </div>
                                         <a href="#modalSelectRoom" data-toggle="modal" class="btn btn-info">Select Room</a>
@@ -111,8 +146,8 @@
                                 <div class="control-group">
                                     <label class="control-label">Total Room Rates</label>
                                     <div class="controls">
-                                        <input value="{{\App\Helpers\GlobalHelper::moneyFormat($row->grand_total)}}" readonly id="booking_rate" type="text" name="booking_rate" />
-                                        <input type="hidden" name="total_rates" value="{{$row->grand_total}}" id="total_rates">
+                                        <input value="{{\App\Helpers\GlobalHelper::moneyFormat($row->total_room_rate)}}" readonly id="booking_rate" type="text" name="booking_rate" />
+                                        <input type="hidden" name="total_rates" value="{{$row->total_room_rate}}" id="total_rates">
                                     </div>
                                 </div>
                             </div>
@@ -383,40 +418,30 @@
             <h3>Available Rooms</h3>
         </div>
         <div class="modal-body">
-            <form id="searchRoomForm" class="form-horizontal">
-                {{csrf_field()}}
-                <div id="form-search-guest" class="step">
-                    <div class="control-group">
-                        <label class="control-label">Filter Room</label>
-                        <div class="controls">
-                            <select id="room_type_filter" name="room_type">
-                                <option value="0" selected>All Room Type</option>
-                                @foreach($room_type as $key => $val)
-                                    <option value="{{$val['room_type_id']}}">{{$val['room_type_name']}}</option>
-                                @endforeach
-                            </select>
-                            <select id="floor_filter" name="floor">
-                                <option value="0" selected>All Floor</option>
-                                @foreach($floor as $key => $val)
-                                    <option value="{{$val['property_floor_id']}}">{{$val['property_floor_name']}}</option>
-                                @endforeach
-                            </select>
-                            <input type="submit" value="Search" class="btn btn-primary" />
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <table class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th>Room Number</th>
-                    <th>Room Type</th>
-                    <th>Floor</th>
-                    <th>Room Rate Weekdays</th>
-                    <th>Room Rate Weekends</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
+            {{--<form id="searchRoomForm" class="form-horizontal">--}}
+                {{--{{csrf_field()}}--}}
+                {{--<div id="form-search-guest" class="step">--}}
+                    {{--<div class="control-group">--}}
+                        {{--<label class="control-label">Filter Room</label>--}}
+                        {{--<div class="controls">--}}
+                            {{--<select id="room_type_filter" name="room_type">--}}
+                                {{--<option value="0" selected>All Room Type</option>--}}
+                                {{--@foreach($room_type as $key => $val)--}}
+                                    {{--<option value="{{$val['room_type_id']}}">{{$val['room_type_name']}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                            {{--<select id="floor_filter" name="floor">--}}
+                                {{--<option value="0" selected>All Floor</option>--}}
+                                {{--@foreach($floor as $key => $val)--}}
+                                    {{--<option value="{{$val['property_floor_id']}}">{{$val['property_floor_name']}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                            {{--<input type="submit" value="Search" class="btn btn-primary" />--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</form>--}}
+            <table class="table table-bordered view-room">
                 <tbody id="listRoom">
                 <tr>
                     <td style="text-align: center" colspan="7">Please Select Check In and Check Out Date</td>

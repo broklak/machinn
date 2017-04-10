@@ -19,6 +19,11 @@ class EmployeeStatusController extends Controller
      */
     private $module;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -26,6 +31,8 @@ class EmployeeStatusController extends Controller
         $this->model = new EmployeeStatus();
 
         $this->module = 'employee-status';
+
+        $this->parent = 'employees';
     }
 
     /**
@@ -35,6 +42,7 @@ class EmployeeStatusController extends Controller
      */
     public function index()
     {
+        $data['parent_menu'] = $this->parent;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
         return view("master.".$this->module.".index", $data);
@@ -47,7 +55,8 @@ class EmployeeStatusController extends Controller
      */
     public function create()
     {
-        return view("master.".$this->module.".create");
+        $data['parent_menu'] = $this->parent;
+        return view("master.".$this->module.".create", $data);
     }
 
     /**
@@ -89,6 +98,7 @@ class EmployeeStatusController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
     }
@@ -146,6 +156,16 @@ class EmployeeStatusController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->employee_status_active);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

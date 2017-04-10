@@ -32,6 +32,11 @@ class RoomTypeController extends Controller
      */
     private $rate;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -43,6 +48,8 @@ class RoomTypeController extends Controller
         $this->attribute = RoomAttribute::where('room_attribute_status', 1)->get();
 
         $this->rate = new RoomRate();
+
+        $this->parent = 'rooms';
     }
 
     /**
@@ -52,6 +59,7 @@ class RoomTypeController extends Controller
      */
     public function index()
     {
+        $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -65,6 +73,7 @@ class RoomTypeController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['attribute'] = $this->attribute;
         return view("master.".$this->module.".create", $data);
     }
@@ -91,7 +100,8 @@ class RoomTypeController extends Controller
             'room_type_max_adult'   => $request->input('room_type_max_adult'),
             'room_type_max_child'   => $request->input('room_type_max_child'),
             'room_type_banquet' => $request->input('room_type_banquet'),
-            'room_type_attributes' => implode(',',$request->input('room_type_attributes'))
+            'room_type_attributes' => implode(',',$request->input('room_type_attributes')),
+            ''
         ]);
 
         $this->rate->create([
@@ -129,6 +139,7 @@ class RoomTypeController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['weekday'] = $this->rate->where('room_rate_day_type_id', 1)->where('room_rate_type_id', $id)->first();
         $data['weekend'] = $this->rate->where('room_rate_day_type_id', 2)->where('room_rate_type_id', $id)->first();
         $data['attribute'] = $this->attribute;
@@ -206,6 +217,16 @@ class RoomTypeController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->room_type_name);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

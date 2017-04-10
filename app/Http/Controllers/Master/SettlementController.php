@@ -25,6 +25,11 @@ class SettlementController extends Controller
      */
     private $bank;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -34,6 +39,8 @@ class SettlementController extends Controller
         $this->module = 'settlement';
 
         $this->bank = Bank::where('bank_status', 1)->get();
+
+        $this->parent = 'payment';
     }
 
     /**
@@ -43,6 +50,7 @@ class SettlementController extends Controller
      */
     public function index()
     {
+        $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -56,6 +64,7 @@ class SettlementController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['bank'] = $this->bank;
         return view("master.".$this->module.".create", $data);
     }
@@ -101,6 +110,7 @@ class SettlementController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['bank'] = $this->bank;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
@@ -160,6 +170,16 @@ class SettlementController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->settlement_name);
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

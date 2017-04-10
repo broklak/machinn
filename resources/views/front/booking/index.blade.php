@@ -9,6 +9,9 @@
         <h1>{{$master_module}}</h1>
     </div>
     <div class="container-fluid">
+        <div class="legend-status">
+            <span class="checkin-soon">&nbsp;</span><span class="legend-title">Expected Check In</span>
+        </div>
         <hr>
         <a class="btn btn-primary" href="{{route("$route_name.create")}}">Create New {{$master_module}}</a>
         <div class="filter-data">
@@ -37,7 +40,7 @@
                         <div style="clear: both"></div>
                     </div>
                     <div class="widget-content nopadding">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Booking Code</th>
@@ -53,7 +56,7 @@
                             <tbody>
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
-                                    <tr class="odd gradeX">
+                                    <tr class="checkin-{{\App\BookingRoom::validateCheckinTime($val->checkin_date, $val->booking_status)}}">
                                         <td>{{$val->booking_code}}</td>
                                         <td>{{$val->first_name .' '.$val->last_name}} <br/>({{$val->id_number}}) ({{$guest_model->getIdTypeName($val->id_type)}})
                                             <br /><label class="label label-{{\App\Helpers\GlobalHelper::getBookingTypeLabel($val->type)}}">{{\App\Helpers\GlobalHelper::getBookingTypeName($val->type)}}</label>

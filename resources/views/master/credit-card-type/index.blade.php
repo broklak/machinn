@@ -34,6 +34,10 @@
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->cc_type_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->cc_type_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a onclick="return confirm('You will delete {{$val->cc_type_name}}, continue? ')"
+                                               class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->cc_type_id])}}"
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                            </a>
                                             @if($val->cc_type_status == 0)
                                                 <a onclick="return confirm('You will activate {{$val->cc_type_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->cc_type_id, 'status' => $val->cc_type_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
                                             @else

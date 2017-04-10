@@ -19,6 +19,11 @@ class RoomRateDayTypeController extends Controller
      */
     private $module;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -26,6 +31,8 @@ class RoomRateDayTypeController extends Controller
         $this->model = new RoomRateDateType();
 
         $this->module = 'room-rate-day-type';
+
+        $this->parent = 'rooms';
     }
 
     /**
@@ -38,6 +45,7 @@ class RoomRateDayTypeController extends Controller
         $data['days'] = $this->listOfDays();
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
+        $data['parent_menu'] = $this->parent;
         return view("master.".$this->module.".index", $data);
     }
 
@@ -48,6 +56,7 @@ class RoomRateDayTypeController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['days'] = $this->listOfDays();
         return view("master.".$this->module.".create", $data);
     }
@@ -106,6 +115,7 @@ class RoomRateDayTypeController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['days'] = $this->listOfDays();
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
@@ -146,6 +156,9 @@ class RoomRateDayTypeController extends Controller
         //
     }
 
+    /**
+     * @return array
+     */
     protected function listOfDays() {
         return [
             '1' => 'Monday',

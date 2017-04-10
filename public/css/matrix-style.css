@@ -1626,22 +1626,32 @@ div.dataTables_wrapper .ui-widget-header {
 
 .view-room .vacant{
 	background: #50BE50;
+	border: 1px solid #fff;
+	color: #fff;
 }
 
 .view-room .occupied{
 	background: #E35355;
+	border: 1px solid #fff;
+	color: #fff;
 }
 
 .view-room .guaranteed{
 	background: #FC9E4A;
+	border: 1px solid #fff;
+	color: #fff;
 }
 
 .view-room .tentative{
 	background: #ffc80e;
+	border: 1px solid #fff;
+	color: #fff;
 }
 
 .view-room .ooo{
 	background: #000;
+	border: 1px solid #fff;
+	color: #fff;
 }
 
 .view-room .room-type-name{
@@ -1754,4 +1764,54 @@ label.large{
 .control-group .controls.double-select .year-select{
 	width: 20%;
 }
+.delete-link, .delete-link:hover{
+	color: #ff3800;
+}
+.table-bordered .checkout-now td{
+	background-color:#f2dede;
+	border-color:#ebccd1;
+	color:#a94442
+}
 
+.table-bordered .checkout-soon td{
+	background-color:#fcf8e3;
+	border-color:#ebccd1;
+	color:#a94442
+}
+
+.table-bordered .checkin-soon td{
+	color: #3a87ad;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+span.checkout-soon{
+	background-color:#fcf8e3;
+	border-color:#ebccd1;
+	padding: 5px 15px;
+}
+
+span.checkout-now{
+	background-color:#f2dede;
+	border-color:#ebccd1;
+	padding: 5px 15px;
+}
+
+span.checkin-soon{
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+	padding: 5px 15px;
+}
+
+.view-room tr:hover{
+	background-color: #fff;
+}
+
+.view-room input[type="checkbox"], .view-room label{
+	display: inline-block;
+}
+
+.view-room label{
+	vertical-align: sub;
+	margin-left: 5px;
+}

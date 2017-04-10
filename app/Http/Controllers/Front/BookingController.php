@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Front;
 
 use App\Bank;
+use App\Banquet;
+use App\BanquetEvent;
 use App\BookingHeader;
 use App\BookingPayment;
 use App\BookingRoom;
@@ -89,6 +91,21 @@ class BookingController extends Controller
      */
     private $floor;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
+    /**
+     * @var string
+     */
+    private $banquet_time;
+    /**
+     * @var string
+     */
+    private $banqet_event;
+
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -116,12 +133,19 @@ class BookingController extends Controller
         $this->roomType = RoomType::where('room_type_status', 1)->get();
 
         $this->floor = PropertyFloor::where('property_floor_status', 1)->get();
+
+        $this->banquet_time = Banquet::where('banquet_status', 1)->get();
+
+        $this->banqet_event = BanquetEvent::where('event_status', 1)->get();
+
+        $this->parent = 'room-transaction';
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request) {
+        $data['parent_menu'] = $this->parent;
         $filter['guest'] = $request->input('guest');
         $filter['status'] = $request->input('status');
         $getBook = BookingHeader::getBooking($filter);
@@ -140,6 +164,7 @@ class BookingController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['month'] = [
             '1' => 'January',
             '2' => 'February',
@@ -169,6 +194,8 @@ class BookingController extends Controller
         $data['idType'] = $this->idType;
         $data['plan'] = $this->roomPlan;
         $data['source'] = $this->source;
+        $data['banquet_time'] = $this->banquet_time;
+        $data['banquet_event'] = $this->banqet_event;
         return view("front.".$this->module.".create", $data);
     }
 
@@ -178,10 +205,8 @@ class BookingController extends Controller
      */
     public function store(Request $request){
         $guest_id = $request->input('guest_id');
-        if(!$guest_id){
-            $guest = Guest::insertGuest($request->input());
-            $guest_id = $guest->guest_id;
-        }
+        $guest = Guest::insertGuest($request->input(), $guest_id);
+        $guest_id = ($guest_id == null) ? $guest->guest_id  : $guest_id;
 
         $header = BookingHeader::processHeader($request->input(), $guest_id);
 
@@ -204,10 +229,8 @@ class BookingController extends Controller
     {
         $header = BookingHeader::find($id);
         $guest_id = $request->input('guest_id');
-        if(!$guest_id){
-            $guest = Guest::insertGuest($request->input());
-            $guest_id = $guest->guest_id;
-        }
+        $guest = Guest::insertGuest($request->input(), $guest_id);
+        $guest_id = ($guest_id == null) ? $guest->guest_id  : $guest_id;
 
         BookingHeader::processHeader($request->input(), $guest_id, $id);
 
@@ -227,6 +250,7 @@ class BookingController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['month'] = [
             '1' => 'January',
             '2' => 'February',
@@ -260,7 +284,8 @@ class BookingController extends Controller
         $data['idType'] = $this->idType;
         $data['plan'] = $this->roomPlan;
         $data['source'] = $this->source;
-
+        $data['banquet_time'] = $this->banquet_time;
+        $data['banquet_event'] = $this->banqet_event;
         return view("front.".$this->module.".edit", $data);
     }
 
@@ -269,6 +294,7 @@ class BookingController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showdownPayment($bookingId){
+        $data['parent_menu'] = $this->parent;
         $data['header'] = BookingHeader::getBookingDetail($bookingId);
         $data['payment'] = BookingPayment::where('booking_id', $bookingId)->get();
         return view("front.".$this->module.".list_payment", $data);
@@ -313,6 +339,7 @@ class BookingController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function report(Request $request){
+        $data['parent_menu'] = 'report-front';
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = date("$year-$month-01");

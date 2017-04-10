@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RoomType extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -23,9 +25,16 @@ class RoomType extends Model
      */
     protected $primaryKey = 'room_type_id';
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
     public static function getAttributeName ($attributeId) {
         $attribute = RoomAttribute::find($attributeId);
 
-        return $attribute->room_attribute_name;
+        return isset($attribute->room_attribute_name) ? $attribute->room_attribute_name : 'DELETED';
     }
 }

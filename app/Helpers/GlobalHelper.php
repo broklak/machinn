@@ -117,6 +117,23 @@ class GlobalHelper
     }
 
     /**
+     * @param $bookingId
+     * @return string
+     */
+    public static function generateReceipt($bookingId){
+        $prefix = 'B';
+        $length = 5;
+        $lenZero = $length - strlen($bookingId);
+        $zero = '';
+        for($i=0; $i<$lenZero; $i++){
+            $zero .= '0';
+        }
+
+        return $prefix.$zero.$bookingId;
+
+    }
+
+    /**
      * @param $type
      * @return string
      */
@@ -214,6 +231,61 @@ class GlobalHelper
                 return 'ooo';
                 break;
         }
+    }
+
+    /**
+     * @param $data
+     * @param null $booking_id
+     * @return string
+     */
+    public static function generateHTMLRoomChoice($data, $booking_id = null){
+        $html = '';
+        foreach($data as $key => $val){
+            $html .= '<tr><td class="room-type-name" colspan="100">'.$key.' (Weekend : '.self::moneyFormat($val['weekends_rate']).', Weekday : '.self::moneyFormat($val['weekdays_rate']).')</td></tr>';
+            foreach($val['floor'] as $key_floor => $val_floor){
+                $html .= '<tr><td>Floor '.$key_floor.'</td>';
+
+                foreach($val_floor as $room) {
+                    $checkable = '';
+                    $checked = '';
+                    if($room['room_used'] == 0){
+                        $status = 'vacant';
+                    } else{
+                        if($room['status'] == 2){
+                            $status = 'occupied';
+                        } elseif($room['status'] == 3){
+                            $status = 'guaranteed';
+                        } elseif($room['status'] == 4){
+                            $status = 'tentative';
+                        } else {
+                            $status = 'ooo';
+                        }
+                    }
+
+                    if($room['room_used'] != 0){
+                        $checkable = 'disabled';
+                    }
+
+                    if($room['booking_id'] == $booking_id){
+                        $checkable = '';
+                    }
+
+                    if($room['room_used'] > 0 && $room['booking_id'] == $booking_id){
+                        $checked = 'checked';
+                    }
+
+                    $html .= '<td class="'.$status.'"><input '.$checkable.' '.$checked.' class="chooseRoom" id="room-check-'.$room['room_number_id'].'"
+                               data-id="'.$room['room_number_id'].'" data-weekdays="'.$room['room_rate_weekdays'].'"
+                               data-weekends="'.$room['room_rate_weekdays'].'" data-type="'.$room['room_type_id'].'"
+                               data-code="'.$room['room_number_code'].'" type="checkbox" />
+                               <label for="room-check-'.$room['room_number_id'].'">'.$room['room_number_code'].'</label>
+                               </td>';
+                }
+                $html .= '</tr>';
+            }
+        }
+
+        return $html;
     }
 }
 

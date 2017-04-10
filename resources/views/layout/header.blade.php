@@ -1,6 +1,8 @@
 <!--Header-part-->
 <div id="header">
-    <h1><a href="dashboard.html">Hotel Admin</a></h1>
+    <a href="#">
+        <img style="height: 75px;width: 220px" src="{{(session('logo') == null) ? asset('img/matrix/no_image.png') : asset('storage/img/matrix/'.session('logo')) }}">
+    </a>
 </div>
 <!--close-Header-part-->
 
@@ -12,6 +14,7 @@
                 <span class="text">Welcome {{ucfirst($user['name'])}}</span></a>
             <ul class="dropdown-menu">
                 <li><a href="{{route('change-password')}}"><i class="icon icon-lock"></i> Change Password</a></li>
+                <li><a href="{{route('profile')}}"><i class="icon icon-building"></i> Change Hotel Profile</a></li>
             </ul>
         </li>
         <li class=""><a title="" href="{{url('/logout')}}"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>

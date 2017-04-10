@@ -15,6 +15,11 @@ class ReportController extends Controller
 
     private $month;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -33,6 +38,8 @@ class ReportController extends Controller
             '11' => 'November',
             '12' => 'December',
         ];
+
+        $this->parent = 'report-front';
     }
 
     /**
@@ -40,6 +47,7 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function guestBill (Request $request){
+
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = date("$year-$month-01");
@@ -49,6 +57,7 @@ class ReportController extends Controller
         $filter['end'] = $end;
         $report = $this->model->guestBill($filter);
 
+        $data['parent_menu'] = $this->parent;
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
@@ -75,6 +84,7 @@ class ReportController extends Controller
         $filter['end'] = $end;
         $report = $this->model->downPayment($filter);
 
+        $data['parent_menu'] = $this->parent;
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
@@ -97,6 +107,7 @@ class ReportController extends Controller
         $filter['bill_number'] = $request->input('bill_number');
         $filter['status'] = $request->input('status');
         $rows = OutletTransactionHeader::getList($filter, config('limitPerPage'));
+        $data['parent_menu'] = $this->parent;
         $data['rows'] = $rows;
         $data['filter'] = $filter;
         return view("front.report.pos", $data);
@@ -116,6 +127,7 @@ class ReportController extends Controller
         $filter['end'] = $end;
         $report = $this->model->downPayment($filter, $down = 4);
 
+        $data['parent_menu'] = $this->parent;
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
@@ -141,6 +153,7 @@ class ReportController extends Controller
         $filter['end'] = $end;
         $report = $this->model->source($filter);
 
+        $data['parent_menu'] = $this->parent;
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));

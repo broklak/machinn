@@ -6,7 +6,7 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Create {{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <h1>{{$master_module}} Time</h1>
     </div>
     <div class="container-fluid"><hr>
         <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
@@ -19,7 +19,7 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Add New {{$master_module}}</h5>
+                        <h5>Add New {{$master_module}} Time</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.store")}}" method="post">

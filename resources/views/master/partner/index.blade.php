@@ -40,6 +40,10 @@
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->partner_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->partner_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a onclick="return confirm('You will delete {{$val->partner_name}}, continue? ')"
+                                               class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->partner_id])}}"
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                            </a>
                                             @if($val->partner_status == 0)
                                                 <a onclick="return confirm('You will activate {{$val->partner_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->partner_id, 'status' => $val->partner_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
                                             @else

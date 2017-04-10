@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Front;
 
 use App\Extracharge;
+use App\Helpers\GlobalHelper;
 use App\Province;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Guest;
 use App\RoomNumber;
 use App\RoomRateDateType;
+use Illuminate\Support\Facades\Cache;
 
 class AjaxController extends Controller
 {
@@ -60,12 +63,23 @@ class AjaxController extends Controller
     public function searchRoom (Request $request) {
         $checkin = $request->input('checkin');
         $checkout = $request->input('checkout');
+        $booking_id = $request->input('booking_id');
         $filter['type'] = $request->input('type');
         $filter['floor'] = $request->input('floor');
+        $filter['banquet'] = $request->input('banquet');
 
         $getRoom = RoomNumber::getRoomAvailable($checkin, $checkout, $filter);
+        $mod = [];
 
-        return json_encode($getRoom);
+        foreach($getRoom as $key => $val){
+            $mod[$val->room_type_name]['weekends_rate'] = $val->room_rate_weekends;
+            $mod[$val->room_type_name]['weekdays_rate'] = $val->room_rate_weekdays;
+            $mod[$val->room_type_name]['floor'][$val->property_floor_name][] = (array)$val;
+        }
+
+        $html = GlobalHelper::generateHTMLRoomChoice($mod, $booking_id);
+
+        return $html;
     }
 
     /**
@@ -95,5 +109,20 @@ class AjaxController extends Controller
         $data['total_rates'] = ($action == 'plus') ? $totalRates + $subtotal : $totalRates - $subtotal;
         $data['subtotal_room'] = $subtotal;
         return json_encode($data);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLookBook () {
+        $data = Cache::get('logbook');
+        $log = [];
+        foreach($data as $key => $val){
+            $log[] = [
+                'title' => '<a style="color:#fff" href="'.route('logbook.index').'">Message from '.User::getName($val['created_by']).'</a>',
+                'text' => '<a style="color:#fff" href="'.route('logbook.index').'">'.$val['logbook_message'].'</a>'
+            ];
+        }
+        return json_encode($log);
     }
 }

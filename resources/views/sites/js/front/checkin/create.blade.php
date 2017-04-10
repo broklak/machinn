@@ -1,5 +1,22 @@
 <script>
     $(function() {
+        $('#checkin').datepicker({
+            dateFormat : 'yy-mm-dd',
+            onSelect: function(dateStr) {
+                resetRoom();
+                var date = $(this).datepicker('getDate');
+                if (date) {
+                    date.setDate(date.getDate() + 1);
+                }
+                $('#checkout').datepicker('option', 'minDate', date);
+
+                var checkin = $('#checkin').val();
+                var checkout = $('#checkout').val();
+
+                getAvailableRoom(checkin, checkout);
+            }
+        });
+
         $('#checkout').datepicker({
             dateFormat : 'yy-mm-dd',
             minDate : 0,
@@ -19,6 +36,23 @@
             changeYear: true,
             maxDate: 0,
             yearRange: "-70:+0",
+        });
+
+        $('input[type=radio][name=is_banquet]').change(function() { // IS BANQUET
+            if (this.value == '1') {
+                $('#banquet').val('1');
+                $('#banquet-container').show();
+            }
+            else if (this.value == '0') {
+                $('#banquet').val('0');
+                $('#banquet-container').hide();
+            }
+
+            var checkin = $('#checkin').val();
+            var checkout = $('#checkout').val();
+
+            getAvailableRoom(checkin, checkout);
+            resetRoom();
         });
 
         $('#createGuestButton').click(function(){
@@ -201,23 +235,10 @@
         var listRoom = [];
         $.ajax({
             type     : 'GET',
-            data     : {"checkin" : dateIn, "checkout" : dateOut, "type" : type, "floor" : floor},
+            data     : {"checkin" : dateIn, "checkout" : dateOut, "type" : type, "floor" : floor, "banquet" : $('#banquet').val()},
             url      : "{{route('ajax.searchRoom')}}",
             success  : function(result) {
-                $('#listRoom').html("");
-                obj = JSON.parse(result);
-                i = 0;
-                $.each(obj, function(key, value) {
-                    listRoom.push('<tr>');
-                    listRoom.push('<td>'+value.room_number_code+'</td>');
-                    listRoom.push('<td>'+value.room_type_name+'</td>');
-                    listRoom.push('<td>'+value.property_floor_name+'</td>');
-                    listRoom.push('<td>'+toMoney(value.room_rate_weekdays)+'</td>');
-                    listRoom.push('<td>'+toMoney(value.room_rate_weekends)+'</td>');
-                    listRoom.push('<td><a data-id="'+value.room_number_id+'" data-weekdays="'+value.room_rate_weekdays+'" data-weekends="'+value.room_rate_weekends+'" data-type="'+value.room_type_id+'" data-code="'+value.room_number_code+'" class="btn btn-success chooseRoom">Choose</a></td>');
-                });
-                listRoomElement = listRoom.join(" ");
-                $('#listRoom').html(listRoomElement);
+                $('#listRoom').html(result);
 
                 $('.chooseRoom').click(function(){
                    chooseRoom($(this));
@@ -242,7 +263,7 @@
         var checkout = $('#checkout').val();
 
         if($.inArray(id.toString(), roomList) !== -1){ // ALREADY SELECTED
-            alert("Room Number "+code+' is already selected');
+            removeRoom(elem);
         } else { // NOT YET SELECTED
             roomList.push(id);
             joinRoom = roomList.join(',');
@@ -251,8 +272,7 @@
             // GET TOTAL ROOM RATES
             var action = 'plus';
             getTotalRoomRate(checkin, checkout, rateWeekdays, rateWeekends, type, action);
-            $('#selectedRoomContainer').append('<a href="#" title="Click to remove room" class="badge badge-success tip-top removeRoom" data-id="'+id+'" data-code="'+code+'" data-type="'+type+'" data-weekendrate="'+rateWeekends+'" data-weekdayrate="'+rateWeekdays+'" data-original-title="Click to remove room">'+code+'</a> ');
-            alert("Room Number "+code+' is selected');
+            $('#selectedRoomContainer').append('<a id="remove-'+id+'" class="badge badge-success tip-top" data-id="'+id+'" data-code="'+code+'" data-type="'+type+'" data-weekendrate="'+rateWeekends+'" data-weekdayrate="'+rateWeekdays+'">'+code+'</a> ');
 
             $('.removeRoom').click(function(e){
                 removeRoom($(this));
@@ -282,8 +302,8 @@
         var selectedRoom = $('#room_number').val();
         var roomList = selectedRoom.split(",");
         var type = elem.data("type");
-        var weekend = elem.data("weekendrate");
-        var weekday = elem.data("weekdayrate");
+        var weekend = elem.data("weekends");
+        var weekday = elem.data("weekdays");
         var checkin = $('#checkin').val();
         var checkout = $('#checkout').val();
         var index = $.inArray(id.toString(), roomList);
@@ -294,7 +314,7 @@
         if (index > -1) {
             roomList.splice(index, 1);
         }
-        elem.remove();
+        $('#remove-'+id).remove();
         joinRoom = roomList.join(',');
         $('#room_number').val(joinRoom);
     }

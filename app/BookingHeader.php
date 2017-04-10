@@ -19,7 +19,8 @@ class BookingHeader extends Model
      */
     protected $fillable = [
         'guest_id', 'room_plan_id', 'partner_id', 'type', 'checkin_date', 'checkout_date', 'adult_num','room_list', 'booking_code',
-        'child_num', 'is_banquet', 'booking_status', 'payment_status', 'created_by', 'updated_by', 'grand_total', 'notes', 'void_reason', 'checkout'
+        'child_num', 'is_banquet', 'booking_status', 'payment_status', 'created_by', 'updated_by', 'grand_total', 'notes', 'void_reason', 'checkout',
+        'banquet_time_id', 'banquet_event_id', 'banquet_event_name'
     ];
 
     /**
@@ -36,6 +37,14 @@ class BookingHeader extends Model
 
         if(isset($filter['status']) && $filter['status'] != 0) {
             $where[] = ['booking_header.booking_status', '=', $filter['status']];
+        }
+
+        if(isset($filter['checkout']) && $filter['checkout'] != 0) {
+            $where[] = ['booking_header.checkout', '=', $filter['checkout']];
+        }
+
+        if(isset($filter['paid']) && $filter['paid'] != 0) {
+            $where[] = ['booking_header.payment_status', '<>', 3];
         }
 
         $guest = (isset($filter['guest'])) ? $filter['guest'] : '';
@@ -68,9 +77,12 @@ class BookingHeader extends Model
      */
     public static function getBookingDetail($bookingId){
        $detail = DB::table('booking_header')
-                    ->select(DB::raw('booking_header.type as booking_type, booking_code, room_list, booking_header.guest_id, grand_total, room_plan_id, partner_id, checkin_date, checkout_date, adult_num, child_num, is_banquet, notes,
-                    title, id_type, id_number, first_name, last_name, guests.type as guest_type, birthdate, birthplace, religion, gender, job, address, country_id, province_id, email, homephone, handphone,
-                    payment_method, booking_payment.type, total_payment, card_type, card_number, bank, cc_type_id, settlement_id, card_name, card_expiry_month, card_expiry_year, bank_transfer_recipient'))
+                    ->select(DB::raw('booking_header.type as booking_type, booking_code, room_list, booking_header.guest_id, banquet_time_id, banquet_event_id, banquet_event_name,
+                    (select SUM(room_rate) from booking_room where booking_id = booking_header.booking_id group by booking_id) as total_room_rate, room_plan_id, partner_id, checkin_date, checkout_date, adult_num, child_num,
+                    is_banquet, notes, title, id_type, id_number, first_name, last_name, guests.type as guest_type, birthdate, birthplace,
+                    religion, gender, job, address, country_id, province_id, email, homephone, handphone, payment_method, booking_payment.type,
+                    total_payment, card_type, card_number, bank, cc_type_id, settlement_id, card_name, card_expiry_month, card_expiry_year,
+                    bank_transfer_recipient'))
                     ->where('booking_header.booking_id', $bookingId)
                     ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
                     ->leftJoin('booking_payment', 'booking_payment.booking_id', '=', 'booking_header.booking_id')
@@ -116,6 +128,9 @@ class BookingHeader extends Model
             'child_num'      => isset($input['child_num']) ? $input['child_num'] : 0,
             'notes'      => $input['notes'],
             'is_banquet'      => $input['is_banquet'],
+            'banquet_time_id' => isset($input['banquet_time_id']) ? $input['banquet_time_id'] : null,
+            'banquet_event_id' => isset($input['banquet_event_id']) ? $input['banquet_event_id'] : null,
+            'banquet_event_name' => isset($input['banquet_event_name']) ? $input['banquet_event_name'] : null,
             'booking_status'      => ($source == 'booking') ? 1 : 2,
             'payment_status'    => $payment_status,
             'created_by'        => Auth::id()

@@ -96,4 +96,36 @@ class BookingRoom extends Model
 
         return $getRoom;
     }
+
+    /**
+     * @param $checkoutDate
+     * @return string
+     */
+    public static function validateCheckoutTime($checkoutDate){
+        $checkoutTime = strtotime(date($checkoutDate.' '.config('app.defaultCheckoutTime')));
+        $now = time();
+
+        if($now > $checkoutTime){
+            return 'now';
+        } else if(date('d') == date('d', strtotime($checkoutDate))){
+            return 'soon';
+        } else {
+            return 'wait';
+        }
+    }
+
+    /**
+     * @param $checkoutDate
+     * @return string
+     */
+    public static function validateCheckinTime($checkinDate, $status){
+        $checkoutTime = strtotime(date($checkinDate.' 23:59:59'));
+        $now = time();
+
+       if(date('d') == date('d', strtotime($checkinDate)) && $status != 2){
+            return 'soon';
+        } else {
+            return 'wait';
+        }
+    }
 }

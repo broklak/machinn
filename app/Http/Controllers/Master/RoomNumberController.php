@@ -33,6 +33,11 @@ class RoomNumberController extends Controller
      */
     private $type;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -44,6 +49,8 @@ class RoomNumberController extends Controller
         $this->floor = PropertyFloor::where('property_floor_status', 1)->get();
 
         $this->type = RoomType::where('room_type_status', 1)->get();
+
+        $this->parent = 'rooms';
     }
 
     /**
@@ -53,6 +60,7 @@ class RoomNumberController extends Controller
      */
     public function index()
     {
+        $data['parent_menu'] = $this->parent;
         $data['status'] = config('app.roomStatus');
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
@@ -67,6 +75,7 @@ class RoomNumberController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['type'] = $this->type;
         $data['floor'] = $this->floor;
         return view("master.".$this->module.".create", $data);
@@ -115,6 +124,7 @@ class RoomNumberController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['type'] = $this->type;
         $data['floor'] = $this->floor;
         $data['row'] = $this->model->find($id);
@@ -176,6 +186,7 @@ class RoomNumberController extends Controller
     }
 
     public function viewRoom (Request $request){
+        $data['parent_menu'] = 'room-transaction';
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d');
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d', strtotime("+14 days"));
 
@@ -195,5 +206,15 @@ class RoomNumberController extends Controller
         $data['room_type'] = RoomType::where('room_type_status', 1)->get();
 
         return view("master.".$this->module.".view", $data);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

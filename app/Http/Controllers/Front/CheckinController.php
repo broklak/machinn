@@ -23,6 +23,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\GlobalHelper;
+use App\Banquet;
+use App\BanquetEvent;
 
 class CheckinController extends Controller
 {
@@ -61,6 +63,15 @@ class CheckinController extends Controller
      */
     private $floor;
 
+    /**
+     * @var string
+     */
+    private $banquet_time;
+    /**
+     * @var string
+     */
+    private $banqet_event;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -78,6 +89,10 @@ class CheckinController extends Controller
         $this->roomType = RoomType::where('room_type_status', 1)->get();
 
         $this->floor = PropertyFloor::where('property_floor_status', 1)->get();
+
+        $this->banquet_time = Banquet::where('banquet_status', 1)->get();
+
+        $this->banqet_event = BanquetEvent::where('event_status', 1)->get();
     }
 
     /**
@@ -85,6 +100,7 @@ class CheckinController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = 'room-transaction';
         $data['floor'] = $this->floor;
         $data['room_type'] = $this->roomType;
         $data['payment_method'] = config('app.paymentMethod');
@@ -94,6 +110,8 @@ class CheckinController extends Controller
         $data['religion'] = config('app.religion');
         $data['idType'] = $this->idType;
         $data['plan'] = $this->roomPlan;
+        $data['banquet_time'] = $this->banquet_time;
+        $data['banquet_event'] = $this->banqet_event;
         return view("front.".$this->module.".create", $data);
     }
 
@@ -104,10 +122,8 @@ class CheckinController extends Controller
     public function store(Request $request)
     {
         $guest_id = $request->input('guest_id');
-        if(!$guest_id){
-            $guest = Guest::insertGuest($request->input());
-            $guest_id = $guest->guest_id;
-        }
+        $guest = Guest::insertGuest($request->input(), $guest_id);
+        $guest_id = ($guest_id == null) ? $guest->guest_id  : $guest_id;
 
         $header = BookingHeader::processHeader($request->input(), $guest_id, $existingId = null, $source = 'checkin');
 
@@ -168,6 +184,7 @@ class CheckinController extends Controller
             'religion'  => config('app.religion'),
             'charge'    => $charge
         ];
+        $data['parent_menu'] = 'guest';
 
         return view("front.".$this->module.".detail", $data);
     }
@@ -361,6 +378,7 @@ class CheckinController extends Controller
             'payment'   => $payment,
             'extra'     => $extra,
             'charge'    => $charge,
+            'bill_number' => GlobalHelper::generateReceipt($bookingId),
             'cash_account' => CashAccount::where('cash_account_status', 1)->get(),
             'cc_type'    => CreditCardType::where('cc_type_status', 1)->get(),
             'bank' => Bank::where('bank_status', 1)->get(),
@@ -370,6 +388,8 @@ class CheckinController extends Controller
             'total_unpaid_extra'  => $total_unpaid_extra,
             'total_paid'  => $total_paid
         ];
+
+        $data['parent_menu'] = 'guest';
 
         $data['month'] = [
             '1' => 'January',

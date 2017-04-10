@@ -76,13 +76,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Status</label>
-                                    <div class="controls">
-                                        <input @if($row->status == 1) checked @endif type="radio" value="1" name="status" id="app"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="app">Approved</label>
-                                        <input @if($row->status == 2) checked @endif type="radio" value="2" name="status" id="napp"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="napp">Not Approved</label>
-                                    </div>
-                                </div>
                             </div>
                             <div class="form-actions">
                                 <input id="next" class="btn btn-primary" type="submit" value="Save" />

@@ -43,7 +43,7 @@
                                     <div class="control-group">
                                         <label class="control-label">Check In Date</label>
                                         <div class="controls">
-                                            <input readonly value="{{date('Y-m-d')}}" id="checkin" type="text" name="checkin_date" />
+                                            <input value="{{date('Y-m-d')}}" id="checkin" type="text" name="checkin_date" />
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -70,6 +70,37 @@
                                             <input type="radio" @if(old('is_banquet') == 0) checked @endif value="0" name="is_banquet" id="no_ban"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="no_ban">No</label>
                                             <input type="radio" @if(old('is_banquet') == 1) checked @endif value="1" name="is_banquet" id="yes_ban"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="yes_ban">Yes</label>
                                         </div>
+                                    </div>
+                                    <div id="banquet-container" class="hide">
+                                        <div class="control-group">
+                                            <label class="control-label">Banquet Time</label>
+                                            <div class="controls">
+                                                <select id="banquet_time_id" name="banquet_time_id">
+                                                    <option value="0" disabled selected>Choose Time</option>
+                                                    @foreach($banquet_time as $key => $val)
+                                                        <option @if(old('banquet_time_id') == $val['banquet_id']) selected="selected" @endif value="{{$val['banquet_id']}}">{{$val['banquet_name']}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">Banquet Event</label>
+                                            <div class="controls">
+                                                <select id="banquet_event_id" name="banquet_event_id">
+                                                    <option value="0" disabled selected>Choose Event</option>
+                                                    @foreach($banquet_event as $key => $val)
+                                                        <option @if(old('banquet_event_id') == $val['event_id']) selected="selected" @endif value="{{$val['event_id']}}">{{$val['event_name']}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">Event Name</label>
+                                            <div class="controls">
+                                                <input value="{{old('banquet_event_name')}}" type="text" name="banquet_event_name" />
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="banquet" name="banquet" value="{{old('banquet')}}">
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">Room Number</label>
@@ -251,44 +282,34 @@
             <h3>Available Rooms</h3>
         </div>
         <div class="modal-body">
-            <form id="searchRoomForm" class="form-horizontal">
-                {{csrf_field()}}
-                <div id="form-search-guest" class="step">
-                    <div class="control-group">
-                        <label class="control-label">Filter Room</label>
-                        <div class="controls">
-                            <select id="room_type_filter" name="room_type">
-                                <option value="0" selected>All Room Type</option>
-                                @foreach($room_type as $key => $val)
-                                    <option value="{{$val['room_type_id']}}">{{$val['room_type_name']}}</option>
-                                @endforeach
-                            </select>
-                            <select id="floor_filter" name="floor">
-                                <option value="0" selected>All Floor</option>
-                                @foreach($floor as $key => $val)
-                                    <option value="{{$val['property_floor_id']}}">{{$val['property_floor_name']}}</option>
-                                @endforeach
-                            </select>
-                            <input type="submit" value="Search" class="btn btn-primary" />
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Room Number</th>
-                        <th>Room Type</th>
-                        <th>Floor</th>
-                        <th>Room Rate Weekdays</th>
-                        <th>Room Rate Weekends</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+            {{--<form id="searchRoomForm" class="form-horizontal">--}}
+                {{--{{csrf_field()}}--}}
+                {{--<div id="form-search-guest" class="step">--}}
+                    {{--<div class="control-group">--}}
+                        {{--<label class="control-label">Filter Room</label>--}}
+                        {{--<div class="controls">--}}
+                            {{--<select id="room_type_filter" name="room_type">--}}
+                                {{--<option value="0" selected>All Room Type</option>--}}
+                                {{--@foreach($room_type as $key => $val)--}}
+                                    {{--<option value="{{$val['room_type_id']}}">{{$val['room_type_name']}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                            {{--<select id="floor_filter" name="floor">--}}
+                                {{--<option value="0" selected>All Floor</option>--}}
+                                {{--@foreach($floor as $key => $val)--}}
+                                    {{--<option value="{{$val['property_floor_id']}}">{{$val['property_floor_name']}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                            {{--<input type="submit" value="Search" class="btn btn-primary" />--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</form>--}}
+            <table class="table table-bordered view-room">
                 <tbody id="listRoom">
-                    <tr>
-                        <td style="text-align: center" colspan="7">Please Select Check In and Check Out Date</td>
-                    </tr>
+                <tr>
+                    <td style="text-align: center" colspan="7">Please Select Check In and Check Out Date</td>
+                </tr>
                 </tbody>
             </table>
         </div>

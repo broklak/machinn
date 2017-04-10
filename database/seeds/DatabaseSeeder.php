@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
          $this->call(RateTypeSeeder::class);
          $this->call(MasterMenuSeeder::class);
+         $this->call(ProfileSeeder::class);
     }
 }

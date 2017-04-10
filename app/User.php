@@ -34,6 +34,10 @@ class User extends Authenticatable
         return (isset($type->employee_type_name)) ? $type->employee_type_name : null;
     }
 
+    public static function getName ($id){
+        return self::find($id)->value('username');
+    }
+
     public static function getDepartmentName ($departmentId) {
         $department = Department::find($departmentId);
 

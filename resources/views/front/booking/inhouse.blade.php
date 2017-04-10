@@ -9,6 +9,10 @@
         <h1>{{$master_module}}</h1>
     </div>
     <div class="container-fluid">
+        <div class="legend-status">
+            <span class="checkout-now">&nbsp;</span><span class="legend-title">Need to Checkout Now</span>
+            <span class="checkout-soon">&nbsp;</span><span class="legend-title">Expected Checkout</span>
+        </div>
         <hr>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
@@ -26,7 +30,7 @@
                         <div style="clear: both"></div>
                     </div>
                     <div class="widget-content nopadding">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                             <thead>
                             <tr>
                                 <th>Booking Code</th>
@@ -42,7 +46,7 @@
                             <tbody>
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
-                                    <tr class="odd gradeX">
+                                    <tr class="checkout-{{\App\BookingRoom::validateCheckoutTime($val->checkout_date)}}">
                                         <td>{{$val->booking_code}}</td>
                                         <td>{{$val->first_name .' '.$val->last_name}} <br/>({{$val->id_number}}) ({{$guest_model->getIdTypeName($val->id_type)}})</td>
                                         <td>{{\App\RoomNumber::getRoomCodeList($val->room_list)}}</td>

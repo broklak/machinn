@@ -10,11 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'Master\RoomNumberController@index');
+Route::get('/', 'Master\RoomNumberController@viewRoom');
+Route::get('home', 'Master\RoomNumberController@viewRoom');
 
 Route::get('front/guest/checkin-report', 'Front\GuestController@checkinReport')->name("guest.checkin");
 Route::get('front/guest/statistic', 'Front\GuestController@statistic')->name("guest.statistic");
 Route::get('front/guest/inhouse', 'Front\GuestController@inhouse')->name("guest.inhouse");
+Route::get('front/guest/delete/{id}', 'Front\GuestController@softDelete')->name('guest.delete');
 Route::post('ajax/searchGuest', 'Front\AjaxController@searchGuest')->name("ajax.searchGuest");
 Route::resource('front/guest', 'Front\GuestController');
 Route::resource('front/staff', 'Front\StaffController');
@@ -22,6 +24,7 @@ Route::resource('front/staff', 'Front\StaffController');
 Route::get('ajax/searchProvince', 'Front\AjaxController@searchProvince')->name("ajax.searchProvince");
 Route::get('ajax/searchProvince', 'Front\AjaxController@searchProvince')->name("ajax.searchProvince");
 Route::get('ajax/searchRoom', 'Front\AjaxController@searchRoom')->name("ajax.searchRoom");
+Route::get('ajax/getLogbook', 'Front\AjaxController@getLookBook')->name("ajax.getLogbook");
 Route::post('ajax/searchItem', 'Front\AjaxController@searchItem')->name("ajax.searchItem");
 Route::get('ajax/getTotalRoomRates', 'Front\AjaxController@getTotalRoomRates')->name("ajax.getTotalRoomRates");
 
@@ -41,13 +44,8 @@ Route::get('front/checkin/checkout/{bookingId}', 'Front\CheckinController@checko
 Route::post('front/checkin/make-payment/{bookingId}', 'Front\CheckinController@makePayment')->name('checkin.make-payment');
 Route::post('front/checkin', 'Front\CheckinController@store')->name('checkin.store');
 
-Route::get('master/contact-group/change-status/{id}/{status}', 'Master\ContactGroupController@changeStatus')->name('contact-group.change-status');
-Route::resource('master/contact-group', 'Master\ContactGroupController');
-
-Route::get('front/contact/change-status/{id}/{status}', 'Master\ContactController@changeStatus')->name('contact.change-status');
-Route::resource('front/contact', 'Master\ContactController');
-
 Route::get('front/logbook/change-status/{id}/{status}', 'Master\LogbookController@changeStatus')->name('logbook.change-status');
+Route::get('front/logbook/done/{id}', 'Master\LogbookController@done')->name('logbook.done');
 Route::resource('front/logbook', 'Master\LogbookController');
 
 Route::get('front/transaction/change-status/{id}/{status}', 'Front\TransactionController@changeStatus')->name('transaction.change-status');

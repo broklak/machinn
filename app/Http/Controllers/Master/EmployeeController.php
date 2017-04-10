@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -43,6 +44,11 @@ class EmployeeController extends Controller
      */
     private $religion;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -58,6 +64,8 @@ class EmployeeController extends Controller
         $this->status = EmployeeStatus::where('employee_status_active', 1)->get();
 
         $this->religion = config('app.religion');
+
+        $this->parent = 'employees';
     }
 
     /**
@@ -67,6 +75,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -80,6 +89,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['religion'] = $this->religion;
         $data['type'] = $this->type;
         $data['department'] = $this->department;
@@ -148,6 +158,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['religion'] = $this->religion;
         $data['type'] = $this->type;
         $data['department'] = $this->department;
@@ -250,5 +261,55 @@ class EmployeeController extends Controller
             return redirect(route('change-password'))->with('displayMessage', $message);
         }
         return view('master.'.$this->module.'.change-password');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showProfile() {
+        $data['row'] = DB::table('hotel_profile')->first();
+        return view('master.'.$this->module.'.company', $data);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function changeProfile(Request $request){
+        $name = $request->input('name');
+        $phone = $request->input('phone');
+        $fax = $request->input('fax');
+        $email = $request->input('email');
+        $address = $request->input('address');
+
+        $data = [
+            'name'      => $name,
+            'phone'     => $phone,
+            'fax'       => $fax,
+            'email'     => $email,
+            'address'   => $address,
+
+        ];
+
+        if ($request->file('logo')) {
+            $request->logo->storeAs('img/matrix', 'logo-hotel.png');
+            $data['logo'] = 'logo-hotel.png';
+        }
+
+        session($data);
+
+        DB::table('hotel_profile')->where('id', 1)->update($data);
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to update hotel profile');
+        return redirect(route("profile"))->with('displayMessage', $message);
     }
 }

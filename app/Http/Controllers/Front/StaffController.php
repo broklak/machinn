@@ -67,6 +67,7 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
+        $data['parent_menu'] = 'info';
         $data['department'] = $this->department;
         $data['name'] = $request->input('name');
 

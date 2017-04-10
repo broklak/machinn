@@ -5,9 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Guest extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -25,6 +27,13 @@ class Guest extends Model
      * @var string
      */
     protected $primaryKey = 'guest_id';
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * @param $idType
@@ -83,14 +92,15 @@ class Guest extends Model
     public static function getFullName ($id){
         $data = parent::find($id);
 
-        return ($data) ? $data->first_name. ' '.$data->last_name : '';
+        return ($data) ? $data->first_name. ' '.$data->last_name : 'DELETED';
     }
 
     /**
      * @param $input
+     * @param null $id
      * @return mixed
      */
-    public static function insertGuest($input){
+    public static function insertGuest($input, $id = null){
         $guestData = [
             'id_type'       => $input['id_type'],
             'id_number'     => $input['id_number'],
@@ -111,7 +121,7 @@ class Guest extends Model
             'email'    => $input['email'],
             'created_by' => Auth::id()
         ];
-        $guest = parent::create($guestData);
+        $guest = ($id == null) ? parent::create($guestData) : parent::find($id)->update($guestData);
         return $guest;
     }
     /**

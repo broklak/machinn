@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class LogbookController extends Controller
 {
@@ -26,6 +27,13 @@ class LogbookController extends Controller
      */
     private $dept;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
+    const cacheKey = 'logbook';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -35,6 +43,8 @@ class LogbookController extends Controller
         $this->module = 'logbook';
 
         $this->dept = Department::where('department_status', 1)->get();
+
+        $this->parent = 'info';
     }
 
     /**
@@ -44,9 +54,13 @@ class LogbookController extends Controller
      */
     public function index()
     {
+        Cache::forget(self::cacheKey);
+        $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
-        $rows = Logbook::where('logbook_status', 1)->paginate(config('limitPerPage'));
+        $rows = Logbook::where('logbook_status', 1)->where('done', 0)->paginate(config('limitPerPage'));
+        $store = Logbook::where('logbook_status', 1)->where('done', 0)->where('to_date', date('y-m-d'))->get();
         $data['rows'] = $rows;
+        Cache::forever(self::cacheKey,$store);
         return view("master.".$this->module.".index", $data);
     }
 
@@ -57,6 +71,7 @@ class LogbookController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['dept'] = $this->dept;
         return view("master.".$this->module.".create", $data);
     }
@@ -79,6 +94,8 @@ class LogbookController extends Controller
             'to_date'   => $request->input('to_date'),
             'created_by'   => Auth::id(),
         ]);
+
+
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -103,6 +120,7 @@ class LogbookController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['dept'] = $this->dept;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
@@ -164,6 +182,21 @@ class LogbookController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of logbook');
+        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function done($id) {
+        $data = $this->model->find($id);
+
+        $data->done = 1;
+
+        $data->save();
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to set done reminder');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

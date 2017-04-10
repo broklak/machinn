@@ -38,6 +38,11 @@ class TransactionController extends Controller
      */
     private $cash;
 
+    /**
+     * @var string
+     */
+    private $parent;
+
     public function __construct()
     {
         $this->model = new FrontExpenses();
@@ -49,6 +54,8 @@ class TransactionController extends Controller
         $this->department = Department::where('department_status', 1)->get();
 
         $this->cash = CashAccount::where('cash_account_status', 1)->get();
+
+        $this->parent = 'cashier';
     }
 
     /**
@@ -57,12 +64,13 @@ class TransactionController extends Controller
      */
     public function index(Request $request){
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 month'));
-        $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
+        $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d', strtotime('+1 month'));
         $filter['bill_number'] = $request->input('bill_number');
         $filter['status'] = $request->input('status');
 
         $rows = FrontExpenses::getList($filter, config('limitPerPage'));
         $data['rows'] = $rows;
+        $data['parent_menu'] = $this->parent;
         $data['filter'] = $filter;
         return view("front.".$this->module.".index", $data);
     }
@@ -74,6 +82,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
+        $data['parent_menu'] = $this->parent;
         $data['cost'] = $this->cost;
         $data['department'] = $this->department;
         $data['cash'] = $this->cash;
@@ -103,7 +112,7 @@ class TransactionController extends Controller
             'department_id'    => $request->input('department_id'),
             'cash_account_id'    => $request->input('cash_account_id'),
             'date'    => $request->input('date'),
-            'status'    => $request->input('status'),
+            'status'    => 2, // NOT APPROVED
             'created_by' => Auth::id()
         ]);
 
@@ -119,6 +128,7 @@ class TransactionController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['cost'] = $this->cost;
         $data['department'] = $this->department;
         $data['cash'] = $this->cash;
@@ -150,7 +160,6 @@ class TransactionController extends Controller
             'department_id'    => $request->input('department_id'),
             'cash_account_id'    => $request->input('cash_account_id'),
             'date'    => $request->input('date'),
-            'status'    => $request->input('status'),
             'updated_by' => Auth::id()
         ]);
 

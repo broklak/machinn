@@ -34,6 +34,10 @@
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->settlement_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->settlement_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a onclick="return confirm('You will delete {{$val->settlement_name}}, continue? ')"
+                                               class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->settlement_id])}}"
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                            </a>
                                             @if($val->settlement_status == 0)
                                                 <a onclick="return confirm('You will activate {{$val->settlement_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->settlement_id, 'status' => $val->settlement_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
                                             @else

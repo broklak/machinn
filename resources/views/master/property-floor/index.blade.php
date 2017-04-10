@@ -32,6 +32,10 @@
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->property_floor_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->property_floor_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a onclick="return confirm('You will delete {{$val->property_floor_name}}, continue? ')"
+                                               class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->property_floor_id])}}"
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                            </a>
                                             @if($val->property_floor_status == 0)
                                                 <a onclick="return confirm('You will activate {{$val->property_floor_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->property_floor_id, 'status' => $val->property_floor_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
                                             @else

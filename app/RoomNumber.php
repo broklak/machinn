@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class RoomNumber
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
  */
 class RoomNumber extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -29,23 +31,30 @@ class RoomNumber extends Model
     protected $primaryKey = 'room_number_id';
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
+    /**
      * @param $typeId
      * @return mixed
      */
     public static function getTypeName ($typeId) {
         $type = RoomType::find($typeId);
 
-        return $type->room_type_name;
+        return isset($type->room_type_name) ? $type->room_type_name : 'DELETED';
     }
 
     /**
-     * @param $typeId
+     * @param $planId
      * @return mixed
      */
     public static function getPlanName ($planId) {
         $plan = RoomPlan::find($planId);
 
-        return $plan->room_plan_name;
+        return isset($plan->room_plan_name) ? $plan->room_plan_name : 'DELETED';
     }
 
     /**
@@ -55,7 +64,7 @@ class RoomNumber extends Model
     public static function getFloorName ($floorId) {
         $floor = PropertyFloor::find($floorId);
 
-        return $floor->property_floor_name;
+        return isset($floor->property_floor_name) ? $floor->property_floor_name : 'DELETED';
     }
 
     /**
@@ -64,7 +73,7 @@ class RoomNumber extends Model
      */
     public static function getCode ($id){
         $data = parent::find($id);
-        return $data->room_number_code;
+        return isset($data->room_number_code) ? $data->room_number_code : 'DELETED';
     }
 
     /**
@@ -75,8 +84,11 @@ class RoomNumber extends Model
      */
     public static function getRoomAvailable ($checkinDate, $checkoutDate, $filter = array()){
         $checkoutDate = date('Y-m-d', strtotime($checkoutDate) - 3600); // ROOM CAN BE USED ON CHECKOUT DATE (kurangi 1 hari dari jadwal checkout)
+        $banquet = (isset($filter['banquet'])) ? $filter['banquet'] : 0;
 
         $where = [];
+        $where[] = ['room_numbers.deleted_at', '=', null];
+        $where[] = ['room_type_banquet', '=', $banquet];
         if(isset($filter['type']) && $filter['type'] != 0) {
             $where[] = ['room_numbers.room_type_id', '=', $filter['type']];
         }
@@ -88,12 +100,13 @@ class RoomNumber extends Model
         $getRoom = DB::table('room_numbers')
                     ->select(DB::raw("room_number_id, room_numbers.room_type_id, room_number_code, room_type_name, property_floor_name,
                       (select count(*) from booking_room where room_number_id = room_numbers.room_number_id
-                      and room_transaction_date between '$checkinDate' and '$checkoutDate' and status NOT IN (1,5,7,8) and checkout = 1) as room_available,
+                      and room_transaction_date between '$checkinDate' and '$checkoutDate' and status IN (2,3,4,6) and checkout = 0) as room_used,
+                      (select status from booking_room where room_number_id = room_numbers.room_number_id AND room_transaction_date = '$checkinDate') AS status,
+                      (select booking_id from booking_room where room_number_id = room_numbers.room_number_id AND room_transaction_date = '$checkinDate') AS booking_id,
                       (select room_price from room_rates where room_rate_day_type_id = 1 and room_rate_type_id = room_numbers.room_type_id) as room_rate_weekdays,
                       (select room_price from room_rates where room_rate_day_type_id = 2 and room_rate_type_id = room_numbers.room_type_id) as room_rate_weekends"))
-                    ->join('room_types', 'room_numbers.room_type_id', '=', 'room_types.room_type_id')
-                    ->join('property_floors', 'property_floors.property_floor_id', '=', 'room_numbers.room_floor_id')
-                    ->having('room_available', '=', 0)
+                    ->rightJoin('room_types', 'room_numbers.room_type_id', '=', 'room_types.room_type_id')
+                    ->rightJoin('property_floors', 'property_floors.property_floor_id', '=', 'room_numbers.room_floor_id')
                     ->where($where)
                     ->get();
 

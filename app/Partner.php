@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Partner extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -23,10 +25,17 @@ class Partner extends Model
      */
     protected $primaryKey = 'partner_id';
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
     public static function getGroupName ($groupId) {
         $group = PartnerGroup::find($groupId);
 
-        return $group->partner_group_name;
+        return isset($group->partner_group_name) ? $group->partner_group_name : 'DELETED';
     }
 
     public static function getName ($id) {
@@ -35,6 +44,6 @@ class Partner extends Model
         }
 
         $name = parent::find($id);
-        return $name->partner_name;
+        return isset($name->partner_name) ? $name->partner_name : 'DELETED';
     }
 }
