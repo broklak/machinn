@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -42,6 +43,25 @@ class LoginController extends Controller
 
     public function username(){
         return 'username';
+    }
+
+    /**
+     *
+     */
+    protected function authenticated()
+    {
+        $hotel = DB::table('hotel_profile')->first();
+
+        $data = [
+            'name'  => $hotel->name,
+            'logo'  => $hotel->logo,
+            'address'  => $hotel->address,
+            'phone'  => $hotel->phone,
+            'fax'  => $hotel->fax,
+            'email'  => $hotel->email,
+        ];
+
+        session($data);
     }
 
 }

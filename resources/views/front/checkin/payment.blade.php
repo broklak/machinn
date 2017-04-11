@@ -280,7 +280,11 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="MAKE PAYMENT">
+            @if($header->payment_status != 3)
+                <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="MAKE PAYMENT">
+            @else
+                <a href="#" class="btn btn-success">PRINT RECEIPT</a>
+            @endif
         </form>
     </div>
     </div>

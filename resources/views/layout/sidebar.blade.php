@@ -179,6 +179,9 @@
                 </li>
                 <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'cashier') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Cashier</span></a>
                     <ul @if(isset($parent_menu) && $parent_menu == 'cashier') style="display: block" @endif>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName(2) == 'guest.inhouse') class="active" @endif>
+                            <a href="{{route('guest.inhouse')}}?paid=1">Guest Payment</a>
+                        </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'transaction') class="active" @endif>
                             <a href="{{route('transaction.index')}}">Expense</a>
                         </li>

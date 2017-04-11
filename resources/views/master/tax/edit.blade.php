@@ -40,18 +40,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="form-wizard-1" class="step">
-                                <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Type</label>
-                                    <div class="controls">
-                                        <select name="tax_type">
-                                            @foreach($type as $key => $val)
-                                                <option @if($row->tax_type == $key) selected="selected" @endif value="{{$key}}">{{$val}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-actions">
                                 <input id="next" class="btn btn-primary" type="submit" value="Save" />
                                 <div id="status"></div>

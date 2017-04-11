@@ -223,18 +223,23 @@ class GuestController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function inhouse (Request $request){
-        $now = BookingRoom::validateCheckoutTime('2017-04-09');
+        $paid = $request->input('paid');
         $data['parent_menu'] = $this->module;
         $filter['guest'] = $request->input('guest');
         $filter['room_number'] = $request->input('room_number');
         $filter['status']      = 2; // ALREAY CHECKIN
-        $filter['checkout']      = 0; // NOT CHECKOUT
-        $filter['paid']      = 1; // NOT PAID
+        if($paid){
+            $filter['paid']      = 1; // PAID
+        } else {
+            $filter['checkout']      = 0; // NOT CHECKOUT
+            $filter['unpaid']      = 1; // NOT PAID
+        }
         $getBook = BookingHeader::getBooking($filter);
         $data['filter'] = $filter;
         $data['payment_method'] = config('app.paymentMethod');
         $data['rows'] = $getBook['booking'];
         $data['link'] = $getBook['link'];
+        $data['paid'] = $paid;
         $data['guest_model'] = new Guest();
         return view('front.booking.inhouse', $data);
     }

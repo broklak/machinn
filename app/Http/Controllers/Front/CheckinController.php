@@ -19,6 +19,8 @@ use App\RoomPlan;
 use App\RoomRateDateType;
 use App\RoomType;
 use App\Settlement;
+use App\Tax;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -359,7 +361,7 @@ class CheckinController extends Controller
         $header->room_data = RoomNumber::getRoomDataList($header->room_list);
         $header->grand_total = ($header->payment_status == 3) ? 0 : $header->grand_total;
 
-        $guest = Guest::find($header->guest_id);
+        $guest = Guest::withTrashed()->find($header->guest_id);
         $detail = BookingRoom::where('booking_id', $bookingId)->get();
         $payment = BookingPayment::where('booking_id', $bookingId)->get();
         $history = Guest::getHistoryCheckin($header->guest_id);
@@ -450,6 +452,104 @@ class CheckinController extends Controller
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to make payment');
         return redirect(route("checkin.payment", ['id' => $id]))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $bookingId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function printReceipt($bookingId){
+        $header = BookingHeader::find($bookingId);
+        $guest = Guest::withTrashed()->find($header->guest_id);
+        $payment = BookingPayment::where('booking_id', $bookingId)->get();
+
+        $total = 0;
+        foreach($payment as $key => $value){
+            $total = $total + $value->total_payment;
+        }
+        $created = ($header->updated_by) ? User::getName($header->updated_by) : User::getName($header->created_by);
+
+        $data = [
+            'name'  => $guest->first_name.' '.$guest->last_name,
+            'admin' => $created,
+            'header' => $header,
+            'bill_number' => GlobalHelper::generateReceipt($bookingId),
+            'total' => GlobalHelper::moneyFormat($total),
+            'date'  => date('l, j F Y'),
+            'created_at'  => date('j-F-Y H:i:s'),
+            'hotel_name'   => session('name'),
+            'hotel_phone'   => session('phone'),
+            'hotel_fax'   => session('fax'),
+            'hotel_email'   => session('email'),
+            'hotel_address'   => session('address')
+        ];
+
+        return view("print.receipt", $data);
+    }
+
+    /**
+     * @param $bookingId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function printBill($bookingId){
+        $header = BookingHeader::find($bookingId);
+        $guest = Guest::withTrashed()->find($header->guest_id);
+        $downpayment = BookingPayment::where('booking_id', $bookingId)->where('type', 1)->get();
+        $final_payment = BookingPayment::where('booking_id', $bookingId)->where('type', 4)->get();
+        $extrachargePaid = BookingPayment::where('booking_id', $bookingId)->where('type', 3)->get();
+        $extracharge = BookingExtracharge::where('booking_id', $bookingId)->get();
+        $created = ($header->updated_by) ? User::getName($header->updated_by) : User::getName($header->created_by);
+
+        $total = 0;
+        foreach($extracharge as $key => $value){
+            $total = $total + $value->total_payment;
+        }
+
+        $total_paid = 0;
+        foreach($extrachargePaid as $key => $value){
+            $total_paid = $total_paid + $value->total_payment;
+        }
+
+        $total_dp = 0;
+        foreach($downpayment as $key => $value){
+            $total_dp = $total_dp + $value->total_payment;
+        }
+
+        $total_final = 0;
+        foreach($final_payment as $key => $value){
+            $total_final = $total_final + $value->total_payment;
+        }
+
+        $tax = Tax::find(1);
+        $service = Tax::find(2);
+
+        $data = [
+            'name'  => Guest::getTitleName($guest->title). ' '.$guest->first_name.' '.$guest->last_name,
+            'admin' => $created,
+            'header' => $header,
+            'extracharge' => $total,
+            'total_room' => $header->grand_total,
+            'total_extra' => $total,
+            'total_extra_paid' => $total_paid,
+            'total_dp' => $total_dp,
+            'tax' => $tax->tax_percentage,
+            'service' => $service->tax_percentage,
+            'total_final_paid' => $total_final,
+            'total_debit' => $header->grand_total + $total,
+            'total_credit' => $total_dp + $total_paid + $total_final,
+            'total_balance' => ($header->grand_total + $total) - ($total_dp + $total_paid + $total_final),
+            'bill_number' => GlobalHelper::generateReceipt($bookingId),
+            'total' => GlobalHelper::moneyFormat($total),
+            'date'  => date('l, j F Y'),
+            'created_at'  => date('j-F-Y H:i:s'),
+            'hotel_name'   => session('name'),
+            'hotel_phone'   => session('phone'),
+            'hotel_fax'   => session('fax'),
+            'hotel_email'   => session('email'),
+            'hotel_address'   => session('address')
+        ];
+
+        return view("print.bill", $data);
     }
 
 }

@@ -99,11 +99,16 @@ class BookingRoom extends Model
 
     /**
      * @param $checkoutDate
+     * @param $checkout
      * @return string
      */
-    public static function validateCheckoutTime($checkoutDate){
+    public static function validateCheckoutTime($checkoutDate, $checkout = 0){
         $checkoutTime = strtotime(date($checkoutDate.' '.config('app.defaultCheckoutTime')));
         $now = time();
+
+        if($checkout == 1){
+            return 'wait';
+        }
 
         if($now > $checkoutTime){
             return 'now';

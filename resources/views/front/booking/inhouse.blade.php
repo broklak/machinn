@@ -6,7 +6,7 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <h1>{{($paid) ? 'Guest Payment' : 'In House Guest'}}</h1>
     </div>
     <div class="container-fluid">
         <div class="legend-status">
@@ -46,7 +46,7 @@
                             <tbody>
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
-                                    <tr class="checkout-{{\App\BookingRoom::validateCheckoutTime($val->checkout_date)}}">
+                                    <tr class="checkout-{{\App\BookingRoom::validateCheckoutTime($val->checkout_date, $val->checkout)}}">
                                         <td>{{$val->booking_code}}</td>
                                         <td>{{$val->first_name .' '.$val->last_name}} <br/>({{$val->id_number}}) ({{$guest_model->getIdTypeName($val->id_type)}})</td>
                                         <td>{{\App\RoomNumber::getRoomCodeList($val->room_list)}}</td>
@@ -58,6 +58,23 @@
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
+                                                    @if($paid)
+                                                        <li>
+                                                            <a href="#" onClick="window.open('{{route('checkin.print-receipt', ['id' => $val->booking_id])}}','pagename','resizable,height=800,width=750');
+                                                                return false;"><i class="icon-money"></i> Print Receipt</a><noscript>
+                                                                You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                                                                </a>
+                                                            </noscript>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" onClick="window.open('{{route('checkin.print-bill', ['id' => $val->booking_id])}}','pagename','resizable,height=900,width=950');
+                                                                    return false;"><i class="icon-file-alt"></i> Print Bill</a><noscript>
+                                                                You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                                                                </a>
+                                                            </noscript>
+                                                        </li>
+                                                        {{--<li><a href=""><i class="icon-credit-card"></i> Print Receipt</a></li>--}}
+                                                    @endif
                                                     @if($val->checkout == 1)
                                                         <li><a href="{{route('checkin.payment', ['id' => $val->booking_id])}}"><i class="icon-signout"></i> Payment</a></li>
                                                     @endif

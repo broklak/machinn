@@ -34,6 +34,7 @@ class BookingHeader extends Model
      */
     public static function getBooking($filter = array()){
         $where = [];
+        $payment_status = [1,2,3,4];
 
         if(isset($filter['status']) && $filter['status'] != 0) {
             $where[] = ['booking_header.booking_status', '=', $filter['status']];
@@ -43,8 +44,12 @@ class BookingHeader extends Model
             $where[] = ['booking_header.checkout', '=', $filter['checkout']];
         }
 
+        if(isset($filter['unpaid']) && $filter['unpaid'] != 0) {
+            $payment_status = [1,2,4];
+        }
+
         if(isset($filter['paid']) && $filter['paid'] != 0) {
-            $where[] = ['booking_header.payment_status', '<>', 3];
+            $payment_status = [2,3];
         }
 
         $guest = (isset($filter['guest'])) ? $filter['guest'] : '';
@@ -57,6 +62,7 @@ class BookingHeader extends Model
                         ->leftJoin('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
                         ->orderBy('booking_header.booking_id', 'desc')
                         ->where($where)
+                        ->whereIn('payment_status', $payment_status)
                         ->whereRaw("(last_name LIKE '%$guest%' OR first_name LIKE '%$guest%')")
                         ->paginate(config('app.limitPerPage'));
 

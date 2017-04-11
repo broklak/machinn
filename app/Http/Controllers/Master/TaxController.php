@@ -130,7 +130,7 @@ class TaxController extends Controller
         $data = $this->model->find($id);
 
         $data->tax_name = $request->input('tax_name');
-        $data->tax_type = $request->input('tax_type');
+        $data->tax_type = 2; // charged to hotel
         $data->tax_percentage = $request->input('tax_percentage');
 
         $data->save();
