@@ -185,4 +185,24 @@ class BookingHeader extends Model
     public static function getTotalUnpaid($total_header, $total_paid, $total_extra) {
         return $total_header - $total_paid + $total_extra;
     }
+
+    public static function setNoShowBooking(){
+        $noshow = parent::where('checkin_date','<', date('Y-m-d'))->where('booking_status', '=', 1)->get();
+        $arr = [];
+        foreach($noshow as $key => $val){
+            $arr[] = $val->booking_id;
+
+            BookingHeader::find($val->booking_id)->update([
+                'booking_status' => 3,
+                'updated_by' => 0,
+            ]);
+
+            BookingRoom::where('booking_id', $val->booking_id)->update([
+                'status' => 8,
+                'updated_by' => 0
+            ]);
+        }
+
+        return implode(',', $arr);
+    }
 }

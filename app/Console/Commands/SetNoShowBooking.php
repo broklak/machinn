@@ -2,39 +2,33 @@
 
 namespace App\Console\Commands;
 
-use App\Menu;
 use Illuminate\Console\Command;
+use App\BookingHeader;
 
-class WarmUpCache extends Command
+class SetNoShowBooking extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'warmup:cache';
+    protected $signature = 'hotel:noshow';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Warm Up All Cache From Database';
-
-    /**
-     * @var
-     */
-    private $menu;
+    protected $description = 'Set booking to no show where check in date is more than today';
 
     /**
      * Create a new command instance.
      *
-     * @param Menu $menu
+     * @return void
      */
-    public function __construct(Menu $menu)
+    public function __construct()
     {
         parent::__construct();
-        $this->menu = $menu;
     }
 
     /**
@@ -44,7 +38,7 @@ class WarmUpCache extends Command
      */
     public function handle()
     {
-        $menu = $this->menu->generateMenu();
-        echo "Done \n";
+        $data = BookingHeader::setNoShowBooking();
+        echo $data."\n";
     }
 }
