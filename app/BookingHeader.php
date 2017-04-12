@@ -198,7 +198,7 @@ class BookingHeader extends Model
             ]);
 
             BookingRoom::where('booking_id', $val->booking_id)->update([
-                'status' => 8,
+                'status' => 7,
                 'updated_by' => 0
             ]);
         }
