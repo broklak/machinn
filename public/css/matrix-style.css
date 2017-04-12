@@ -1815,3 +1815,6 @@ span.checkin-soon{
 	vertical-align: sub;
 	margin-left: 5px;
 }
+.room-opt{
+	border-radius: 5px;
+}

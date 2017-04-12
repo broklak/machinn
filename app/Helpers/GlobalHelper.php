@@ -243,9 +243,10 @@ class GlobalHelper
         foreach($data as $key => $val){
             $html .= '<tr><td class="room-type-name" colspan="100">'.$key.' (Weekend : '.self::moneyFormat($val['weekends_rate']).', Weekday : '.self::moneyFormat($val['weekdays_rate']).')</td></tr>';
             foreach($val['floor'] as $key_floor => $val_floor){
-                $html .= '<tr><td>Floor '.$key_floor.'</td>';
-
+                $html .= '<tr><td style="width: 20%">Floor '.$key_floor.'</td><td style="width:90%">';
+                $room_total = 0;
                 foreach($val_floor as $room) {
+                    $room_total++;
                     $checkable = '';
                     $checked = '';
                     if($room['room_used'] == 0){
@@ -274,14 +275,16 @@ class GlobalHelper
                         $checked = 'checked';
                     }
 
-                    $html .= '<td class="'.$status.'"><input '.$checkable.' '.$checked.' class="chooseRoom" id="room-check-'.$room['room_number_id'].'"
+                    $html .= '<span class="'.$status.' room-opt"><input '.$checkable.' '.$checked.' class="chooseRoom" id="room-check-'.$room['room_number_id'].'"
                                data-id="'.$room['room_number_id'].'" data-weekdays="'.$room['room_rate_weekdays'].'"
                                data-weekends="'.$room['room_rate_weekdays'].'" data-type="'.$room['room_type_id'].'"
                                data-code="'.$room['room_number_code'].'" type="checkbox" />
-                               <label for="room-check-'.$room['room_number_id'].'">'.$room['room_number_code'].'</label>
-                               </td>';
+                               <label for="room-check-'.$room['room_number_id'].'">'.$room['room_number_code'].'</label></span>';
+                    if($room_total % 10 == 0){
+                        $html .= "<div style='margin-top: 10px'></div>";
+                    }
                 }
-                $html .= '</tr>';
+                $html .= '</td></tr>';
             }
         }
 
