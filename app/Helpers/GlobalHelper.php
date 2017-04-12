@@ -275,11 +275,11 @@ class GlobalHelper
                         $checked = 'checked';
                     }
 
-                    $html .= '<span class="'.$status.' room-opt"><input '.$checkable.' '.$checked.' class="chooseRoom" id="room-check-'.$room['room_number_id'].'"
+                    $html .= '<span class="'.$status.' room-opt"><input style="margin-top:-2px" '.$checkable.' '.$checked.' class="chooseRoom" id="room-check-'.$room['room_number_id'].'"
                                data-id="'.$room['room_number_id'].'" data-weekdays="'.$room['room_rate_weekdays'].'"
                                data-weekends="'.$room['room_rate_weekdays'].'" data-type="'.$room['room_type_id'].'"
                                data-code="'.$room['room_number_code'].'" type="checkbox" />
-                               <label for="room-check-'.$room['room_number_id'].'">'.$room['room_number_code'].'</label></span>';
+                               <label style="vertical-align:top" for="room-check-'.$room['room_number_id'].'">'.$room['room_number_code'].'</label></span>';
                     if($room_total % 10 == 0){
                         $html .= "<div style='margin-top: 10px'></div>";
                     }
