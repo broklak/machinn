@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command(SetNoShowBooking::class, ['--force'])->dailyAt('00:05');
+        $schedule->command('hotel:noshow')->dailyAt('00:32')->appendOutputTo('/dev/cron-logs/hotel/noshow.log');
     }
 
     /**
