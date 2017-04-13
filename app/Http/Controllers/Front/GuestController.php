@@ -224,7 +224,7 @@ class GuestController extends Controller
      */
     public function inhouse (Request $request){
         $paid = $request->input('paid');
-        $data['parent_menu'] = $this->module;
+        $data['parent_menu'] = ($paid) ? 'cashier' : $this->module;
         $filter['guest'] = $request->input('guest');
         $filter['room_number'] = $request->input('room_number');
         $filter['status']      = 2; // ALREAY CHECKIN

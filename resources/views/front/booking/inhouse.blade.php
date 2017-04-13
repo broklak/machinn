@@ -21,8 +21,9 @@
                     <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
                         <h5>Booking List</h5>
                         <div class="filter-data">
-                            <form>
+                            <form action="{{route('guest.inhouse')}}">
                                 <input id="guest" name="guest" placeholder="Search By Guest Name" value="{{$filter['guest']}}" type="text" />
+                                <input type="hidden" name="paid" value="{{$paid}}">
                                 <input id="room_number" name="room_number" placeholder="Search By Room Number" value="{{$filter['room_number']}}" type="text" />
                                 <input type="submit" class="btn btn-primary" value="Search">
                             </form>

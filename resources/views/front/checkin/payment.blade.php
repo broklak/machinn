@@ -283,7 +283,11 @@
             @if($header->payment_status != 3)
                 <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="MAKE PAYMENT">
             @else
-                <a href="#" class="btn btn-success">PRINT RECEIPT</a>
+                <a href="#" onClick="window.open('{{route('checkin.print-receipt', ['id' => $header->booking_id])}}','pagename','resizable,height=800,width=750');
+                        return false;" class="btn btn-success">PRINT RECEIPT</a><noscript>
+                    You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                    </a>
+                </noscript>
             @endif
         </form>
     </div>
