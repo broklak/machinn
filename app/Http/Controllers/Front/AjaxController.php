@@ -35,6 +35,24 @@ class AjaxController extends Controller
      * @param Request $request
      * @return array|string
      */
+    public function searchEmployee(Request $request){
+        $filter = $request->input('query');
+
+        $getEmployee = User::where('username', 'LIKE', "%$filter%")
+            ->orWhere('name', 'LIKE', "%$filter%")
+            ->get();
+
+        foreach($getEmployee as $key => $value){
+            $getEmployee[$key]['department'] = User::getDepartmentName($value['department_id']);
+        }
+
+        return json_encode($getEmployee);
+    }
+
+    /**
+     * @param Request $request
+     * @return array|string
+     */
     public function searchItem(Request $request){
         $filter = $request->input('query');
 

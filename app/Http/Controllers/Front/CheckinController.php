@@ -86,7 +86,7 @@ class CheckinController extends Controller
 
         $this->country = Country::where('country_status', 1)->get();
 
-        $this->guest = Guest::paginate(10);
+        $this->guest = Guest::paginate(20);
 
         $this->roomType = RoomType::where('room_type_status', 1)->get();
 

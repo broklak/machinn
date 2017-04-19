@@ -185,6 +185,10 @@ class RoomNumberController extends Controller
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function viewRoom (Request $request){
         $data['parent_menu'] = 'room-transaction';
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d');
@@ -216,5 +220,39 @@ class RoomNumberController extends Controller
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function houseKeep(){
+        $checkin = date('Y-m-d');
+        $checkout = date('Y-m-d', strtotime('+1 day'));
+        $getRoom = RoomNumber::getRoomAvailable($checkin, $checkout, $filter = array());
+        $mod = [];
+
+        foreach($getRoom as $key => $val){
+            $mod[$val->room_type_name]['floor'][$val->property_floor_name][] = (array)$val;
+        }
+
+        $html = GlobalHelper::generateHTMLHouseKeeping($mod);
+        $data['html'] = $html;
+        return view('house.dashboard',$data);
+    }
+
+    /**
+     * @param $id
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function changeHkStatus($id, $status) {
+        $data = $this->model->find($id);
+
+        $data->hk_status = $status;
+
+        $data->save();
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of room '.$data->room_number_code);
+        return redirect(route("house.dashboard"))->with('displayMessage', $message);
     }
 }

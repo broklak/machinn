@@ -290,5 +290,68 @@ class GlobalHelper
 
         return $html;
     }
+
+    /**
+     * @param $data
+     * @param null $booking_id
+     * @return string
+     */
+    public static function generateHTMLHouseKeeping($data){
+        $html = '';
+        foreach($data as $key => $val){
+            $html .= '<tr><td class="room-type-name" colspan="100">'.$key.'</td></tr>';
+            foreach($val['floor'] as $key_floor => $val_floor){
+                $html .= '<tr style="position: relative"><td style="width: 20%;position: relative">Floor '.$key_floor.'</td><td style="width:90%">';
+                $room_total = 0;
+                foreach($val_floor as $room) {
+                    $room_total++;
+
+                    if($room['room_used'] == 0){
+                        $status = 'success';
+                    } else{
+                        if($room['status'] == 2){
+                            $status = 'danger';
+                        } elseif($room['status'] == 3){
+                            $status = 'warning';
+                        } elseif($room['status'] == 4){
+                            $status = 'info';
+                        } else {
+                            $status = 'inverse';
+                        }
+                    }
+
+                    if($room['hk_status'] == 1){
+                      $hk = 'check';
+                    } elseif($room['hk_status'] == 2){
+                        $hk = 'warning-sign';
+                    } elseif($room['hk_status'] == 3){
+                        $hk = 'wrench';
+                    }
+
+                    $html .= '<div class="btn-group">';
+                    $html .= '<button data-toggle="dropdown" class="btn btn-'.$status.' dropdown-toggle">'.$room['room_number_code'].'  &nbsp; <i class="icon icon-'.$hk.'"></i></button>';
+                    $html .= '<ul class="dropdown-menu">';
+                    if($room['hk_status'] == 1){
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 2]).'"><i class="icon icon-warning-sign"></i> Set Dirty</a></li>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 3]).'"><i class="icon icon-wrench"></i> Set Out of Order</a></li></ul>';
+                    } elseif($room['hk_status'] == 2){
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 1]).'"><i class="icon icon-check"></i> Set Ready</a></li>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 3]).'"><i class="icon icon-wrench"></i> Set Out of Order</a></li></ul>';
+                    } else {
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 1]).'"><i class="icon icon-check"></i> Set Ready</a></li>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 2]).'"><i class="icon icon-warning-sign"></i> Set Dirty</a></li>';
+                    }
+
+                    $html .= '</div>';
+                    if($room_total % 10 == 0){
+                        $html .= "<div style='margin-top: 10px'></div>";
+                    }
+                }
+                $html .= '</td></tr>';
+            }
+        }
+
+        return $html;
+    }
 }
 

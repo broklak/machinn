@@ -39,7 +39,7 @@ class User extends Authenticatable
     }
 
     public static function getDepartmentName ($departmentId) {
-        $department = Department::find($departmentId);
+        $department = Department::withTrashed()->find($departmentId);
 
         return (isset($department->department_name)) ? $department->department_name : null;
     }

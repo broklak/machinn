@@ -98,7 +98,7 @@ class RoomNumber extends Model
         }
 
         $getRoom = DB::table('room_numbers')
-                    ->select(DB::raw("room_number_id, room_numbers.room_type_id, room_number_code, room_type_name, property_floor_name,
+                    ->select(DB::raw("room_number_id, room_numbers.room_type_id, room_number_code, room_type_name, property_floor_name, hk_status,
                       (select count(*) from booking_room where room_number_id = room_numbers.room_number_id
                       and room_transaction_date between '$checkinDate' and '$checkoutDate' and status IN (2,3,4,6) and checkout = 0) as room_used,
                       (select status from booking_room where room_number_id = room_numbers.room_number_id AND room_transaction_date = '$checkinDate') AS status,
