@@ -224,6 +224,7 @@ class GuestController extends Controller
      */
     public function inhouse (Request $request){
         $paid = $request->input('paid');
+        $type = $request->input('type');
         $data['parent_menu'] = ($paid) ? 'cashier' : $this->module;
         $filter['guest'] = $request->input('guest');
         $filter['room_number'] = $request->input('room_number');
@@ -234,8 +235,14 @@ class GuestController extends Controller
             $filter['checkout']      = 0; // NOT CHECKOUT
             $filter['unpaid']      = 1; // NOT PAID
         }
+
+        if($type == 'housekeep'){
+            $data['parent_menu'] = 'booking-house';
+        }
+
         $getBook = BookingHeader::getBooking($filter);
         $data['filter'] = $filter;
+        $data['type'] = $type;
         $data['payment_method'] = config('app.paymentMethod');
         $data['rows'] = $getBook['booking'];
         $data['link'] = $getBook['link'];

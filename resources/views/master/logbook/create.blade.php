@@ -24,6 +24,7 @@
                     <div class="widget-content nopadding">
                         <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.store")}}" method="post">
                             {{csrf_field()}}
+                            <input type="hidden" name="grant_type" value="{{$type}}">
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
                                     <label class="control-label">Message</label>

@@ -36,6 +36,12 @@ class BookingHeader extends Model
         $where = [];
         $payment_status = [1,2,3,4];
 
+        if(isset($filter['room_number']) && $filter['room_number'] != null){
+            $room = RoomNumber::where('room_number_code', $filter['room_number'])->first();
+            $room_id = isset($room->room_number_id) ? $room->room_number_id : '';
+            $where[] = ['booking_header.room_list', 'LIKE', $room_id];
+        }
+
         if(isset($filter['status']) && $filter['status'] != 0) {
             $where[] = ['booking_header.booking_status', '=', $filter['status']];
         }

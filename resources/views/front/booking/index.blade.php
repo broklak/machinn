@@ -13,7 +13,9 @@
             <span class="checkin-soon">&nbsp;</span><span class="legend-title">Expected Check In</span>
         </div>
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Create New {{$master_module}}</a>
+        @if($type != 'housekeep')
+            <a class="btn btn-primary" href="{{route("$route_name.create")}}">Create New {{$master_module}}</a>
+        @endif
         <div class="filter-data">
 
         </div>
@@ -34,6 +36,7 @@
                                 </select>
 
                                 <input id="guest" name="guest" placeholder="Search By Guest Name" value="{{$filter['guest']}}" type="text" />
+                                <input type="hidden" name="type" value="{{$type}}">
                                 <input type="submit" class="btn btn-primary" value="Search">
                             </form>
                         </div>
@@ -50,7 +53,9 @@
                                     <th>Check Out Date</th>
                                     <th>Business Source</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    @if($type != 'housekeep')
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,25 +71,27 @@
                                         <td>{{date('j F Y', strtotime($val->checkout_date))}}</td>
                                         <td>{{($val->partner_id == 0) ? 'Walk In' : $val->partner_name}}</td>
                                         <td>{{\App\Helpers\GlobalHelper::getBookingStatus($val->booking_status)}}</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button data-toggle="dropdown" @if($val->booking_status == 4 || $val->booking_status == 3 || $val->booking_status == 2) disabled @endif class="btn dropdown-toggle">Action <span class="caret"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    @if($val->booking_status != 4 && $val->booking_status != 3)
-                                                        @if($val->type == 1)
-                                                            <li><a href="{{route("$route_name.showdownpayment", ['id' => $val->booking_id])}}"><i class="icon-money"></i> Down Payment</a></li>
+                                        @if($type != 'housekeep')
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button data-toggle="dropdown" @if($val->booking_status == 4 || $val->booking_status == 3 || $val->booking_status == 2) disabled @endif class="btn dropdown-toggle">Action <span class="caret"></span></button>
+                                                    <ul class="dropdown-menu">
+                                                        @if($val->booking_status != 4 && $val->booking_status != 3)
+                                                            @if($val->type == 1)
+                                                                <li><a href="{{route("$route_name.showdownpayment", ['id' => $val->booking_id])}}"><i class="icon-money"></i> Down Payment</a></li>
+                                                            @endif
+                                                            @if($val->booking_status != 2)
+                                                                <li><a onclick="return confirm('Check In Booking #{{$val->booking_code}}?')" href="{{route('checkin.book', ['id' => $val->booking_id])}}">
+                                                                    <i class="icon-signout"></i> Check In</a>
+                                                                </li>
+                                                                <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> Edit</a></li>
+                                                                <li><a href="#modalVoid-{{$val->booking_id}}" data-toggle="modal" href="#"><i class="icon-remove"></i> Void</a></li>
+                                                            @endif
                                                         @endif
-                                                        @if($val->booking_status != 2)
-                                                            <li><a onclick="return confirm('Check In Booking #{{$val->booking_code}}?')" href="{{route('checkin.book', ['id' => $val->booking_id])}}">
-                                                                <i class="icon-signout"></i> Check In</a>
-                                                            </li>
-                                                            <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> Edit</a></li>
-                                                            <li><a href="#modalVoid-{{$val->booking_id}}" data-toggle="modal" href="#"><i class="icon-remove"></i> Void</a></li>
-                                                        @endif
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                        </td>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             @else

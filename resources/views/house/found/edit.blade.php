@@ -29,7 +29,7 @@
                                     <label class="control-label">Lost Item</label>
                                     <div class="controls">
                                         <select id="lost_id" name="lost_id">
-                                            <option>Choose Lost Item</option>
+                                            <option value="0">Choose Lost Item</option>
                                             @foreach($lost as $key => $val)
                                                 <option @if($row->lost_id == $val->id) selected @endif data-itemname="{{$val->item_name}}" data-itemcolor="{{$val->item_color}}" id="opt-{{$val->id}}"
                                                         data-itemvalue="{{$val->item_value}}" data-itemplace="{{$val->place}}" data-itemdesc="{{$val->description}}"

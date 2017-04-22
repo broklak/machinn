@@ -142,13 +142,19 @@ class BookingController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request) {
+        $type = $request->input('type');
         $data['parent_menu'] = $this->parent;
+        if($type == 'housekeep'){
+            $data['parent_menu'] = 'booking-house';
+        }
         $filter['guest'] = $request->input('guest');
         $filter['status'] = $request->input('status');
         $getBook = BookingHeader::getBooking($filter);
+        $data['type'] = $type;
         $data['filter'] = $filter;
         $data['payment_method'] = config('app.paymentMethod');
         $data['rows'] = $getBook['booking'];
@@ -158,11 +164,10 @@ class BookingController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         $data['parent_menu'] = $this->parent;
         $data['month'] = [
@@ -243,12 +248,11 @@ class BookingController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $data['parent_menu'] = $this->parent;
         $data['month'] = [

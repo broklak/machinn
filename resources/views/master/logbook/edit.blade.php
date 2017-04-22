@@ -24,6 +24,7 @@
                     <div class="widget-content nopadding">
                         <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->logbook_id])}}" method="post">
                             {{csrf_field()}}
+                            <input type="hidden" name="grant_type" value="{{$type}}">
                             <div id="form-wizard-1" class="step">
                                 <div id="form-wizard-1" class="step">
                                     <div class="control-group">

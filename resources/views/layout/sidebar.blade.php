@@ -127,7 +127,7 @@
                 </li>
             </ul>
         </li>
-        <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'front') open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>Front Office</span></a>
+        <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'front' && !isset($type)) open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>Front Office</span></a>
             <ul>
                 <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'room-transaction') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Room Transaction</span></a>
                     <ul @if(isset($parent_menu) && $parent_menu == 'room-transaction') style="display: block" @endif>
@@ -225,10 +225,13 @@
                 </li>
             </ul>
         </li>
-        <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'housekeep') open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>House Keeping</span></a>
+        <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'housekeep' || (isset($type) && $type == 'housekeep')) open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>House Keeping</span></a>
             <ul>
                 <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'house') class="active" @endif>
                     <a href="{{route('house.dashboard')}}">Dashboard</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'logbook') class="active" @endif>
+                    <a href="{{route('logbook.index')}}?type=housekeep">Log Book</a>
                 </li>
                 <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'lostfound') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Lost and Found</span></a>
                     <ul @if(isset($parent_menu) && $parent_menu == 'lostfound') style="display: block" @endif>
@@ -247,6 +250,16 @@
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'damage' && isset($lost)) class="active" @endif>
                             <a href="{{route('damage.index')}}?lost=1">Lost Asset</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'booking-house') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Booking</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'booking-house') style="display: block" @endif>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'booking') class="active" @endif>
+                            <a href="{{route('booking.index')}}?type=housekeep">List Booking</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'guest.inhouse' && !isset($paid)) class="active" @endif>
+                            <a href="{{route('guest.inhouse')}}?type=housekeep">In House Guest</a>
                         </li>
                     </ul>
                 </li>

@@ -48,15 +48,16 @@ class LogbookController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        $type = $request->input('type');
         Cache::forget(self::cacheKey);
         $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
+        $data['type'] = $type;
         $rows = Logbook::where('logbook_status', 1)->where('done', 0)->paginate(config('limitPerPage'));
         $store = Logbook::where('logbook_status', 1)->where('done', 0)->where('to_date', date('y-m-d'))->get();
         $data['rows'] = $rows;
@@ -65,12 +66,13 @@ class LogbookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
+        $type = $request->input('type');
+        $data['type'] = $type;
         $data['parent_menu'] = $this->parent;
         $data['dept'] = $this->dept;
         return view("master.".$this->module.".create", $data);
@@ -98,7 +100,7 @@ class LogbookController extends Controller
 
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->module.".index").'?type='.$request->input('grant_type'))->with('displayMessage', $message);
     }
 
     /**
@@ -113,13 +115,14 @@ class LogbookController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
+        $type = $request->input('type');
+        $data['type'] = $type;
         $data['parent_menu'] = $this->parent;
         $data['dept'] = $this->dept;
         $data['row'] = $this->model->find($id);
@@ -149,7 +152,7 @@ class LogbookController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->module.".index").'?type='.$request->input('grant_type'))->with('displayMessage', $message);
     }
 
     /**
@@ -166,11 +169,13 @@ class LogbookController extends Controller
     /**
      * @param $id
      * @param $status
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function changeStatus($id, $status) {
+    public function changeStatus($id, $status, Request $request) {
         $data = $this->model->find($id);
 
+        $type = $request->input('type');
         if($status == 1){
             $active = 0;
         } else {
@@ -182,21 +187,22 @@ class LogbookController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of logbook');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->module.".index").'?type='.$type)->with('displayMessage', $message);
     }
 
     /**
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function done($id) {
+    public function done($id, Request $request) {
         $data = $this->model->find($id);
+        $type = $request->input('type');
 
         $data->done = 1;
 
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to set done reminder');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->module.".index").'?type='.$type)->with('displayMessage', $message);
     }
 }

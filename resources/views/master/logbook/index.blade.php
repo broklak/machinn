@@ -10,7 +10,7 @@
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}?type={{$type}}">Add New {{$master_module}}</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -37,11 +37,11 @@
                                         <td>{{($val->to_date == null) ? '' : date('j F Y', strtotime($val->to_date))}}</td>
                                         <td>{{($val->done == 1) ? 'Done' : 'Not Done'}}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->logbook_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            <a style="margin-right: 20px" onclick="return confirm('You will delete this message, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->logbook_id, 'status' => $val->logbook_status])}}">
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->logbook_id])}}?type={{$type}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a style="margin-right: 20px" onclick="return confirm('You will delete this message, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->logbook_id, 'status' => $val->logbook_status])}}?type={{$type}}">
                                                 <i class="icon-remove" aria-hidden="true"></i> Delete
                                             </a>
-                                            <a href="{{route("$route_name.done", ['id' => $val->logbook_id])}}" title="Set Done"><i class="icon-check" aria-hidden="true"></i> Set Done</a>
+                                            <a href="{{route("$route_name.done", ['id' => $val->logbook_id])}}?type={{$type}}" title="Set Done"><i class="icon-check" aria-hidden="true"></i> Set Done</a>
                                         </td>
                                     </tr>
                                 @endforeach

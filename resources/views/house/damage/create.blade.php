@@ -40,12 +40,12 @@
                                     <div class="control-group">
                                         <label class="control-label">Room Number</label>
                                         <div class="controls">
-                                            <select name="room_number_id">
-                                                <option>Choose Room</option>
+                                            <input list="room_numbers" name="room_number_id">
+                                            <datalist id="room_numbers">
                                                 @foreach($room as $key => $val)
-                                                    <option>{{$val->room_number_code}}</option>
+                                                <option value="{{$val->room_number_code}}"></option>
                                                 @endforeach
-                                            </select>
+                                            </datalist>
                                         </div>
                                     </div>
                                     <div class="control-group">
