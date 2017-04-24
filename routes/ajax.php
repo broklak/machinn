@@ -13,4 +13,7 @@ Route::get('ajax/getLogbook', 'Front\AjaxController@getLookBook')->name("ajax.ge
 Route::post('ajax/searchItem', 'Front\AjaxController@searchItem')->name("ajax.searchItem");
 Route::get('ajax/getTotalRoomRates', 'Front\AjaxController@getTotalRoomRates')->name("ajax.getTotalRoomRates");
 Route::post('ajax/searchGuest', 'Front\AjaxController@searchGuest')->name("ajax.searchGuest");
+Route::post('ajax/searchInhouseGuest', 'Front\AjaxController@searchInhouseGuest')->name("ajax.searchInhouseGuest");
 Route::post('ajax/searchEmployee', 'Front\AjaxController@searchEmployee')->name("ajax.searchEmployee");
+Route::get('ajax/changeStock', 'Front\AjaxController@changeStock')->name("ajax.changeStock");
+Route::get('ajax/setOutStock', 'Front\AjaxController@setOutStock')->name("ajax.setOutStock");

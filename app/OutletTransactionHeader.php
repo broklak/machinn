@@ -16,7 +16,8 @@ class OutletTransactionHeader extends Model
      * @var array
      */
     protected $fillable = [
-        'bill_number', 'total_billed', 'total_discount', 'grand_total', 'desc', 'guest_id', 'date', 'status', 'created_by'
+        'bill_number', 'total_billed', 'total_discount', 'grand_total', 'desc', 'guest_id', 'date', 'status', 'created_by',
+        'waiters', 'guest_num', 'table_id', 'room_id', 'bill_type', 'delivery_type', 'source'
     ];
 
     /**
@@ -27,6 +28,8 @@ class OutletTransactionHeader extends Model
     public static function getList ($filter, $limit){
         $where[] = ['status', '<>', 4];
 
+        $source = isset($filter['source']) ? $filter['source'] : 1;
+        $where[] = ['source', '=', $source];
         if($filter['status'] != 0) {
             $where[] = ['status', '=', $filter['status']];
         }
@@ -55,5 +58,34 @@ class OutletTransactionHeader extends Model
         }
 
         return implode(' ', $text);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function getDetailResto($id) {
+        $detail = OutletTransactionDetail::select('name', 'outlet_transaction_detail.price', 'qty')
+            ->join('pos_item', 'pos_item.id', '=', 'outlet_transaction_detail.extracharge_id')
+            ->where('transaction_id', $id)
+            ->get();
+
+        $text = array();
+        foreach($detail as $key => $val) {
+            $text[] = $val->name.' ['.GlobalHelper::moneyFormat($val->price).' x '.$val->qty.']<br />';
+        }
+
+        return implode(' ', $text);
+    }
+
+    /**
+     * @param $type
+     * @return string
+     */
+    public static function getDeliveryType($type){
+        if($type == 1){
+            return 'Dine In';
+        }
+        return 'Room Service';
     }
 }

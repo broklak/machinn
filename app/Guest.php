@@ -189,4 +189,33 @@ class Guest extends Model
         return $history;
     }
 
+    /**
+     * @param array $filter
+     * @return mixed
+     */
+    public static function getInhouseGuestWithRoom ($filter = null){
+        $where = [];
+
+        if($filter != null){
+            $room = RoomNumber::where('room_number_code', $filter)->first();
+            if(isset($room->room_number_id)){
+                $where[] = ['room_numbers.room_number_id', '=', $room->room_number_id];
+            } else{
+                $where[] = ['first_name', 'LIKE', "%$filter%"];
+            }
+        }
+
+        $where[] = ['status', '=', 2];
+        $where[] = ['checkout', '=', 0];
+
+        $guest = DB::table('booking_room')
+                        ->select('first_name', 'last_name', 'booking_room.guest_id', 'room_number_code', 'booking_room.room_number_id')
+                        ->where($where)
+                        ->join('guests', 'guests.guest_id', '=', 'booking_room.guest_id')
+                        ->join('room_numbers', 'room_numbers.room_number_id', '=', 'booking_room.room_number_id')
+                        ->get();
+
+        return $guest;
+    }
+
 }

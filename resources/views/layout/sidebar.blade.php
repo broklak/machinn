@@ -81,7 +81,7 @@
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'credit-card-type') class="active" @endif>
                             <a href="{{route('credit-card-type.index')}}">Credit Card Type</a>
                         </li>
-                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'tax') class="active" @endif>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'tax' && $parent_menu == 'payment') class="active" @endif>
                             <a href="{{route('tax.index')}}">Tax</a>
                         </li>
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'settlement') class="active" @endif>
@@ -218,13 +218,6 @@
             <ul>
             </ul>
         </li>
-        <li class="submenu "> <a href="#"><i class="icon icon-th-list"></i> <span>POS</span></a>
-            <ul>
-                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'house.dashboard') class="active" @endif>
-                    <a href="{{route('booking.report')}}">Dashboard</a>
-                </li>
-            </ul>
-        </li>
         <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'housekeep' || (isset($type) && $type == 'housekeep')) open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>House Keeping</span></a>
             <ul>
                 <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'house') class="active" @endif>
@@ -260,6 +253,37 @@
                         </li>
                         <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'guest.inhouse' && !isset($paid)) class="active" @endif>
                             <a href="{{route('guest.inhouse')}}?type=housekeep">In House Guest</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'resto' || (isset($type) && $type == 'resto')) open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>POS Resto</span></a>
+            <ul>
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'master-resto') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Master</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'master-resto') style="display: block" @endif>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'item') class="active" @endif>
+                            <a href="{{route('item.index')}}">Item and Price</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'category') class="active" @endif>
+                            <a href="{{route('category.index')}}">Category Item</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'table') class="active" @endif>
+                            <a href="{{route('table.index')}}">Tables</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'tax') class="active" @endif>
+                            <a href="{{route('pos.tax.index')}}">Tax</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'stock') class="active" @endif>
+                            <a href="{{route('item.stock')}}">Stock</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'pos-resto') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                        <span>Transaction</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'pos-resto') style="display: block" @endif>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'pos') class="active" @endif>
+                            <a href="{{route('resto.pos.create')}}">New Transaction</a>
                         </li>
                     </ul>
                 </li>

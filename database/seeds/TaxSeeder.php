@@ -24,5 +24,16 @@ class TaxSeeder extends Seeder
             'tax_percentage'  => 5,
             'tax_type'      => 2
         ]);
+
+        DB::table('pos_tax')->truncate();
+        DB::table('pos_tax')->insert([
+            'name'  => 'Government Tax',
+            'percentage'  => 11
+        ]);
+
+        DB::table('pos_tax')->insert([
+            'name'  => 'Service',
+            'percentage'  => 10
+        ]);
     }
 }

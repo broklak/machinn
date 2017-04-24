@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Extracharge;
 use App\Helpers\GlobalHelper;
+use App\PosItem;
 use App\Province;
 use App\User;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Guest;
 use App\RoomNumber;
 use App\RoomRateDateType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class AjaxController extends Controller
@@ -27,6 +29,18 @@ class AjaxController extends Controller
             ->orWhere('last_name', 'LIKE', "%$filter%")
             ->orWhere('id_number', 'LIKE', "%$filter%")
             ->get();
+
+        return json_encode($getGuest);
+    }
+
+    /**
+     * @param Request $request
+     * @return array|string
+     */
+    public function searchInhouseGuest(Request $request){
+        $filter = $request->input('query');
+
+        $getGuest = Guest::getInhouseGuestWithRoom($filter);
 
         return json_encode($getGuest);
     }
@@ -142,5 +156,38 @@ class AjaxController extends Controller
             ];
         }
         return json_encode($log);
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function changeStock(Request $request){
+        $id = $request->input('id');
+        $stock = $request->input('stock');
+
+        PosItem::find($id)->update([
+            'stock'         => $stock,
+            'updated_by'    => Auth::id(),
+            'status'        => ($stock > 0) ? 1 : 2
+        ]);
+
+        return '1';
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function setOutStock(Request $request){
+        $id = $request->input('id');
+
+        PosItem::find($id)->update([
+            'stock'         => 0,
+            'updated_by'    => Auth::id(),
+            'status'        => 2
+        ]);
+
+        return '1';
     }
 }

@@ -10,17 +10,19 @@
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
                 <div class="widget-box">
+                    <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+                        <h5>Category Item List</h5>
+                    </div>
                     <div class="widget-content nopadding">
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Status</th>
+                                <th>Percentage</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -28,16 +30,16 @@
                             @if(count($rows) > 0)
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
-                                        <td>{{$val->department_name}}</td>
-                                        <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->department_status)!!}</td>
+                                        <td>{{$val->name}}</td>
+                                        <td>{{$val->percentage}}%</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->department_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a style="margin-right: 20px" href="{{route("$route_name.tax.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="3" style="text-align: center">No Data Found</td>
+                                    <td colspan="4" style="text-align: center">No Data Found</td>
                                 </tr>
                             @endif
                             </tbody>

@@ -13,20 +13,22 @@
 Route::get('/', 'Master\RoomNumberController@viewRoom');
 Route::get('home', 'Master\RoomNumberController@viewRoom');
 
-Route::get('housekeep/lost/delete/{id}', 'HouseKeep\LostController@softDelete')->name('lost.delete');
-Route::get('housekeep/lost/change-status/{id}/{status}', 'HouseKeep\LostController@changeStatus')->name('lost.change-status');
-Route::resource('housekeep/lost', 'HouseKeep\LostController');
+Route::get('resto/category/change-status/{id}/{status}', 'Resto\CategoryController@changeStatus')->name('category.change-status');
+Route::get('resto/category/delete/{id}', 'Resto\CategoryController@softDelete')->name('category.delete');
+Route::resource('resto/category', 'Resto\CategoryController');
 
-Route::get('housekeep/found/delete/{id}', 'HouseKeep\FoundController@softDelete')->name('found.delete');
-Route::get('housekeep/found/change-status/{id}/{status}', 'HouseKeep\FoundController@changeStatus')->name('found.change-status');
-Route::resource('housekeep/found', 'HouseKeep\FoundController');
+Route::get('resto/item/change-status/{id}/{status}', 'Resto\ItemController@changeStatus')->name('item.change-status');
+Route::get('resto/item/delete/{id}', 'Resto\ItemController@softDelete')->name('item.delete');
+Route::get('resto/stock', 'Resto\ItemController@stock')->name('item.stock');
+Route::resource('resto/item', 'Resto\ItemController');
 
-Route::get('housekeep/damage/delete/{id}', 'HouseKeep\DamageController@softDelete')->name('damage.delete');
-Route::get('housekeep/damage/change-status/{id}/{status}', 'HouseKeep\DamageController@changeStatus')->name('damage.change-status');
-Route::resource('housekeep/damage', 'HouseKeep\DamageController');
+Route::get('resto/table/delete/{id}', 'Resto\TableController@softDelete')->name('table.delete');
+Route::resource('resto/table', 'Resto\TableController');
 
-Route::get('housekeep/house/dashboard', 'Master\RoomNumberController@houseKeep')->name('house.dashboard');
-Route::get('housekeep/house/set/{id}/{status}', 'Master\RoomNumberController@changeHkStatus')->name('house.set');
+Route::resource('resto/tax', 'Resto\TaxPosController', ['as' => 'pos']);
+
+Route::get('resto/pos/change-status/{id}/{status}', 'Resto\PosController@changeStatus')->name('resto.pos.change-status');
+Route::resource('resto/pos', 'Resto\PosController', ['as' => 'resto']);
 
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
