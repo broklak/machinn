@@ -459,7 +459,6 @@ class CheckinController extends Controller
                 'cc_holder'        => $request->input('card_holder'),
                 'bank'              => $request->input('bank'),
                 'guest_id'          => $request->input('guest_id'),
-                'card_name'        => $request->input('card_holder'),
                 'card_expiry_month' => $request->input('month'),
                 'card_expiry_year' => $request->input('year'),
                 'bank_transfer_recipient'  => ($request->input('cash_account_id') != 0) ? $request->input('cash_account_id') : null ,
