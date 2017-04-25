@@ -43,6 +43,7 @@
                 <div class="controls">
                     <input id="room_code" value="{{($row->room_id == null || $row->room_id == 0) ? '' : \App\RoomNumber::getCode($row->room_id)}}" readonly type="text" name="room_code" />
                     <input id="room_id" value="{{$row->room_id}}" type="hidden" name="room_id" />
+                    <input id="booking_id" value="{{$row->booking_id}}" type="hidden" name="booking_id" />
                 </div>
             </div>
             <div id="guest-num-cont" class="control-group @if($row->delivery_type == 2) hide @endif">

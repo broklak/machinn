@@ -17,7 +17,7 @@ class OutletTransactionHeader extends Model
      */
     protected $fillable = [
         'bill_number', 'total_billed', 'total_discount', 'grand_total', 'desc', 'guest_id', 'date', 'status', 'created_by',
-        'waiters', 'guest_num', 'table_id', 'room_id', 'bill_type', 'delivery_type', 'source'
+        'waiters', 'guest_num', 'table_id', 'room_id', 'bill_type', 'delivery_type', 'source', 'total_tax', 'total_service', 'booking_id'
     ];
 
     /**
@@ -32,6 +32,10 @@ class OutletTransactionHeader extends Model
         $where[] = ['source', '=', $source];
         if($filter['status'] != 0) {
             $where[] = ['status', '=', $filter['status']];
+        }
+
+        if($filter['delivery_type'] != 0) {
+            $where[] = ['delivery_type', '=', $filter['delivery_type']];
         }
 
         if($filter['bill_number'] != null){
@@ -87,5 +91,21 @@ class OutletTransactionHeader extends Model
             return 'Dine In';
         }
         return 'Room Service';
+    }
+
+    /**
+     * @param $bookingId
+     * @return mixed
+     */
+    public static function getUnpaidResto($bookingId){
+        return parent::where('booking_id', $bookingId)->where('status', '<>', '3')->sum('grand_total');
+    }
+
+    /**
+     * @param $bookingId
+     * @return mixed
+     */
+    public static function getRestoBill($bookingId){
+        return parent::where('booking_id', $bookingId)->sum('grand_total');
     }
 }

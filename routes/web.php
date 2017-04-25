@@ -28,6 +28,9 @@ Route::resource('resto/table', 'Resto\TableController');
 Route::resource('resto/tax', 'Resto\TaxPosController', ['as' => 'pos']);
 
 Route::get('resto/pos/change-status/{id}/{status}', 'Resto\PosController@changeStatus')->name('resto.pos.change-status');
+Route::get('resto/pos/set-delivery/{id}/{status}', 'Resto\PosController@setDelivery')->name('resto.pos.set-delivery');
+Route::get('resto/pos/print-receipt/{id}', 'Resto\PosController@printReceipt')->name('resto.pos.print-receipt');
+Route::get('resto/active', 'Resto\PosController@activeOrder')->name('resto.pos.active');
 Route::resource('resto/pos', 'Resto\PosController', ['as' => 'resto']);
 
 Auth::routes();

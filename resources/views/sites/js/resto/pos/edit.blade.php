@@ -52,10 +52,12 @@
             var last_name = elem.data("lastname");
             var room_code = elem.data("roomcode");
             var room_id = elem.data("room");
+            var booking_id = elem.data("booking");
 
             $('#guest_name').val(first_name+' '+last_name);
             $('#guest_id').val(id);
             $('#room_id').val(room_id);
+            $('#booking_id').val(booking_id);
             $('#room_code').val(room_code);
         };
 
@@ -119,6 +121,7 @@
                         listGuest.push('<td>'+value.first_name+' '+value.last_name+'</td>');
                         listGuest.push('<td>'+value.room_number_code+'</td>');
                         listGuest.push('<td><a data-dismiss="modal" data-firstname="'+value.first_name+'" data-lastname="'+value.last_name+'"');
+                        listGuest.push('data-booking="'+value.booking_id+'"');
                         listGuest.push('data-id="'+value.guest_id+'" data-room="'+value.room_number_id+'" data-roomcode="'+value.room_number_code+'"');
                         listGuest.push('class="btn btn-success chooseGuest">Choose</a></td>')
                         listGuest.push('</tr>');

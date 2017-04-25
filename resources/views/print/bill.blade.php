@@ -173,11 +173,20 @@
             <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($total_room)}}</td>
             <td style="text-align: right">0</td>
         </tr>
+        @if($total_extra != 0)
         <tr class="item">
             <td>Extracharge</td>
             <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($total_extra)}}</td>
             <td style="text-align: right">0</td>
         </tr>
+        @endif
+        @if($total_resto != 0)
+        <tr class="item">
+            <td>Restaurant</td>
+            <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($total_resto)}}</td>
+            <td style="text-align: right">0</td>
+        </tr>
+        @endif
         @if($total_dp != 0)
         <tr class="item">
             <td>Room Down Payment</td>
@@ -187,7 +196,7 @@
         @endif
         @if($total_extra_paid != 0)
             <tr class="item">
-                <td>Room Down Payment</td>
+                <td>Extracharge Payment</td>
                 <td style="text-align: right">0</td>
                 <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($total_extra_paid)}}</td>
             </tr>

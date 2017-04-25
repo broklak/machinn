@@ -43,6 +43,7 @@
                 <div class="controls">
                     <input id="room_code" value="" readonly type="text" name="room_code" />
                     <input id="room_id" value="" type="hidden" name="room_id" />
+                    <input id="booking_id" value="" type="hidden" name="booking_id" />
                 </div>
             </div>
             <div id="guest-num-cont" class="control-group hide">

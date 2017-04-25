@@ -285,7 +285,13 @@
                         <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'pos') class="active" @endif>
                             <a href="{{route('resto.pos.create')}}">New Transaction</a>
                         </li>
+                        <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'active') class="active" @endif>
+                            <a href="{{route('resto.pos.active')}}">Active Order</a>
+                        </li>
                     </ul>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'logbook') class="active" @endif>
+                    <a href="{{route('logbook.index')}}?type=resto">Log Book</a>
                 </li>
             </ul>
         </li>

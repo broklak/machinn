@@ -10,6 +10,7 @@ use App\OutletTransactionHeader;
 use App\OutletTransactionPayment;
 use App\PosItem;
 use App\PosTable;
+use App\PosTax;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -90,6 +91,7 @@ class PosController extends Controller
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
         $filter['bill_number'] = $request->input('bill_number');
         $filter['status'] = $request->input('status');
+        $filter['delivery_type'] = $request->input('delivery_type');
         $filter['source'] = 2;
         $rows = OutletTransactionHeader::getList($filter, config('limitPerPage'));
         $data['rows'] = $rows;
@@ -132,6 +134,10 @@ class PosController extends Controller
         $qty = $request->input('qty');
         $sub = $request->input('subtotal');
         $type = $request->input('type');
+        $grand_total = $request->input('grand_total');
+
+        $tax = PosTax::getTax($grand_total);
+        $service = PosTax::getService($grand_total);
 
         foreach($price as $key => $value) {
             $total_price  = $total_price + $value;
@@ -142,7 +148,10 @@ class PosController extends Controller
             'bill_number'   => GlobalHelper::generateBillNumber($request->input('guest_id')),
             'total_billed'  => $total_price,
             'total_discount' => $total_discount,
-            'grand_total'   => $request->input('grand_total'),
+            'total_tax'     => $tax,
+            'booking_id'    => $request->input('booking_id'),
+            'total_service' => $service,
+            'grand_total'   => $grand_total + $tax + $service,
             'guest_id'      => ($request->input('guest_id')) ? $request->input('guest_id') : 0,
             'date'          => $request->input('date'),
             'status'        => $type,
@@ -239,11 +248,17 @@ class PosController extends Controller
             $total_price  = $total_price + $value;
             $total_discount = $total_discount + $discount[$key];
         }
+        $grand_total = $total_price - $total_discount;
+        $tax = PosTax::getTax($grand_total);
+        $service = PosTax::getService($grand_total);
 
         $header = OutletTransactionHeader::find($id)->update([
             'total_billed'  => $total_price,
             'total_discount' => $total_discount,
-            'grand_total'   => $request->input('grand_total'),
+            'total_tax'     => $tax,
+            'total_service' => $service,
+            'grand_total'   => $grand_total + $tax + $service,
+            'booking_id'    => $request->input('booking_id'),
             'guest_id'      => ($request->input('guest_id')) ? $request->input('guest_id') : 0,
             'date'          => $request->input('date'),
             'status'        => $type,
@@ -304,10 +319,12 @@ class PosController extends Controller
     /**
      * @param $id
      * @param $status
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function changeStatus($id, $status)
+    public function changeStatus($id, $status, Request $request)
     {
+        $back = $request->input('back');
         $data = OutletTransactionHeader::find($id);
 
         if ($status == 2) {
@@ -326,7 +343,57 @@ class PosController extends Controller
             'status' => $status
         ]);
 
+        $url = ($back) ? route($this->module.'.edit', ['id' => $id]) : route($this->module.'.index');
+
         $message = GlobalHelper::setDisplayMessage('success', "Success to $act");
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect($url)->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $transactionId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function printReceipt($transactionId){
+        $header = OutletTransactionHeader::find($transactionId);
+        $detail = OutletTransactionDetail::where('transaction_id', $transactionId)->get();
+        $data = [
+            'header'    => $header,
+            'detail'    => $detail,
+            'hotel_name'   => session('name'),
+            'hotel_phone'   => session('phone'),
+            'hotel_fax'   => session('fax'),
+            'hotel_email'   => session('email'),
+            'hotel_address'   => session('address'),
+
+        ];
+        return view("print.pos-bill", $data);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function activeOrder(Request $request){
+        $data['parent_menu'] = $this->parent;
+        $data['dine'] = OutletTransactionHeader::where('delivery_type', 1)->where('status', 1)->where('source', 2)->get();
+        $data['room'] = OutletTransactionHeader::where('delivery_type', 2)->where('status', 1)->where('source', 2)->get();
+        return view($this->module.".active", $data);
+    }
+
+    /**
+     * @param $id
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function setDelivery($id, $status)
+    {
+        $data = OutletTransactionDetail::find($id);
+
+        $data->delivery_status = $status;
+
+        $data->save();
+
+        $message = GlobalHelper::setDisplayMessage('success', "Success to change delivery status");
+        return redirect(route($this->module.".active"))->with('displayMessage', $message);
     }
 }

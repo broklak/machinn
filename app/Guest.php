@@ -209,7 +209,7 @@ class Guest extends Model
         $where[] = ['checkout', '=', 0];
 
         $guest = DB::table('booking_room')
-                        ->select('first_name', 'last_name', 'booking_room.guest_id', 'room_number_code', 'booking_room.room_number_id')
+                        ->select('first_name', 'booking_id', 'last_name', 'booking_room.guest_id', 'room_number_code', 'booking_room.room_number_id')
                         ->where($where)
                         ->join('guests', 'guests.guest_id', '=', 'booking_room.guest_id')
                         ->join('room_numbers', 'room_numbers.room_number_id', '=', 'booking_room.room_number_id')

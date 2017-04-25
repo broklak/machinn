@@ -15,7 +15,7 @@ class OutletTransactionDetail extends Model
      * @var array
      */
     protected $fillable = [
-        'transaction_id', 'extracharge_id', 'price', 'qty', 'discount', 'subtotal', 'status', 'created_by'
+        'transaction_id', 'extracharge_id', 'price', 'qty', 'discount', 'subtotal', 'status', 'created_by', 'delivery_status'
     ];
 
     /**
@@ -23,6 +23,10 @@ class OutletTransactionDetail extends Model
      */
     protected $primaryKey = 'id';
 
+    /**
+     * @param $status
+     * @return string
+     */
     public static function getStatusName ($status) {
         if($status == 1){
             return 'Draft';
@@ -33,5 +37,17 @@ class OutletTransactionDetail extends Model
         } else {
             return 'Deleted';
         }
+    }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function getDeliveryStatus($status){
+        if($status == 1){
+            return '<span class="label label-success">Delivered</span>';
+        }
+
+        return '<span class="label label-warning">Not Delivered</span>';
     }
 }

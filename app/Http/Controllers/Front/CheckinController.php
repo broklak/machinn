@@ -12,6 +12,8 @@ use App\Country;
 use App\CreditCardType;
 use App\Extracharge;
 use App\Guest;
+use App\OutletTransactionHeader;
+use App\OutletTransactionPayment;
 use App\Partner;
 use App\PropertyFloor;
 use App\RoomNumber;
@@ -367,12 +369,15 @@ class CheckinController extends Controller
         $history = Guest::getHistoryCheckin($header->guest_id);
         $extra = BookingExtracharge::where('booking_id', $bookingId)->where('status', 1)->get();
         $charge = Extracharge::where('extracharge_status', 1)->get();
+        $resto = OutletTransactionHeader::where('booking_id', $bookingId)->where('status', '<>', '3')->get();
 
+        $total_unpaid_resto = OutletTransactionHeader::getUnpaidResto($bookingId);
         $total_paid = BookingPayment::getTotalPaid($bookingId);
         $total_unpaid_extra = BookingExtracharge::getTotalUnpaid($bookingId);
-        $total_unpaid_all = ($header->payment_status == 3) ? 0 : BookingHeader::getTotalUnpaid($header->grand_total, $total_paid, $total_unpaid_extra);
+        $total_unpaid_all = ($header->payment_status == 3) ? 0 : BookingHeader::getTotalUnpaid($header->grand_total, $total_paid, $total_unpaid_extra + $total_unpaid_resto);
 
         $data = [
+            'resto'     => $resto,
             'header'    => $header,
             'history'   => $history,
             'guest'     => $guest,
@@ -388,6 +393,7 @@ class CheckinController extends Controller
             'payment_method' => config('app.paymentMethod'),
             'total_unpaid_all'  => $total_unpaid_all,
             'total_unpaid_extra'  => $total_unpaid_extra,
+            'total_unpaid_resto'  => $total_unpaid_resto,
             'total_paid'  => $total_paid
         ];
 
@@ -430,6 +436,36 @@ class CheckinController extends Controller
                                 'status'    => 2,
                                 'updated_by' => Auth::id()
                             ]);
+
+        OutletTransactionHeader::where('booking_id', $id)
+                                ->update([
+                                   'status'     => 3,
+                                    'updated_by' => Auth::id()
+                                ]);
+
+        $resto = OutletTransactionHeader::where('booking_id', $id)->get();
+
+        foreach($resto as $key => $val){
+            OutletTransactionPayment::create([
+                'transaction_id'    => $val->transaction_id,
+                'payment_method'    => $request->input('payment_method'),
+                'total_payment'     => $val->grand_total,
+                'total_paid'        => $val->grand_total,
+                'total_change'      => 0,
+                'card_number'        => $request->input('card_number'),
+                'card_type'        => $request->input('card_type'),
+                'settlement_id'     => null,
+                'cc_type_id'        => $request->input('cc_type'),
+                'cc_holder'        => $request->input('card_holder'),
+                'bank'              => $request->input('bank'),
+                'guest_id'          => $request->input('guest_id'),
+                'card_name'        => $request->input('card_holder'),
+                'card_expiry_month' => $request->input('month'),
+                'card_expiry_year' => $request->input('year'),
+                'bank_transfer_recipient'  => ($request->input('cash_account_id') != 0) ? $request->input('cash_account_id') : null ,
+                'created_by'        => Auth::id()
+            ]);
+        }
 
         BookingPayment::create([
             'booking_id'        => $id,
@@ -498,6 +534,7 @@ class CheckinController extends Controller
         $final_payment = BookingPayment::where('booking_id', $bookingId)->where('type', 4)->get();
         $extrachargePaid = BookingPayment::where('booking_id', $bookingId)->where('type', 3)->get();
         $extracharge = BookingExtracharge::where('booking_id', $bookingId)->get();
+        $total_resto = OutletTransactionHeader::getRestoBill($bookingId);
         $created = ($header->updated_by) ? User::getName($header->updated_by) : User::getName($header->created_by);
 
         $total = 0;
@@ -526,6 +563,7 @@ class CheckinController extends Controller
         $data = [
             'name'  => Guest::getTitleName($guest->title). ' '.$guest->first_name.' '.$guest->last_name,
             'admin' => $created,
+            'total_resto' => $total_resto,
             'header' => $header,
             'extracharge' => $total,
             'total_room' => $header->grand_total,
@@ -535,9 +573,9 @@ class CheckinController extends Controller
             'tax' => $tax->tax_percentage,
             'service' => $service->tax_percentage,
             'total_final_paid' => $total_final,
-            'total_debit' => $header->grand_total + $total,
+            'total_debit' => $header->grand_total + $total + $total_resto,
             'total_credit' => $total_dp + $total_paid + $total_final,
-            'total_balance' => ($header->grand_total + $total) - ($total_dp + $total_paid + $total_final),
+            'total_balance' => ($header->grand_total + $total + $total_resto) - ($total_dp + $total_paid + $total_final),
             'bill_number' => GlobalHelper::generateReceipt($bookingId),
             'total' => GlobalHelper::moneyFormat($total),
             'date'  => date('l, j F Y'),

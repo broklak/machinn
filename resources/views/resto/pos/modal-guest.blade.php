@@ -31,7 +31,7 @@
                 <tr class="{{($val->guest_id % 2 == 1) ? 'odd' : 'even'}} gradeX">
                     <td>{{$val->first_name.' '.$val->last_name}}</td>
                     <td>{{$val->room_number_code}}</td>
-                    <td><a data-dismiss="modal" data-firstname="{{$val->first_name}}" data-lastname="{{$val->last_name}}"
+                    <td><a data-dismiss="modal" data-firstname="{{$val->first_name}}" data-lastname="{{$val->last_name}}" data-booking="{{$val->booking_id}}"
                            id="guest-{{$val->guest_id}}" data-id="{{$val->guest_id}}" data-room="{{$val->room_number_id}}" data-roomCode="{{$val->room_number_code}}"
                            class="btn btn-success chooseGuest">Choose</a></td>
                 </tr>

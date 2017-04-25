@@ -20,6 +20,12 @@ class UpdatePosPayment extends Migration
             $table->integer('settlement_id')->nullable()->after('card_number');
             $table->integer('card_type')->nullable()->after('card_number')->comment('1:credit card, 2:debit card');
         });
+
+        Schema::table('outlet_transaction_header', function (Blueprint $table) {
+            $table->integer('total_tax')->after('total_discount')->default(0);
+            $table->integer('total_service')->after('total_discount')->default(0);
+            $table->integer('booking_id')->after('bill_type')->nullable();
+        });
     }
 
     /**
@@ -34,6 +40,12 @@ class UpdatePosPayment extends Migration
             $table->dropColumn('settlement_id');
             $table->dropColumn('card_type');
             $table->dropColumn('cc_holder');
+        });
+
+        Schema::table('outlet_transaction_header', function (Blueprint $table) {
+            $table->dropColumn('total_tax');
+            $table->dropColumn('total_service');
+            $table->dropColumn('booking_id');
         });
     }
 }

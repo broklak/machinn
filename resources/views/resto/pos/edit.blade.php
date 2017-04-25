@@ -82,11 +82,28 @@
                                                     </tr>
                                                 @endforeach
                                                 <tr>
-                                                    <td colspan="5" style="text-align: right;font-weight: bold;font-size: 18px">GRAND TOTAL : <span id="grand_total_text">
-                                                            {{\App\Helpers\GlobalHelper::moneyFormat($row->grand_total)}}</span>
-                                                        <input type="hidden" name="grand_total" value="{{$row->grand_total}}" id="grand_total">
+                                                    <td colspan="5" style="text-align: right;font-size: 14px">Total Bill : <span id="grand_total_text">
+                                                            {{\App\Helpers\GlobalHelper::moneyFormat($row->total_billed)}}</span>
+                                                        <input type="hidden" name="grand_total" value="{{($row->status == 1) ? $row->total_billed : $row->grand_total}}" id="grand_total">
                                                     </td>
                                                 </tr>
+                                                @if($row->status != 1)
+                                                    <tr>
+                                                        <td colspan="5" style="text-align: right;font-size: 14px">
+                                                            {{\App\PosTax::getTaxInfo()}} : {{\App\Helpers\GlobalHelper::moneyFormat($row->total_tax)}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" style="text-align: right;font-size: 14px">
+                                                            {{\App\PosTax::getServiceInfo()}} : {{\App\Helpers\GlobalHelper::moneyFormat($row->total_service)}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" style="text-align: right;font-weight: bold;font-size: 18px">
+                                                            GRAND TOTAL : {{\App\Helpers\GlobalHelper::moneyFormat($row->grand_total)}}
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                                 </tbody>
                                             </table>
                                         </div>
@@ -106,11 +123,29 @@
                                         <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SET AS PAID">
                                     </div>
                                     <div class="span6">
-                                        <a class="btn btn-danger" href="{{route('resto.pos.change-status', ['id' => $row->transaction_id, 'status' => 1])}}" style="display: block;width: 100%">VOID BILLED</a>
+                                        <a style="display: block;width: 100%" class="btn btn-success" href="#"
+                                           onClick="window.open('{{route('resto.pos.print-receipt', ['id' => $row->transaction_id])}}',
+                                                   'pagename','resizable,height=500,width=280');
+                                                   return false;">PRINT BILL</a><noscript>
+                                            You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                                            </a>
+                                        </noscript>
                                     </div>
+                                    {{--<div class="span6">--}}
+                                        {{--<a class="btn btn-danger" href="{{route('resto.pos.change-status', ['id' => $row->transaction_id, 'status' => 1])}}?back=edit" style="display: block;width: 100%">VOID BILLED</a>--}}
+                                    {{--</div>--}}
                                 @else
-                                    <div class="span12">
-                                        <a class="btn btn-danger" href="{{route('resto.pos.change-status', ['id' => $row->transaction_id, 'status' => 2])}}" style="display: block;width: 100%">VOID PAYMENT</a>
+                                    <div class="span6">
+                                        <a style="display: block;width: 100%" class="btn btn-primary" href="#"
+                                           onClick="window.open('{{route('resto.pos.print-receipt', ['id' => $row->transaction_id])}}',
+                                                   'pagename','resizable,height=500,width=280');
+                                                return false;">PRINT RECEIPT</a><noscript>
+                                            You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                                            </a>
+                                        </noscript>
+                                    </div>
+                                    <div class="span6">
+                                        <a class="btn btn-danger" href="{{route('resto.pos.change-status', ['id' => $row->transaction_id, 'status' => 2])}}?back=edit" style="display: block;width: 100%">VOID PAYMENT</a>
                                     </div>
                                 @endif
                             </div>

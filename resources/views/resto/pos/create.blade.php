@@ -52,7 +52,7 @@
                                 </thead>
                                 <tbody id="list-data">
                                     <tr>
-                                        <td colspan="5" style="text-align: right;font-weight: bold;font-size: 18px">GRAND TOTAL : <span id="grand_total_text">IDR 0</span>
+                                        <td colspan="5" style="text-align: right;font-weight: bold;font-size: 18px">TOTAL BILLED : <span id="grand_total_text">IDR 0</span>
                                             <input type="hidden" name="grand_total" value="0" id="grand_total">
                                         </td>
                                     </tr>

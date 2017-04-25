@@ -125,6 +125,46 @@
                         </table>
                     </div>
                 </div>
+                <div class="widget-box title">
+                    <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
+                        <h5>Resto Bills</h5>
+                    </div>
+                    <div class="widget-content tab-content">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>ROOM</th>
+                                <th>MENU</th>
+                                <th>DISCOUNT</th>
+                                <th>TAX</th>
+                                <th>SERVICE</th>
+                                <th>TOTAL</th>
+                            </tr>
+                            </thead>
+                            <tbody id="list-data">
+                            @foreach($resto as $key => $value)
+                                <tr>
+                                    <td>{{date('j F Y', strtotime($value->created_at))}}</td>
+                                    <td>{{\App\RoomNumber::getCode($value->room_id)}}</td>
+                                    <td>{!! \App\OutletTransactionHeader::getDetailResto($value->transaction_id) !!}</td>
+                                    <td>{{\App\Helpers\GlobalHelper::moneyFormat($value->total_discount)}}</td>
+                                    <td>{{\App\Helpers\GlobalHelper::moneyFormat($value->total_tax)}}</td>
+                                    <td>{{\App\Helpers\GlobalHelper::moneyFormat($value->total_service)}}</td>
+                                    <td>{{\App\Helpers\GlobalHelper::moneyFormat($value->grand_total)}}</td>
+                                    <input type="hidden" name="resto_transaction[]" value="{{$value->transaction_id}}" />
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <td colspan="8" style="text-align: right;font-weight: bold;font-size: 14px">TOTAL UNPAID RESTO BILLS : <span id="grand_total_text">
+                                        {{\App\Helpers\GlobalHelper::moneyFormat($total_unpaid_resto)}}</span>
+                                    <input type="hidden" name="grand_total_resto" value="{{$total_unpaid_resto}}" id="grand_total_resto">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 @if(count($payment) > 0)
                     <div class="widget-box title">
                         <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>

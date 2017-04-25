@@ -16,15 +16,21 @@
                 <div class="controls">
                     <form>
                         <input placeholder="Input Bill Number" value="{{$filter['bill_number']}}" name="bill_number" type="text">
-                        <select name="status">
+                        <select onchange="this.form.submit()" name="status">
                             <option @if($filter['status'] == 0) selected @endif value="0">All Status</option>
                             <option @if($filter['status'] == 1) selected @endif value="1">Draft</option>
                             <option @if($filter['status'] == 2) selected @endif value="2">Billed</option>
                             <option @if($filter['status'] == 3) selected @endif value="3">Paid</option>
                         </select>
+                        <select onchange="this.form.submit()" name="delivery_type">
+                            <option @if($filter['delivery_type'] == 0) selected @endif value="0">All Outlet</option>
+                            <option @if($filter['delivery_type'] == 1) selected @endif value="1">Dine In</option>
+                            <option @if($filter['delivery_type'] == 2) selected @endif value="2">Room Service</option>
+                        </select>
+                        <label>Date Range</label>
                         <input value="{{$filter['start']}}" id="checkin" type="text" name="start" /> TO
                         <input value="{{$filter['end']}}" id="checkout" type="text" name="end" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" class="btn btn-primary" value="Search">
                     </form>
                 </div>
             </div>
@@ -83,6 +89,15 @@
                                                     @if($val->status == 3)
                                                         <li><a onclick="return confirm('You will void payment on bill {{$val->bill_number}}, continue?')" href="{{route($route_name.'.change-status', ['id' => $val->transaction_id, 'status' => 2])}}">
                                                                 <i class="icon-remove"></i>Void Payment</a>
+                                                        </li>
+                                                    @endif
+                                                    @if($val->status != 1)
+                                                        <li>
+                                                            <a href="#" onClick="window.open('{{route('resto.pos.print-receipt', ['id' => $val->transaction_id])}}','pagename','resizable,height=500,width=280');
+                                                                    return false;"><i class="icon-money"></i> Print Receipt</a><noscript>
+                                                                You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                                                                </a>
+                                                            </noscript>
                                                         </li>
                                                     @endif
                                                 </ul>
