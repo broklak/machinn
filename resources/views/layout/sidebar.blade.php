@@ -290,6 +290,17 @@
                         </li>
                     </ul>
                 </li>
+                <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'resto-report') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                        <span>Report</span></a>
+                    <ul @if(isset($parent_menu) && $parent_menu == 'resto-report') style="display: block" @endif>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'resto.report-sales') class="active" @endif>
+                            <a href="{{route('resto.report-sales')}}">Sales Report</a>
+                        </li>
+                        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'resto.report-item') class="active" @endif>
+                            <a href="{{route('resto.report-item')}}">Item Report</a>
+                        </li>
+                    </ul>
+                </li>
                 <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'logbook') class="active" @endif>
                     <a href="{{route('logbook.index')}}?type=resto">Log Book</a>
                 </li>

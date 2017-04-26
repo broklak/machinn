@@ -33,5 +33,8 @@ Route::get('resto/pos/print-receipt/{id}', 'Resto\PosController@printReceipt')->
 Route::get('resto/active', 'Resto\PosController@activeOrder')->name('resto.pos.active');
 Route::resource('resto/pos', 'Resto\PosController', ['as' => 'resto']);
 
+Route::get('resto/report/sales', 'Resto\ReportController@sales')->name('resto.report-sales');
+Route::get('resto/report/item', 'Resto\ReportController@item')->name('resto.report-item');
+
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');

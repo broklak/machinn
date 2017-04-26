@@ -34,11 +34,11 @@ class OutletTransactionHeader extends Model
             $where[] = ['status', '=', $filter['status']];
         }
 
-        if($filter['delivery_type'] != 0) {
+        if(isset($filter['delivery_type']) && $filter['delivery_type'] != 0) {
             $where[] = ['delivery_type', '=', $filter['delivery_type']];
         }
 
-        if($filter['bill_number'] != null){
+        if(isset($filter['bill_number']) && $filter['bill_number'] != null){
             $where[] = ['bill_number', '=', $filter['bill_number']];
         }
 
