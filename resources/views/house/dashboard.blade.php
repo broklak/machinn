@@ -9,6 +9,10 @@
         <h1>{{$master_module}}</h1>
     </div>
     <div class="container-fluid">
+        <div class="legend-status">
+            <span class="ooo"><i class="icon icon-check"></i></span><span class="legend-title">Ready</span>
+            <span class="ooo"><i class="icon icon-warning-sign"></i></span><span class="legend-title">Dirty</span>
+            <span class="ooo"><i class="icon icon-wrench"></i></span><span class="legend-title">Out of Order</span>
         </div>
         {!! session('displayMessage') !!}
         <div class="row-fluid">

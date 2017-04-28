@@ -55,7 +55,7 @@
             <div id="table-cont" class="control-group @if($row->delivery_type == 2) hide @endif">
                 <label class="control-label">Table Number</label>
                 <div class="controls">
-                    <input @if($row->status != 1) readonly @endif id="table_id" value="{{$row->table_id}}" type="text" name="table_id" list="table-list" />
+                    <input @if($row->status != 1) readonly @endif id="table_id" value="{{\App\PosTable::getName($row->table_id)}}" type="text" name="table_id" list="table-list" />
                     <datalist aria-multiselectable="true" id="table-list">
                         @foreach($table as $key => $val)
                             <option>{{$val->name}}</option>

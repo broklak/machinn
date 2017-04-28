@@ -33,7 +33,7 @@
                                 @foreach($dine as $key => $val)
                                     @if($detail = \App\OutletTransactionDetail::where('transaction_id', $val->transaction_id)->get())
                                     <tr>
-                                        <td>Table {{$val->table_id}}</td>
+                                        <td>Table {{\App\PosTable::getName($val->table_id)}}</td>
                                         <td>
                                             @foreach($detail as $key_detail => $val_detail)
                                                 {{\App\PosItem::getName($val_detail->extracharge_id)}}<br />

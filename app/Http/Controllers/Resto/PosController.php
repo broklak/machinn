@@ -129,7 +129,7 @@ class PosController extends Controller
     {
         $total_price = 0;
         $total_discount = 0;
-        $price = $request->input('price');
+        $price = $request->input('subtotal');
         $discount = $request->input('discount');
         $qty = $request->input('qty');
         $sub = $request->input('subtotal');
@@ -143,6 +143,8 @@ class PosController extends Controller
             $total_price  = $total_price + $value;
             $total_discount = $total_discount + $discount[$key];
         }
+
+        $getTable = PosTable::where('name', $request->input('table_id'))->first();
 
         $header = OutletTransactionHeader::create([
             'bill_number'   => GlobalHelper::generateBillNumber($request->input('guest_id')),
@@ -158,7 +160,7 @@ class PosController extends Controller
             'created_by'    => Auth::id(),
             'waiters'       => $request->input('waiters'),
             'guest_num'     => ($request->input('guest_num')) ? $request->input('guest_num') : 2,
-            'table_id'      => $request->input('table_id'),
+            'table_id'      => isset($getTable->id) ? $getTable->id : 0,
             'room_id'       => $request->input('room_id'),
             'bill_type'     => $request->input('bill_type'),
             'delivery_type' => $request->input('delivery_type'),
@@ -178,6 +180,11 @@ class PosController extends Controller
                 'created_by'        => Auth::id(),
                 'delivery_status'   => 0
             ]);
+
+            $item = PosItem::find($key);
+            $qty_old = $item->stock;
+            $item->stock = $qty_old - $qty[$key];
+            $item->save();
         }
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -234,7 +241,7 @@ class PosController extends Controller
     {
         $total_price = 0;
         $total_discount = 0;
-        $price = $request->input('price');
+        $price = $request->input('subtotal');
         $discount = $request->input('discount');
         $qty = $request->input('qty');
         $sub = $request->input('subtotal');
@@ -252,6 +259,8 @@ class PosController extends Controller
         $tax = PosTax::getTax($grand_total);
         $service = PosTax::getService($grand_total);
 
+        $getTable = PosTable::where('name', $request->input('table_id'))->first();
+
         $header = OutletTransactionHeader::find($id)->update([
             'total_billed'  => $total_price,
             'total_discount' => $total_discount,
@@ -265,11 +274,21 @@ class PosController extends Controller
             'updated_by'    => Auth::id(),
             'waiters'       => $request->input('waiters'),
             'guest_num'     => ($request->input('guest_num')) ? $request->input('guest_num') : 2,
-            'table_id'      => $request->input('table_id'),
+            'table_id'      => isset($getTable->id) ? $getTable->id : 0,
             'room_id'       => $request->input('room_id'),
             'bill_type'     => $request->input('bill_type'),
             'delivery_type' => $request->input('delivery_type')
         ]);
+
+        $getDetail = OutletTransactionDetail::where('transaction_id',$id)->get();
+
+        // RETURN QTY
+        foreach ($getDetail as $key_old => $val_old) {
+            $item = PosItem::find($val_old->extracharge_id);
+            $qty_old = $item->stock;
+            $item->stock = $qty_old + $val_old->qty;
+            $item->save();
+        }
 
         OutletTransactionDetail::where('transaction_id',$id)->delete();
 
@@ -285,6 +304,11 @@ class PosController extends Controller
                 'status'            => $type,
                 'created_by'        => Auth::id()
             ]);
+
+            $item = PosItem::find($key);
+            $qty_old = $item->stock;
+            $item->stock = $qty_old - $qty[$key];
+            $item->save();
         }
 
         if($type == 3){ // IF PAID

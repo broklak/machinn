@@ -1704,6 +1704,10 @@ span.ooo{
 	background: #000;
 }
 
+span.ooo i{
+	color: #fff;
+}
+
 .booking-report .partner, .widget-box.title .widget-title{
 	font-weight: bold;
 	background: #f4f4f4;

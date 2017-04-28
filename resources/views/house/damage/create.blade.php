@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Report By</label>
+                                        <label class="control-label">Reported By</label>
                                         <div class="controls">
                                             <select name="founder_employee_id">
                                                 <option>Choose Employee</option>

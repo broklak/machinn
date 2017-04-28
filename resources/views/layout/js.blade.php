@@ -13,17 +13,23 @@
             url  : '{{route('ajax.getLogbook')}}',
             success : function (result) {
                 obj = JSON.parse(result);
+                var num = obj.length;
+                $('#notif-num').html(num);
 
-                $.each(obj, function(key, value) {
-                    $.gritter.add({
-                        title:	value.title,
-                        text:	value.text,
-                        sticky: true
+                $('#show-notif').click(function () {
+                    $('#gritter-notice-wrapper').html('');
+                    $('#gritter-notice-wrapper').toggle();
+                    $.each(obj, function(key, value) {
+                        $.gritter.add({
+                            title:	value.title,
+                            text:	value.text,
+                            sticky: true
+                        });
                     });
                 });
             }
         });
     });
-</script>x`
+</script>
 
 @includeIf($js_name)

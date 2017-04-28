@@ -120,7 +120,7 @@ class PosController extends Controller
     {
         $total_price = 0;
         $total_discount = 0;
-        $price = $request->input('price');
+        $price = $request->input('subtotal');
         $discount = $request->input('discount');
         $qty = $request->input('qty');
         $sub = $request->input('subtotal');
@@ -193,7 +193,7 @@ class PosController extends Controller
     {
         $total_price = 0;
         $total_discount = 0;
-        $price = $request->input('price');
+        $price = $request->input('subtotal');
         $discount = $request->input('discount');
         $qty = $request->input('qty');
         $sub = $request->input('subtotal');

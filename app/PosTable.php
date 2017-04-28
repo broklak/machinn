@@ -44,4 +44,13 @@ class PosTable extends Model
 
         return 'Banquet';
     }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function getName($id){
+        $data = parent::find($id);
+        return isset($data->name) ? $data->name : '';
+    }
 }
