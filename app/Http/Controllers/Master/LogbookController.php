@@ -58,8 +58,8 @@ class LogbookController extends Controller
         $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $data['type'] = $type;
-        $rows = Logbook::where('logbook_status', 1)->where('done', 0)->paginate(config('limitPerPage'));
-        $store = Logbook::where('logbook_status', 1)->where('done', 0)->where('to_date', date('y-m-d'))->get();
+        $rows = Logbook::where('logbook_status', 1)->orderBy('done')->paginate(config('limitPerPage'));
+        $store = Logbook::where('logbook_status', 1)->orderBy('done')->where('to_date', date('y-m-d'))->get();
         $data['rows'] = $rows;
         Cache::forever(self::cacheKey,$store);
         return view("master.".$this->module.".index", $data);
