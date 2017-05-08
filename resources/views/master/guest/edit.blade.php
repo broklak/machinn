@@ -3,9 +3,9 @@
 @section('title', 'Home')
 
 @section('content')
-
+    @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'guest' : '' @endphp
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.$route.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
         <h1>{{$master_module}}</h1>
     </div>
     <div class="container-fluid"><hr>
@@ -22,7 +22,7 @@
                         <h5>Edit {{$master_module}} Data</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->guest_id])}}" method="post">
+                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.$route.update", ['id' => $row->guest_id])}}" method="post">
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <input type="hidden" name="guest_id" id="guest_id">

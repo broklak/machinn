@@ -4,6 +4,8 @@
 
 @section('content')
 
+    @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '' @endphp
+
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
         <h1>{{($paid) ? 'Guest Payment' : 'In House Guest'}}</h1>
@@ -21,7 +23,7 @@
                     <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
                         <h5>Booking List</h5>
                         <div class="filter-data">
-                            <form action="{{route('guest.inhouse')}}">
+                            <form action="{{route($route.'guest.inhouse')}}">
                                 <input id="guest" name="guest" placeholder="Search By Guest Name" value="{{$filter['guest']}}" type="text" />
                                 <input type="hidden" name="paid" value="{{$paid}}">
                                 <input type="hidden" name="type" value="{{$type}}">

@@ -1,0 +1,59 @@
+<li class="submenu @if(\Illuminate\Support\Facades\Request::segment(1) == 'back' || (isset($type) && $type == 'back')) open active @endif"> <a href="#"><i class="icon icon-th-list"></i> <span>Back Office</span></a>
+    <ul>
+        <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.dashboard') class="active" @endif>
+            <a href="{{route('back.dashboard')}}">Dashboard</a>
+        </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'guest-back') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Guest</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'guest') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.guest.inhouse' && !isset($paid)) class="active" @endif>
+                    <a href="{{route('back.guest.inhouse')}}">In House Guest</a>
+                </li>
+                <li
+                        @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.guest.index'
+                        || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.guest.create'
+                        || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.guest.edit') class="active" @endif>
+                    <a href="{{route('back.guest.index')}}">List All Guest</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.guest.statistic') class="active" @endif>
+                    <a href="{{route('back.guest.statistic')}}">Guest Statistic</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.guest.checkin') class="active" @endif>
+                    <a href="{{route('back.guest.checkin')}}">Guest By Check In</a>
+                </li>
+            </ul>
+        </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'resto-report') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                <span>Resto Report</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'resto-report') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report-sales') class="active" @endif>
+                    <a href="{{route('back.report-sales')}}">Sales Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report-item') class="active" @endif>
+                    <a href="{{route('back.report-item')}}">Item Report</a>
+                </li>
+            </ul>
+        </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'report-front') open @endif"><a href="#"><i class="icon icon-list-alt"></i> <span>Front Office Report</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'report-front') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.booking.report') class="active" @endif>
+                    <a href="{{route('back.booking.report')}}">Booking Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.guest-bill') class="active" @endif>
+                    <a href="{{route('back.report.guest-bill')}}">Guest Bill Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.down-payment') class="active" @endif>
+                    <a href="{{route('back.report.down-payment')}}">Deposit Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.cash-credit') class="active" @endif>
+                    <a href="{{route('back.report.cash-credit')}}">Cash and Credit Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.front-pos') class="active" @endif>
+                    <a href="{{route('back.report.front-pos')}}">Outlet Posting Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.source') class="active" @endif>
+                    <a href="{{route('back.report.source')}}">Business Source Report</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>

@@ -15,12 +15,12 @@
                 <label class="control-label">Choose Report Time</label>
                 <div class="controls">
                     <form>
-                        <select name="month">
+                        <select onchange="this.form.submit()" name="month">
                             @foreach($month_list as $key => $val)
                                 <option @if($month == $val) selected @endif value="{{$key}}">{{$val}}</option>
                             @endforeach
                         </select>
-                        <select name="year">
+                        <select onchange="this.form.submit()" name="year">
                             @for($x=0; $x < $year_list; $x++)
                                 <option @if($year == date('Y')-$x) selected @endif>{{date('Y') - $x}}</option>
                             @endfor

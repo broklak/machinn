@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-
+    @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '' @endphp
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
         <h1>{{$master_module}} Statistic</h1>
@@ -14,7 +14,7 @@
             <div class="control-group">
                 <label class="control-label">Choose Date Range</label>
                 <div class="controls">
-                    <form>
+                    <form action="">
                         <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                         <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
                         <input type="submit" style="vertical-align: top" class="btn btn-primary">
@@ -31,9 +31,9 @@
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
-                            <li @if($type == 'gender') class="active" @endif><a href="{{route('guest.statistic')}}">Gender</a></li>
-                            <li @if($type == 'age') class="active" @endif><a href="{{route('guest.statistic')}}?type=age">Age</a></li>
-                            <li @if($type == 'religion') class="active" @endif><a href="{{route('guest.statistic')}}?type=religion">Religion</a></li>
+                            <li @if($type == 'gender') class="active" @endif><a href="{{route($route.'guest.statistic')}}">Gender</a></li>
+                            <li @if($type == 'age') class="active" @endif><a href="{{route($route.'guest.statistic')}}?type=age">Age</a></li>
+                            <li @if($type == 'religion') class="active" @endif><a href="{{route($route.'guest.statistic')}}?type=religion">Religion</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">

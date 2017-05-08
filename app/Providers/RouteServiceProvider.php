@@ -46,7 +46,9 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapHouseRoutes();
 
-        //
+        $this->mapRestoRoutes();
+
+        $this->mapBackRoutes();
     }
 
     /**
@@ -103,6 +105,34 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/housekeep.php'));
+    }
+
+    /**
+     * Define the master module for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapRestoRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/resto.php'));
+    }
+
+    /**
+     * Define the master module for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapBackRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/back.php'));
     }
 
     /**

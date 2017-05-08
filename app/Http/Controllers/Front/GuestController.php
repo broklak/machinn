@@ -99,8 +99,10 @@ class GuestController extends Controller
             'created_by' => Auth::id()
         ]);
 
+        $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';
+
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($route.$this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -171,8 +173,9 @@ class GuestController extends Controller
             'updated_by' => Auth::id()
         ]);
 
+        $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($route.$this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -258,7 +261,8 @@ class GuestController extends Controller
     public function softDelete($id) {
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';
+        return redirect(route($route.$this->module.".index"))->with('displayMessage', $message);
     }
 
 }

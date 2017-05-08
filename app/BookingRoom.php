@@ -120,7 +120,8 @@ class BookingRoom extends Model
     }
 
     /**
-     * @param $checkoutDate
+     * @param $checkinDate
+     * @param $status
      * @return string
      */
     public static function validateCheckinTime($checkinDate, $status){
@@ -132,5 +133,25 @@ class BookingRoom extends Model
         } else {
             return 'wait';
         }
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    public static function getRoomSales ($start, $end){
+        $getRoom = DB::table('room_types')
+            ->select(DB::raw("room_type_id,room_type_name,
+                       (SELECT count(*) from booking_room inner join room_numbers on room_numbers.room_number_id = booking_room.room_number_id
+                                where room_type_id = room_types.room_type_id and room_transaction_date BETWEEN '$start' and '$end' and checkout = 1
+                                GROUP BY room_numbers.room_type_id) AS total_qty,
+                       (SELECT SUM(subtotal) from booking_room inner join room_numbers on room_numbers.room_number_id = booking_room.room_number_id
+                                where room_type_id = room_types.room_type_id and room_transaction_date BETWEEN '$start' and '$end' and checkout = 1
+                                GROUP BY room_numbers.room_type_id) AS total_amount
+                            "))
+            ->get();
+
+        return $getRoom;
     }
 }

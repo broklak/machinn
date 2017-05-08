@@ -133,8 +133,10 @@ class Report extends Model
 
     public function source($filter) {
         $data = DB::table('partners')
-                        ->select(DB::raw('partner_name, (SELECT SUM(grand_total) from booking_header
-                                WHERE booking_status = 2 and partner_id = partners.partner_id GROUP BY partner_id) AS total_bills'))
+                        ->select(DB::raw("distinct(partners.partner_id), partner_name, (SELECT SUM(grand_total) from booking_header where
+                                 booking_status = 2 and partner_id = partners.partner_id
+                                AND checkout_date BETWEEN '".$filter['start']."' AND '".$filter['end']."'
+                                GROUP BY partner_id) AS total_bills"))
                         ->leftJoin('booking_header', 'booking_header.partner_id', '=', 'partners.partner_id')
                         ->whereBetween('booking_header.checkout_date', [$filter['start'], $filter['end']])
                         ->get();
