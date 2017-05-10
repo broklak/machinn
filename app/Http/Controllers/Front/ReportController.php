@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\BookingHeader;
 use App\Report;
 use Illuminate\Http\Request;
 use App\OutletTransactionHeader;
@@ -163,6 +164,87 @@ class ReportController extends Controller
         $data['filter'] = $filter;
         $data['rows'] = $report;
         return view('front.report.source', $data);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function arrival (Request $request){
+        $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d');
+
+        $arrival = $this->model->getArrival($start);
+
+        $departure = $this->model->getArrival($start, 2);
+        $data = [
+            'start'     => $start,
+            'arrival'      => $arrival,
+            'departure'      => $departure,
+            'parent_menu'   => $this->parent
+        ];
+        return view('front.report.arrival', $data);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function occupied (Request $request){
+        $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
+        $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
+        $datediff = strtotime($end) - strtotime($start);
+        $day = floor($datediff / (60 * 60 * 24));
+        $rows = [];
+        for($x=0; $x <= $day; $x++){
+            $date = date('Y-m-d', strtotime("$start + $x days"));
+            $getOccupied = $this->model->getOccupied($date);
+            $rows[$x]['date']           = date('j F Y', strtotime("$start + $x days"));
+            $rows[$x]['total_guest']     = isset($getOccupied->total_guest) ? $getOccupied->total_guest : 0;
+        }
+
+        $data = [
+            'start'     => $start,
+            'end'     => $end,
+            'parent_menu'   => $this->parent,
+            'day'   => floor($datediff / (60 * 60 * 24)),
+            'rows'  => $rows
+        ];
+        return view('front.report.occupied', $data);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function outstanding (Request $request){
+        $status = ($request->input('status')) ? $request->input('status') : 0;
+        $rows = $this->model->getOutstandingBooking($status);
+        $data = [
+            'status'     => $status,
+            'parent_menu'   => $this->parent,
+            'rows'          => $rows
+        ];
+        return view('front.report.outstanding', $data);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function void (Request $request){
+        $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
+        $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
+        $status = ($request->input('status')) ? $request->input('status') : 0;
+
+        $rows = $this->model->getVoid($start, $end, $status);
+        $data = [
+            'start'     => $start,
+            'end'     => $end,
+            'status'     => $status,
+            'parent_menu'   => $this->parent,
+            'rows'          => $rows
+        ];
+        return view('front.report.void', $data);
     }
 
 }

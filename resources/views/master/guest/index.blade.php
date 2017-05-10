@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'guest' : '' @endphp
+    @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'guest.' : '' @endphp
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
@@ -12,7 +12,7 @@
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.$route.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route($route_name.'.'.$route.'create')}}">Add New {{$master_module}}</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -37,9 +37,9 @@
                                         <td>@if($val->gender == 1) Male @else Female @endif</td>
                                         <td>{{$val->handphone}}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.$route.edit", ['id' => $val->guest_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a style="margin-right: 20px" href="{{route($route_name.'.'.$route.'edit', ['id' => $val->guest_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
                                             <a onclick="return confirm('You will delete {{$val->first_name.' '.$val->last_name}}, continue? ')"
-                                               class="delete-link" style="margin-right: 20px" href="{{route("$route_name.$route.delete", ['id' => $val->guest_id])}}"
+                                               class="delete-link" style="margin-right: 20px" href="{{route($route_name.'.'.$route.'delete', ['id' => $val->guest_id])}}"
                                                title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
                                             </a>
                                         </td>

@@ -35,7 +35,8 @@ class User extends Authenticatable
     }
 
     public static function getName ($id){
-        return self::find($id)->value('username');
+        $data = parent::find($id);
+        return (isset($data->name)) ? $data->name : 'system';
     }
 
     public static function getDepartmentName ($departmentId) {

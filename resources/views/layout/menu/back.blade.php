@@ -53,6 +53,18 @@
                 <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.source') class="active" @endif>
                     <a href="{{route('back.report.source')}}">Business Source Report</a>
                 </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.arrival') class="active" @endif>
+                    <a href="{{route('back.report.arrival')}}">Actual Arrival - Departure</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.occupied') class="active" @endif>
+                    <a href="{{route('back.report.occupied')}}">Actual Room Occupied</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.outstanding') class="active" @endif>
+                    <a href="{{route('back.report.outstanding')}}">Oustanding Bill</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.void') class="active" @endif>
+                    <a href="{{route('back.report.void')}}">Booking Cancel History</a>
+                </li>
             </ul>
         </li>
     </ul>

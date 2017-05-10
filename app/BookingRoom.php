@@ -125,9 +125,6 @@ class BookingRoom extends Model
      * @return string
      */
     public static function validateCheckinTime($checkinDate, $status){
-        $checkoutTime = strtotime(date($checkinDate.' 23:59:59'));
-        $now = time();
-
        if(date('d') == date('d', strtotime($checkinDate)) && $status != 2){
             return 'soon';
         } else {
@@ -153,5 +150,35 @@ class BookingRoom extends Model
             ->get();
 
         return $getRoom;
+    }
+
+    /**
+     * @param $date
+     * @return mixed
+     */
+    public static function getTotalRoom ($date){
+        $getBooking = DB::table('booking_room')
+            ->select(DB::raw("count(*) as total_room"))
+            ->where('room_transaction_date', $date)
+            ->where('status', 2)
+            ->groupBy('room_transaction_date')
+            ->first();
+
+        return isset($getBooking->total_room) ? $getBooking->total_room : 0;
+    }
+
+    /**
+     * @param $date
+     * @return mixed
+     */
+    public static function getTotalRatePerDay ($date){
+        $getBooking = DB::table('booking_room')
+            ->select(DB::raw("SUM(subtotal) as total_rate"))
+            ->where('room_transaction_date', $date)
+            ->where('status', 2)
+            ->groupBy('room_transaction_date')
+            ->first();
+
+        return isset($getBooking->total_rate) ? $getBooking->total_rate : 0;
     }
 }

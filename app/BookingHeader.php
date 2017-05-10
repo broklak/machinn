@@ -192,6 +192,9 @@ class BookingHeader extends Model
         return $total_header - $total_paid + $total_extra;
     }
 
+    /**
+     * @return string
+     */
     public static function setNoShowBooking(){
         $noshow = parent::where('checkin_date','<', date('Y-m-d'))->where('booking_status', '=', 1)->get();
         $arr = [];

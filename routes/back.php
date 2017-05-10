@@ -15,5 +15,9 @@ Route::get('back/report/cash-credit', 'Front\ReportController@cashCredit')->name
 Route::get('back/report/front-pos', 'Front\ReportController@frontPos')->name("back.report.front-pos");
 Route::get('back/report/source', 'Front\ReportController@source')->name("back.report.source");
 Route::get('back/booking/report', 'Front\BookingController@report')->name("back.booking.report");
+Route::get('back/report/arrival', 'Front\ReportController@arrival')->name("back.report.arrival");
+Route::get('back/report/occupied', 'Front\ReportController@occupied')->name("back.report.occupied");
+Route::get('back/report/outstanding', 'Front\ReportController@outstanding')->name("back.report.outstanding");
+Route::get('back/report/void', 'Front\ReportController@void')->name("back.report.void");
 
 Route::get('back/dashboard', 'Back\DashboardController@index')->name("back.dashboard");

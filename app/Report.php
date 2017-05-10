@@ -131,6 +131,10 @@ class Report extends Model
         return $data;
     }
 
+    /**
+     * @param $filter
+     * @return mixed
+     */
     public function source($filter) {
         $data = DB::table('partners')
                         ->select(DB::raw("distinct(partners.partner_id), partner_name, (SELECT SUM(grand_total) from booking_header where
@@ -141,5 +145,88 @@ class Report extends Model
                         ->whereBetween('booking_header.checkout_date', [$filter['start'], $filter['end']])
                         ->get();
         return $data;
+    }
+
+    /**
+     * @param $start
+     * @param int $type
+     * @return mixed
+     */
+    public function getArrival ($start, $type = 1){
+        $type = ($type == 1) ? 'checkin_date' : 'checkout_date';
+        $getBooking = DB::table('booking_header')
+                    ->select(DB::raw("booking_code, checkin_date, checkout_date, room_list, first_name, last_name, title, adult_num, child_num,
+                        (select count(*) from booking_room where booking_id = booking_header.booking_id AND room_transaction_date = '$start'  GROUP BY booking_id)
+                        AS total_room"))
+                    ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
+                    ->where($type, $start)
+                    ->paginate(config('app.limitPerPage'));
+
+        return $getBooking;
+    }
+
+    /**
+     * @param $date
+     * @return mixed
+     */
+    public function getOccupied ($date){
+        $occupied = DB::table('booking_header')
+                        ->select(DB::raw("(SUM(ANY_VALUE(adult_num)) + SUM(ANY_VALUE(child_num))) as total_guest"))
+                        ->where('checkin_date', '<=', $date)
+                        ->where('checkout_date', '>', $date)
+                        ->where('booking_status', 2)
+                        ->groupBy("checkin_date")
+                        ->first();
+
+        return $occupied;
+    }
+
+    /**
+     * @param int $status
+     * @return mixed
+     */
+    public function getOutstandingBooking ($status = 0){
+        $where[] = ['payment_status', '<>', 3];
+        if($status != 0){
+            $where[] = ['booking_status', '=', $status];
+        }
+        $outstanding = DB::table('booking_header')
+                            ->select(DB::raw('booking_code, first_name, last_name, partner_name, checkin_date, checkout_date, grand_total, booking_status
+                                , (select SUM(total_payment) from booking_extracharge where booking_id = booking_header.booking_id
+                                group by booking_id) AS total_extra,
+                                (select SUM(total_payment) from booking_payment where booking_id = booking_header.booking_id
+                                group by booking_id) AS total_paid'))
+                            ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
+                            ->join('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
+                            ->where($where)
+                            ->whereIn('booking_status', [1,2])
+                            ->paginate(config('app.limitPerPage'));
+
+        return $outstanding;
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @param $status
+     * @return mixed
+     */
+    public function getVoid($start, $end, $status){
+        $where = [];
+        if($status != 0){
+            $where[] = ['booking_status', '=', $status];
+        }
+
+        $void = DB::table('booking_header')
+                    ->select(DB::raw('booking_code, first_name, last_name, partner_name, checkin_date, checkout_date, booking_status, room_list,
+                              booking_header.updated_by'))
+                    ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
+                    ->join('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
+                    ->where($where)
+                    ->whereIn('booking_status', [3,4])
+                    ->whereBetween('booking_header.checkout_date', [$start, $end])
+                    ->paginate(config('app.limitPerPage'));
+
+        return $void;
     }
 }
