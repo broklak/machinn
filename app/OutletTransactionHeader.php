@@ -16,7 +16,7 @@ class OutletTransactionHeader extends Model
      * @var array
      */
     protected $fillable = [
-        'bill_number', 'total_billed', 'total_discount', 'grand_total', 'desc', 'guest_id', 'date', 'status', 'created_by',
+        'bill_number', 'total_billed', 'total_discount', 'grand_total', 'desc', 'guest_id', 'date', 'status', 'created_by', 'audited',
         'waiters', 'guest_num', 'table_id', 'room_id', 'bill_type', 'delivery_type', 'source', 'total_tax', 'total_service', 'booking_id'
     ];
 

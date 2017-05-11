@@ -20,7 +20,7 @@ class BookingHeader extends Model
     protected $fillable = [
         'guest_id', 'room_plan_id', 'partner_id', 'type', 'checkin_date', 'checkout_date', 'adult_num','room_list', 'booking_code',
         'child_num', 'is_banquet', 'booking_status', 'payment_status', 'created_by', 'updated_by', 'grand_total', 'notes', 'void_reason', 'checkout',
-        'banquet_time_id', 'banquet_event_id', 'banquet_event_name'
+        'banquet_time_id', 'banquet_event_id', 'banquet_event_name', 'audited'
     ];
 
     /**

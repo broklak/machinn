@@ -20,4 +20,12 @@ Route::get('back/report/occupied', 'Front\ReportController@occupied')->name("bac
 Route::get('back/report/outstanding', 'Front\ReportController@outstanding')->name("back.report.outstanding");
 Route::get('back/report/void', 'Front\ReportController@void')->name("back.report.void");
 
+Route::get('back/audit/room', 'Back\AuditController@room')->name("back.night.room");
+Route::get('back/audit/room/void/{id}', 'Back\AuditController@voidRoom')->name("back.night.room.void");
+Route::post('back/audit/room', 'Back\AuditController@processRoom')->name("back.night.room.process");
+
+Route::get('back/audit/outlet', 'Back\AuditController@outlet')->name("back.night.outlet");
+Route::get('back/audit/outlet/void/{id}', 'Back\AuditController@voidOutlet')->name("back.night.outlet.void");
+Route::post('back/audit/outlet', 'Back\AuditController@processOutlet')->name("back.night.outlet.process");
+
 Route::get('back/dashboard', 'Back\DashboardController@index')->name("back.dashboard");

@@ -67,5 +67,16 @@
                 </li>
             </ul>
         </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'night-audit') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                <span>Night Audit</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'night-audit') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.night.room') class="active" @endif>
+                    <a href="{{route('back.night.room')}}">Room Transaction</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.night.outlet') class="active" @endif>
+                    <a href="{{route('back.night.outlet')}}">Outlet Transaction</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </li>
