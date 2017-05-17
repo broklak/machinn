@@ -32,4 +32,14 @@ class Income extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function getName($id) {
+        $data = parent::find($id);
+
+        return isset($data->income_name) ? $data->income_name : 'DELETED';
+    }
+
 }

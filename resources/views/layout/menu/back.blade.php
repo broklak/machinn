@@ -78,5 +78,30 @@
                 </li>
             </ul>
         </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'invoice') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                <span>Account Payable</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'invoice') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'invoice') class="active" @endif>
+                    <a href="{{route('invoice.index')}}">Invoice</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'invoice-payment') class="active" @endif>
+                    <a href="{{route('invoice-payment.index')}}">Invoice Payment</a>
+                </li>
+            </ul>
+        </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'back-transaction') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                <span>Transaction</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'back-transaction') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'mutation') class="active" @endif>
+                    <a href="{{route('mutation.index')}}">Cash and Bank Transfer</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'back-income') class="active" @endif>
+                    <a href="{{route('back-income.index')}}">Income</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'transaction') class="active" @endif>
+                    <a href="{{route('back.transaction.index')}}">Expense</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </li>

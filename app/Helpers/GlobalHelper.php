@@ -64,14 +64,15 @@ class GlobalHelper
 
     /**
      * @param $status
+     * @param string $type
      * @return string
      */
-    public static function setActivationStatus($status){
+    public static function setActivationStatus($status, $type = 'Active'){
         if($status == 0){
-            return '<span class="label label-important">Not Active</span>';
+            return '<span class="label label-important">Not '.$type.'</span>';
         }
 
-        return '<span class="label label-success">Active</span>';
+        return '<span class="label label-success">'.$type.'</span>';
     }
 
     /**
@@ -114,6 +115,21 @@ class GlobalHelper
         $rand = str_random($char - $len);
 
         return $prefix.strtoupper($guestId.$rand.$now);
+    }
+
+    /**
+     * @param $department_id
+     * @param $source_id
+     * @return string
+     */
+    public static function generateInvoiceNumber ($department_id, $source_id) {
+        $prefix = 'IP-';
+        $char = 8;
+        $now = substr(time(), -3);
+        $len = strlen($department_id.$now.$source_id);
+        $rand = str_random($char - $len);
+
+        return $prefix.strtoupper($department_id.$source_id.$rand.$now);
     }
 
     /**

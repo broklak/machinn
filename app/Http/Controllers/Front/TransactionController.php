@@ -43,11 +43,18 @@ class TransactionController extends Controller
      */
     private $parent;
 
+    /**
+     * @var string
+     */
+    private $url;
+
     public function __construct()
     {
         $this->model = new FrontExpenses();
 
         $this->module = 'transaction';
+
+        $this->url = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';
 
         $this->cost = Cost::where('cost_status', 1)->get();
 
@@ -55,7 +62,7 @@ class TransactionController extends Controller
 
         $this->cash = CashAccount::where('cash_account_status', 1)->get();
 
-        $this->parent = 'cashier';
+        $this->parent = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back-transaction' : 'cashier';
     }
 
     /**
@@ -117,7 +124,7 @@ class TransactionController extends Controller
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->url.$this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -164,7 +171,7 @@ class TransactionController extends Controller
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->url.$this->module.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -188,6 +195,16 @@ class TransactionController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', "Success to $action expenses");
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->url.$this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function softDelete($id) {
+        $this->model->find($id)->delete();
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        return redirect(route($this->url.$this->module.".index"))->with('displayMessage', $message);
     }
 }

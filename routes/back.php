@@ -28,4 +28,24 @@ Route::get('back/audit/outlet', 'Back\AuditController@outlet')->name("back.night
 Route::get('back/audit/outlet/void/{id}', 'Back\AuditController@voidOutlet')->name("back.night.outlet.void");
 Route::post('back/audit/outlet', 'Back\AuditController@processOutlet')->name("back.night.outlet.process");
 
+Route::get('back/invoice/delete/{id}', 'Back\InvoiceController@softDelete')->name('invoice.delete');
+Route::get('back/invoice/change-status/{id}/{status}', 'Back\InvoiceController@changeStatus')->name('invoice.change-status');
+Route::resource('back/invoice', 'Back\InvoiceController');
+
+Route::get('back/mutation/delete/{id}', 'Back\MutationController@softDelete')->name('mutation.delete');
+Route::get('back/mutation/change-status/{id}/{status}', 'Back\MutationController@changeStatus')->name('mutation.change-status');
+Route::resource('back/mutation', 'Back\MutationController');
+
+Route::get('back/back-income/delete/{id}', 'Back\BackIncomeController@softDelete')->name('back-income.delete');
+Route::get('back/back-income/change-status/{id}/{status}', 'Back\BackIncomeController@changeStatus')->name('back-income.change-status');
+Route::resource('back/back-income', 'Back\BackIncomeController');
+
+Route::get('back/invoice-payment/delete/{id}', 'Back\InvoicePaymentController@softDelete')->name('invoice-payment.delete');
+Route::get('back/invoice-payment/change-status/{id}/{status}', 'Back\InvoicePaymentController@changeStatus')->name('invoice-payment.change-status');
+Route::resource('back/invoice-payment', 'Back\InvoicePaymentController');
+
+Route::get('back/transaction/delete/{id}', 'Front\TransactionController@softDelete')->name('back.transaction.delete');
+Route::get('back/transaction/change-status/{id}/{status}', 'Front\TransactionController@changeStatus')->name('back.transaction.change-status');
+Route::resource('back/transaction', 'Front\TransactionController', ['as' => 'back']);
+
 Route::get('back/dashboard', 'Back\DashboardController@index')->name("back.dashboard");

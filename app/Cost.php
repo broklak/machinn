@@ -40,7 +40,9 @@ class Cost extends Model
     }
 
     public static function getCostName ($cost_id){
-        return parent::find($cost_id)->value('cost_name');
+        $data = parent::find($cost_id);
+
+        return (isset($data->cost_name)) ? $data->cost_name : 'DELETED';
     }
 
 }

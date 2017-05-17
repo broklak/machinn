@@ -2,8 +2,8 @@
 <script>
     $('.datepicker').datepicker();
 
-    $('#cost_id').change(function(){
-        var cost = $(this).val();
-        $('#amount').val($('#cost_amount_'+cost).val());
+    $('#income_id').change(function(){
+        var id = $(this).val();
+        $('#amount').val($('#income_amount_'+id).val());
     });
 </script>

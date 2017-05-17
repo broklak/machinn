@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-    @php $route_name = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.transaction' : 'transaction'; @endphp
+
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
         <h1>{{$master_module}}</h1>
@@ -26,35 +26,38 @@
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
-                                    <label class="control-label">Date</label>
+                                    <label class="control-label">{{$master_module}} Date</label>
                                     <div class="controls">
-                                        <input value="{{$row->date}}" id="date" required type="text" name="date" class="datepicker" data-date-format="yyyy-mm-dd" />
+                                        <input id="date" value="{{$row->invoice_date}}" required type="text" name="invoice_date" data-date-format="yyyy-mm-dd" class="datepicker" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Cost Type</label>
+                                    <label class="control-label">Due Date</label>
                                     <div class="controls">
-                                        <select id="cost_id" name="cost_id">
-                                            <option disabled selected>Choose Cost Type</option>
-                                            @foreach($cost as $key => $val)
-                                                <option @if($row->cost_id == $val['cost_id']) selected="selected" @endif value="{{$val['cost_id']}}">{{$val['cost_name']}}</option>
-                                            @endforeach
-                                        </select>
+                                        <input id="due_date" required value="{{$row->due_date}}" type="text" name="due_date" data-date-format="yyyy-mm-dd" class="datepicker" />
                                     </div>
-                                    @foreach($cost as $key => $val)
-                                        <input type="hidden" id="cost_amount_{{$val['cost_id']}}" value="{{$val['cost_amount']}}" />
-                                    @endforeach
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">Amount</label>
                                     <div class="controls">
-                                        <input value="{{$row->amount}}" id="amount" required type="number" name="amount" />
+                                        <input id="amount" value="{{$row->amount}}" required type="number" name="amount" />
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">Description</label>
                                     <div class="controls">
-                                        <input value="{{$row->desc}}" id="desc" required type="text" name="desc" />
+                                        <input id="description" value="{{$row->desc}}" type="text" name="description" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Business Partner</label>
+                                    <div class="controls">
+                                        <select name="source_id">
+                                            <option disabled selected>Choose Business Partner</option>
+                                            @foreach($partner as $key => $val)
+                                                <option @if($row->source_id == $val['partner_id']) selected="selected" @endif value="{{$val['partner_id']}}">{{$val['partner_name']}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -69,12 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Cash Source</label>
+                                    <label class="control-label">Cost</label>
                                     <div class="controls">
-                                        <select name="cash_account_id">
-                                            <option disabled selected>Choose Cash Source</option>
-                                            @foreach($cash as $key => $val)
-                                                <option @if($row->cash_account_id == $val['cash_account_id']) selected="selected" @endif value="{{$val['cash_account_id']}}">{{$val['cash_account_name']}}</option>
+                                        <select name="cost_id">
+                                            <option disabled selected>Choose Cost</option>
+                                            @foreach($cost as $key => $val)
+                                                <option @if($row->cost_id == $val['cost_id']) selected="selected" @endif value="{{$val['cost_id']}}">{{$val['cost_name']}}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -32,5 +32,14 @@ class CashAccount extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function getName ($id){
+        $data = parent::find($id);
+
+        return isset($data->cash_account_name) ? $data->cash_account_name : 'DELETED';
+    }
 
 }

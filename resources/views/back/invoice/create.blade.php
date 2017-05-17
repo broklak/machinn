@@ -3,13 +3,13 @@
 @section('title', 'Home')
 
 @section('content')
-    @php $route_name = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.transaction' : 'transaction'; @endphp
+
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Create {{$master_module}}</a> </div>
         <h1>{{$master_module}}</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
+        <a class="btn btn-success" href="{{route('invoice.index')}}">View Invoice Data</a>
         @foreach($errors->all() as $message)
             <div style="margin: 20px 0" class="alert alert-error">
                 {{$message}}
@@ -19,42 +19,45 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Edit {{$master_module}} Data</h5>
+                        <h5>Add New {{$master_module}}</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->id])}}" method="post">
+                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.store")}}" method="post">
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
-                                    <label class="control-label">Date</label>
+                                    <label class="control-label">{{$master_module}} Date</label>
                                     <div class="controls">
-                                        <input value="{{$row->date}}" id="date" required type="text" name="date" class="datepicker" data-date-format="yyyy-mm-dd" />
+                                        <input id="date" required type="text" name="invoice_date" data-date-format="yyyy-mm-dd" class="datepicker" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Cost Type</label>
+                                    <label class="control-label">Due Date</label>
                                     <div class="controls">
-                                        <select id="cost_id" name="cost_id">
-                                            <option disabled selected>Choose Cost Type</option>
-                                            @foreach($cost as $key => $val)
-                                                <option @if($row->cost_id == $val['cost_id']) selected="selected" @endif value="{{$val['cost_id']}}">{{$val['cost_name']}}</option>
-                                            @endforeach
-                                        </select>
+                                        <input id="due_date" required type="text" name="due_date" data-date-format="yyyy-mm-dd" class="datepicker" />
                                     </div>
-                                    @foreach($cost as $key => $val)
-                                        <input type="hidden" id="cost_amount_{{$val['cost_id']}}" value="{{$val['cost_amount']}}" />
-                                    @endforeach
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">Amount</label>
                                     <div class="controls">
-                                        <input value="{{$row->amount}}" id="amount" required type="number" name="amount" />
+                                        <input id="amount" required type="number" name="amount" />
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">Description</label>
                                     <div class="controls">
-                                        <input value="{{$row->desc}}" id="desc" required type="text" name="desc" />
+                                        <input id="description" type="text" name="description" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Business Partner</label>
+                                    <div class="controls">
+                                        <select name="source_id">
+                                            <option disabled selected>Choose Business Partner</option>
+                                            @foreach($partner as $key => $val)
+                                                <option @if(old('source_id') == $val['partner_id']) selected="selected" @endif value="{{$val['partner_id']}}">{{$val['partner_name']}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -63,18 +66,18 @@
                                         <select name="department_id">
                                             <option disabled selected>Choose Department</option>
                                             @foreach($department as $key => $val)
-                                                <option @if($row->department_id == $val['department_id']) selected="selected" @endif value="{{$val['department_id']}}">{{$val['department_name']}}</option>
+                                                <option @if(old('department_id') == $val['department_id']) selected="selected" @endif value="{{$val['department_id']}}">{{$val['department_name']}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Cash Source</label>
+                                    <label class="control-label">Cost</label>
                                     <div class="controls">
-                                        <select name="cash_account_id">
-                                            <option disabled selected>Choose Cash Source</option>
-                                            @foreach($cash as $key => $val)
-                                                <option @if($row->cash_account_id == $val['cash_account_id']) selected="selected" @endif value="{{$val['cash_account_id']}}">{{$val['cash_account_name']}}</option>
+                                        <select name="cost_id">
+                                            <option disabled selected>Choose Cost</option>
+                                            @foreach($cost as $key => $val)
+                                                <option @if(old('cost_id') == $val['cost_id']) selected="selected" @endif value="{{$val['cost_id']}}">{{$val['cost_name']}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -85,7 +88,6 @@
                                 <div id="status"></div>
                             </div>
                             <div id="submitted"></div>
-                            {{ method_field('PUT') }}
                         </form>
                     </div>
                 </div>

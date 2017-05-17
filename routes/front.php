@@ -30,6 +30,7 @@ Route::get('front/logbook/change-status/{id}/{status}', 'Master\LogbookControlle
 Route::get('front/logbook/done/{id}', 'Master\LogbookController@done')->name('logbook.done');
 Route::resource('front/logbook', 'Master\LogbookController');
 
+Route::get('front/transaction/delete/{id}', 'Front\TransactionController@softDelete')->name('transaction.delete');
 Route::get('front/transaction/change-status/{id}/{status}', 'Front\TransactionController@changeStatus')->name('transaction.change-status');
 Route::resource('front/transaction', 'Front\TransactionController');
 
