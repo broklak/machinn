@@ -48,4 +48,11 @@ Route::get('back/transaction/delete/{id}', 'Front\TransactionController@softDele
 Route::get('back/transaction/change-status/{id}/{status}', 'Front\TransactionController@changeStatus')->name('back.transaction.change-status');
 Route::resource('back/transaction', 'Front\TransactionController', ['as' => 'back']);
 
+Route::get('back/report/cash', 'Back\ReportController@cash')->name("back.report.cash");
+Route::get('back/report/profit', 'Back\ReportController@profit')->name("back.report.profit");
+Route::get('back/report/expense', 'Back\ReportController@expense')->name("back.report.expense");
+Route::get('back/report/asset', 'Back\ReportController@asset')->name("back.report.asset");
+Route::get('back/report/trial', 'Back\ReportController@asset')->name("back.report.trial");
+
 Route::get('back/dashboard', 'Back\DashboardController@index')->name("back.dashboard");
+Route::resource('back/account-receivable', 'Back\AccountReceivableController');

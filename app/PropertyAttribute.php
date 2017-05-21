@@ -17,7 +17,7 @@ class PropertyAttribute extends Model
      * @var array
      */
     protected $fillable = [
-        'property_attribute_name'
+        'property_attribute_name', 'type', 'purchase_date', 'purchase_amount', 'qty'
     ];
 
     /**
@@ -31,4 +31,26 @@ class PropertyAttribute extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     * @param $category
+     * @return string
+     */
+    public static function categoryName ($category){
+        switch($category){
+            case 1:
+                return 'Furniture Hotel';
+            break;
+            case 2:
+                return 'Electronic';
+            break;
+            case 3;
+                return 'Kitchen Equipment';
+            break;
+            default;
+                return 'Others';
+            break;
+        }
+
+    }
 }

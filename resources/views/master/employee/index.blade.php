@@ -10,7 +10,9 @@
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        @if($user['employee_type_id'] == 1)
+            <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -35,11 +37,13 @@
                                         <td>{{$model->getDepartmentName($val->department_id)}}</td>
                                         <td>{{$model->getStatusName($val->employee_status_id)}}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            <a onclick="return confirm('You will delete {{$val->name}}, continue? ')"
-                                               class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->id])}}"
-                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
-                                            </a>
+                                            @if($val->employee_type_id != 1 && $user['employee_type_id'] == 1)
+                                                <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                                <a onclick="return confirm('You will delete {{$val->name}}, continue? ')"
+                                                   class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->id])}}"
+                                                   title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                                </a>
+                                            @endif
                                             {{--@if($val->partner_status == 0)--}}
                                                 {{--<a onclick="return confirm('You will activate {{$val->partner_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->partner_id, 'status' => $val->partner_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>--}}
                                             {{--@else--}}

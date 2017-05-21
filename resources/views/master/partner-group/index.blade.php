@@ -20,6 +20,7 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Received Booking Payment First</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -29,6 +30,7 @@
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
                                         <td>{{$val->partner_group_name}}</td>
+                                        <td>{{($val->booking_paid_first == 1) ? 'Yes' : 'No'}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->partner_group_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->partner_group_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>

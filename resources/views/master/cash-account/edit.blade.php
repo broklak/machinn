@@ -28,13 +28,13 @@
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Name</label>
                                     <div class="controls">
-                                        <input id="name" required value="{{$row->cash_account_name}}" type="text" style="width: 30em" name="cash_account_name" />
+                                        <input id="name" @if($row->type == 2) readonly @endif required value="{{$row->cash_account_name}}" type="text" style="width: 30em" name="cash_account_name" />
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label">{{$master_module}} Description</label>
                                     <div class="controls">
-                                        <textarea rows="5" name="cash_account_desc" id="desc">{{$row->cash_account_desc}}</textarea>
+                                        <textarea rows="5" @if($row->type == 2) readonly @endif name="cash_account_desc" id="desc">{{$row->cash_account_desc}}</textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">

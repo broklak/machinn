@@ -128,7 +128,7 @@ class BookingController extends Controller
 
         $this->bank = Bank::where('bank_status', 1)->get();
 
-        $this->cash_account = CashAccount::where('cash_account_status', 1)->get();
+        $this->cash_account = CashAccount::where('cash_account_status', 1)->where('type', 1)->get();
 
         $this->roomType = RoomType::where('room_type_status', 1)->get();
 

@@ -89,6 +89,17 @@
                 </li>
             </ul>
         </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'account-receivable') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                <span>Account Receivable</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'account-receivable') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'account-receivable.index') class="active" @endif>
+                    <a href="{{route('account-receivable.index')}}">List</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'back-income') class="active" @endif>
+                    <a href="{{route('back-income.index')}}?type=2&parent=acc">Account Receivable Income</a>
+                </li>
+            </ul>
+        </li>
         <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'back-transaction') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
                 <span>Transaction</span></a>
             <ul @if(isset($parent_menu) && $parent_menu == 'back-transaction') style="display: block" @endif>
@@ -101,6 +112,26 @@
                 <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'transaction') class="active" @endif>
                     <a href="{{route('back.transaction.index')}}">Expense</a>
                 </li>
+            </ul>
+        </li>
+        <li class="submenu2 @if(isset($parent_menu) && $parent_menu == 'back-report') open @endif"><a href="#"><i class="icon icon-list-alt"></i>
+                <span>Report</span></a>
+            <ul @if(isset($parent_menu) && $parent_menu == 'back-report') style="display: block" @endif>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.cash') class="active" @endif>
+                    <a href="{{route('back.report.cash')}}">Cash and Bank Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.profit') class="active" @endif>
+                    <a href="{{route('back.report.profit')}}">Profit - Loss Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.expense') class="active" @endif>
+                    <a href="{{route('back.report.expense')}}">Expense Report</a>
+                </li>
+                <li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.asset') class="active" @endif>
+                    <a href="{{route('back.report.asset')}}">Asset Report</a>
+                </li>
+                {{--<li @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.trial') class="active" @endif>--}}
+                    {{--<a href="{{route('back.report.trial')}}">Trial Balance</a>--}}
+                {{--</li>--}}
             </ul>
         </li>
     </ul>

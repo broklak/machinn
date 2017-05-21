@@ -214,4 +214,14 @@ class BookingHeader extends Model
 
         return implode(',', $arr);
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public static function getBookingCode ($id){
+        $data = parent::find($id);
+
+        return $data->booking_code;
+    }
 }

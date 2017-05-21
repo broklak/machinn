@@ -9,7 +9,7 @@
         <h1>{{$master_module}}</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a class="btn btn-success" href="{{route('mutation.index')}}">View {{$master_module}} Data</a>
+        <a class="btn btn-success" href="{{route('back-income.index')}}">View {{$master_module}} Data</a>
         @foreach($errors->all() as $message)
             <div style="margin: 20px 0" class="alert alert-error">
                 {{$message}}
@@ -26,12 +26,23 @@
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
+                                    <label class="control-label">Income Type</label>
+                                    <div class="controls">
+                                        <select id="type" name="type">
+                                            <option disabled selected>Choose Type</option>
+                                            @foreach($type as $key => $val)
+                                                <option @if(old('type') == $key) selected="selected" @endif value="{{$key}}">{{$val}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">Date</label>
                                     <div class="controls">
                                         <input id="date" required type="text" name="date" data-date-format="yyyy-mm-dd" class="datepicker" />
                                     </div>
                                 </div>
-                                <div class="control-group">
+                                <div id="other" class="control-group hide">
                                     <label class="control-label">Type</label>
                                     <div class="controls">
                                         <select id="income_id" name="income_id">
@@ -42,6 +53,21 @@
                                         </select>
                                         @foreach($income as $key => $val)
                                             <input type="hidden" id="income_amount_{{$val['income_id']}}" value="{{$val['income_amount']}}" />
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div id="piutang" class="control-group hide">
+                                    <label class="control-label">Account Receivable</label>
+                                    <div class="controls">
+                                        <select id="account_receivable_id" name="account_receivable_id">
+                                            <option disabled selected>Choose Unpaid Booking</option>
+                                            @foreach($unpaidBook as $key => $val)
+                                                <option @if(old('account_receivable_id') == $val->booking_id) selected="selected" @endif
+                                                value="{{$val->booking_id}}">Booking {{\App\BookingHeader::getBookingCode($val->booking_id)}} - {{\App\Helpers\GlobalHelper::moneyFormatReport($val->total)}} - {{\App\Partner::getName($val->partner_id)}}</option>
+                                            @endforeach
+                                        </select>
+                                        @foreach($unpaidBook as $key => $val)
+                                            <input type="hidden" id="ar_amount_{{$val->booking_id}}" value="{{$val->total}}" />
                                         @endforeach
                                     </div>
                                 </div>

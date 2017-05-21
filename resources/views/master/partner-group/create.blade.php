@@ -32,6 +32,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="control-group">
+                                <label class="control-label">Receive Booking Payment</label>
+                                <div class="controls">
+                                    <input type="radio" value="0" name="paid" id="no"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="no">No</label>
+                                    <input type="radio" value="1" name="paid" id="yes"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="yes">Yes</label>
+                                </div>
+                            </div>
                             <div class="form-actions">
                                 <input id="next" class="btn btn-primary" type="submit" value="Save" />
                                 <div id="status"></div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\CashAccount;
+use App\CashTransaction;
 use App\Cost;
 use App\Department;
 use App\FrontExpenses;
@@ -112,7 +113,7 @@ class TransactionController extends Controller
             'date' => 'required'
         ]);
 
-        $this->model->create([
+        $created = $this->model->create([
             'amount'    => $request->input('amount'),
             'desc'    => $request->input('desc'),
             'cost_id'    => $request->input('cost_id'),
@@ -122,6 +123,18 @@ class TransactionController extends Controller
             'status'    => 2, // NOT APPROVED
             'created_by' => Auth::id()
         ]);
+
+        // INSERT TO CASH TRANSACTION
+        $insertCashTransaction = [
+            'expense_id'        => $created->id,
+            'amount'            => $request->input('amount'),
+            'desc'              => Cost::getCostName($request->input('cost_id')),
+            'cash_account_id'   => $request->input('cash_account_id'),
+            'payment_method'    => 4,
+            'type'              => 1
+        ];
+
+        CashTransaction::insert($insertCashTransaction);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
         return redirect(route($this->url.$this->module.".index"))->with('displayMessage', $message);

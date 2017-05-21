@@ -17,7 +17,7 @@ class PartnerGroup extends Model
      * @var array
      */
     protected $fillable = [
-        'partner_group_name'
+        'partner_group_name', 'booking_paid_first'
     ];
 
     /**

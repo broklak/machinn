@@ -12,15 +12,17 @@
         <hr>
         <div>
             <form>
-                {{--<div class="control-group">--}}
-                    {{--<label class="control-label">Choose Approval Status</label>--}}
-                    {{--<div class="controls">--}}
-                        {{--<select name="status" onchange="this.form.submit()">--}}
-                            {{--<option @if($status == 0) selected @endif value="0">Not Approved</option>--}}
-                            {{--<option @if($status == 1) selected @endif value="1">Approved</option>--}}
-                        {{--</select>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
+                <div class="control-group">
+                    <label class="control-label">Choose Type</label>
+                    <div class="controls">
+                        <select name="type" onchange="this.form.submit()">
+                            <option @if($typeIncome == 0) selected @endif value="0">All Type</option>
+                            <option @if($typeIncome == 1) selected @endif value="1">Paid Up Capital</option>
+                            <option @if($typeIncome == 2) selected @endif value="2">Account Receivable Payment</option>
+                            <option @if($typeIncome == 3) selected @endif value="3">Others</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="control-group">
                     <label class="control-label">Choose Date Range</label>
                     <div class="controls">
@@ -57,7 +59,7 @@
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
                                         <td>{{date('j F Y', strtotime($val->date))}}</td>
-                                        <td>{{\App\Income::getName($val->income_id)}}</td>
+                                        <td>{!!  \App\BackIncome::getType($val) !!}</td>
                                         <td>{{\App\CashAccount::getName($val->cash_account_recipient)}}</td>
                                         <td>{{$val->desc}}</td>
                                         <td>{{\App\Helpers\GlobalHelper::moneyFormatReport($val->amount)}}</td>

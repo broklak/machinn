@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\CashTransaction;
 use App\Extracharge;
 use App\Guest;
 use App\OutletTransactionDetail;
@@ -235,7 +236,7 @@ class PosController extends Controller
         }
 
         if($type == 3){ // IF PAID
-            OutletTransactionPayment::create([
+            $created = OutletTransactionPayment::create([
                 'transaction_id'     => $id,
                 'payment_method'     => $request->input('payment_method'),
                 'total_payment'     => $request->input('grand_total'),
@@ -244,6 +245,18 @@ class PosController extends Controller
                 'created_by'        => Auth::id(),
                 'guest_id'          => ($request->input('guest_id')) ? $request->input('guest_id') : 0
             ]);
+
+            // INSERT TO CASH TRANSACTION
+            $insertCashTransaction = [
+                'pos_id'        => $created->id,
+                'amount'            => $request->input('grand_total'),
+                'desc'              => 'Outlet Posting',
+                'cash_account_id'   => $request->input('cash_account_id'),
+                'payment_method'    => $request->input('payment_method'),
+                'type'              => 2
+            ];
+
+            CashTransaction::insert($insertCashTransaction);
         }
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class FrontExpenses extends Model
 {
@@ -35,8 +36,16 @@ class FrontExpenses extends Model
     public static function getList ($filter, $limit){
         $where[] = ['status', '<>', 3];
 
-        if($filter['status'] != 0) {
+        if(isset($filter['status']) && $filter['status'] != 0) {
             $where[] = ['status', '=', $filter['status']];
+        }
+
+        if(isset($filter['department_id']) && $filter['department_id'] != 0) {
+            $where[] = ['department_id', '=', $filter['department_id']];
+        }
+
+        if(isset($filter['cash_account_id']) && $filter['cash_account_id'] != 0) {
+            $where[] = ['cash_account_id', '=', $filter['cash_account_id']];
         }
 
         $list = parent::where($where)->whereBetween('date', [$filter['start'], $filter['end']])->paginate($limit);
@@ -52,5 +61,30 @@ class FrontExpenses extends Model
         } else {
             return 'Deleted';
         }
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    public static function getExpensesByCost ($start, $end){
+        $data = DB::table('front_expenses')
+                    ->select(DB::raw('cost_id, SUM(amount) as total'))
+                    ->groupBy('cost_id')
+                    ->whereBetween('date', [$start, $end])
+                    ->get();
+
+        return $data;
+    }
+
+    public static function getTotalExpense($start, $end){
+        $data = self::getExpensesByCost($start, $end);
+        $total = 0;
+        foreach ($data as $key => $item) {
+            $total = $total + $item->total;
+        }
+
+        return $total;
     }
 }

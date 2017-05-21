@@ -58,7 +58,7 @@ class LoginController extends Controller
             'address'  => $hotel->address,
             'phone'  => $hotel->phone,
             'fax'  => $hotel->fax,
-            'email'  => $hotel->email,
+            'email'  => $hotel->email
         ];
 
         session($data);

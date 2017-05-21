@@ -72,7 +72,11 @@ class PropertyAttributeController extends Controller
         ]);
 
         $this->model->create([
-            'property_attribute_name'   => $request->input('property_attribute_name')
+            'property_attribute_name'   => $request->input('property_attribute_name'),
+            'type'   => $request->input('type'),
+            'purchase_amount'   => $request->input('purchase_amount'),
+            'purchase_date'   => $request->input('purchase_date'),
+            'qty'   => $request->input('qty'),
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -119,6 +123,10 @@ class PropertyAttributeController extends Controller
         $data = $this->model->find($id);
 
         $data->property_attribute_name = $request->input('property_attribute_name');
+        $data->type = $request->input('type');
+        $data->purchase_amount = $request->input('purchase_amount');
+        $data->purchase_date = $request->input('purchase_date');
+        $data->qty = $request->input('qty');
 
         $data->save();
 

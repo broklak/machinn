@@ -68,11 +68,13 @@ class PartnerGroupController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'partner_group_name'  => 'required|max:75|min:3'
+            'partner_group_name'  => 'required|max:75|min:3',
+            'paid'  => 'required'
         ]);
 
         $this->model->create([
-            'partner_group_name'   => $request->input('partner_group_name')
+            'partner_group_name'   => $request->input('partner_group_name'),
+            'booking_paid_first'   => ($request->input('paid')) ? $request->input('paid') : 0
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -113,12 +115,14 @@ class PartnerGroupController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'partner_group_name'  => 'required|max:75|min:3'
+            'partner_group_name'  => 'required|max:75|min:3',
+            'paid'  => 'required'
         ]);
 
         $data = $this->model->find($id);
 
         $data->partner_group_name = $request->input('partner_group_name');
+        $data->booking_paid_first = ($request->input('paid')) ? $request->input('paid') : 0;
 
         $data->save();
 

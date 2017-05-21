@@ -38,14 +38,11 @@
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->cash_account_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->cash_account_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            @if($val->type == 1)
                                             <a onclick="return confirm('You will delete {{$val->cash_account_name}}, continue? ')"
                                                class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->cash_account_id])}}"
                                                title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
                                             </a>
-                                            @if($val->cash_account_status == 0)
-                                                <a onclick="return confirm('You will activate {{$val->cash_account_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->cash_account_id, 'status' => $val->cash_account_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
-                                            @else
-                                                <a onclick="return confirm('You will deactivate {{$val->cash_account_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->cash_account_id, 'status' => $val->cash_account_status])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>
                                             @endif
                                         </td>
                                     </tr>

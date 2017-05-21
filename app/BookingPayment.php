@@ -107,9 +107,37 @@ class BookingPayment extends Model
             } else {
                 parent::find($payment->booking_payment_id)->update($paymentData);
             }
+
+            // INSERT TO ACCOUNT RECEIVABLE
+            $insertAccReceivable = [
+                'booking_id'    => $header->booking_id,
+                'date'    => date('Y-m-d'),
+                'amount'    => $paymentData['total_payment'],
+                'desc'      => 'Down Payment Booking '.$header->booking_code,
+                'partner_id' => $header->partner_id,
+                'paid'      => 0,
+                'created_by' => Auth::id()
+            ];
+
+            AccountReceivable::insert($insertAccReceivable);
+
+            // INSERT TO CASH TRANSACTION
+            $insertCashTransaction = [
+                'booking_id'    => $header->booking_id,
+                'amount'            => $paymentData['total_payment'],
+                'desc'              => 'Down Payment Booking '.$header->booking_code,
+                'cash_account_id'   => $input['cash_account_id'],
+                'payment_method'    => $paymentData['payment_method'],
+                'type'              => 2
+            ];
+
+            CashTransaction::insert($insertCashTransaction);
+
         } else { // DELETE ALL DOWNPAYMENT IF TENTATIVE
             $payment = parent::where('booking_id', $header->booking_id)
                 ->where('type', 1)->delete();
+
+            AccountReceivable::where('booking_id', $header->booking_id)->delete();
         }
         return 1;
     }
@@ -120,5 +148,24 @@ class BookingPayment extends Model
      */
     public static function getTotalPaid ($bookingId){
         return parent::where('booking_id', $bookingId)->sum('total_payment');
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @return int
+     */
+    public static function getIncome ($start, $end){
+        $start = date('Y-m-d 00:00:00', strtotime($start));
+        $end = date('Y-m-d 23:59:59', strtotime($end));
+
+        $payment = parent::whereBetween('created_at', [$start, $end])->get();
+
+        $total = 0;
+        foreach($payment as $key => $val){
+            $total = $total + $val->total_payment;
+        }
+
+        return $total;
     }
 }

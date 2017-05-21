@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\AccountReceivable;
 use App\Bank;
 use App\BookingExtracharge;
 use App\BookingHeader;
 use App\BookingPayment;
 use App\BookingRoom;
 use App\CashAccount;
+use App\CashTransaction;
 use App\Country;
 use App\CreditCardType;
 use App\Extracharge;
@@ -386,7 +388,7 @@ class CheckinController extends Controller
             'extra'     => $extra,
             'charge'    => $charge,
             'bill_number' => GlobalHelper::generateReceipt($bookingId),
-            'cash_account' => CashAccount::where('cash_account_status', 1)->get(),
+            'cash_account' => CashAccount::where('cash_account_status', 1)->where('type', 1)->get(),
             'cc_type'    => CreditCardType::where('cc_type_status', 1)->get(),
             'bank' => Bank::where('bank_status', 1)->get(),
             'settlement' => Settlement::where('settlement_status', 1)->get(),
@@ -424,6 +426,7 @@ class CheckinController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function makePayment (Request $request, $id) {
+        $header = BookingHeader::find($id);
         BookingHeader::find($id)->update([
             'payment_status'    => 3, // LUNAS
             'updated_by'        => Auth::id(),
@@ -484,6 +487,30 @@ class CheckinController extends Controller
             'card_expiry_year' => $request->input('year'),
             'created_by'        => Auth::id()
         ]);
+
+        // INSERT TO ACCOUNT RECEIVABLE
+        $insertAccReceivable = [
+            'booking_id'    => $id,
+            'date'    => date('Y-m-d'),
+            'amount'    => $request->input('total_unpaid'),
+            'desc'      => 'Final Payment Booking '.$header->booking_code,
+            'partner_id' => $header->partner_id,
+            'paid'      => 0,
+            'created_by' => Auth::id()
+        ];
+        AccountReceivable::insert($insertAccReceivable);
+
+        // INSERT TO CASH TRANSACTION
+        $insertCashTransaction = [
+            'booking_id'        => $id,
+            'amount'            => $request->input('total_unpaid'),
+            'desc'              => 'Final Payment Booking '.$header->booking_code,
+            'cash_account_id'   => $request->input('cash_account_id'),
+            'payment_method'    => $request->input('payment_method'),
+            'type'              => 2
+        ];
+
+        CashTransaction::insert($insertCashTransaction);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to make payment');
         return redirect(route("checkin.payment", ['id' => $id]))->with('displayMessage', $message);

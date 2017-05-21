@@ -117,6 +117,7 @@ class MutationController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
         $data['cash_account'] = CashAccount::all();
         $data['row'] = $this->model->find($id);
         return view("back.".$this->module.".edit", $data);

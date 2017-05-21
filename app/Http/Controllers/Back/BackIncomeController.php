@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\AccountReceivable;
 use App\BackIncome;
+use App\CashTransaction;
 use App\Income;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,6 +29,11 @@ class BackIncomeController extends Controller
      */
     private $parent;
 
+    /**
+     *
+     */
+    private $type;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -36,6 +43,8 @@ class BackIncomeController extends Controller
         $this->module = 'back-income';
 
         $this->parent = 'back-transaction';
+
+        $this->type = [1 => 'Paid Up Capital', 2 => 'Account Receivable Payment', 3 => 'Others'];
     }
 
     /**
@@ -47,13 +56,13 @@ class BackIncomeController extends Controller
     {
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
-        $status = ($request->input('status')) ? $request->input('status') : 0;
+        $type = ($request->input('type')) ? $request->input('type') : 0;
 
-        $data['parent_menu'] = $this->parent;
-        $data['status'] = $status;
+        $data['parent_menu'] = ($request->input('parent') == 'acc') ? 'account-receivable' : $this->parent;
+        $data['typeIncome'] = $type;
         $data['start'] = $start;
         $data['end'] = $end;
-        $rows = $this->model->getIncome($start, $end, $status);
+        $rows = $this->model->getIncome($start, $end, $type);
         $data['rows'] = $rows;
         return view("back.".$this->module.".index", $data);
     }
@@ -65,6 +74,8 @@ class BackIncomeController extends Controller
      */
     public function create()
     {
+        $data['unpaidBook'] = AccountReceivable::getUnpaidBooking();
+        $data['type'] = $this->type;
         $data['income'] = Income::all();
         $data['cash_account'] = CashAccount::all();
         $data['parent_menu'] = $this->parent;
@@ -82,21 +93,42 @@ class BackIncomeController extends Controller
         $this->validate($request,[
             'date'  => 'required',
             'amount'  => 'required',
-            'income_id' => 'required',
-            'cash_account_recipient'  => 'required'
+            'cash_account_recipient'  => 'required',
+            'type'  => 'required'
         ]);
 
+        if($request->input('type') == '2'){
+            $bookingId = $request->input('account_receivable_id');
 
-        $this->model->create([
+            AccountReceivable::where('booking_id', $bookingId)
+                ->update([
+                    'paid'  => 1
+                ]);
+        }
+
+        $created = $this->model->create([
             'date'      => $request->input('date'),
             'amount'      => $request->input('amount'),
             'desc'      => $request->input('description'),
-            'income_id'      => $request->input('income_id'),
-            'type'      => 1,
+            'income_id'      => ($request->input('income_id')) ? $request->input('income_id') : 0,
+            'account_receivable_id' => $request->input('account_receivable_id'),
+            'type'      => $request->input('type'),
             'cash_account_recipient'      => $request->input('cash_account_recipient'),
             'created_by'      => Auth::id(),
             'status'        => 0
         ]);
+
+        // INSERT TO CASH TRANSACTION
+        $insertCashTransaction = [
+            'income_id'        => $created->id,
+            'amount'            => $request->input('amount'),
+            'desc'              => BackIncome::getType($created),
+            'cash_account_id'   => $request->input('cash_account_recipient'),
+            'payment_method'    => 4,
+            'type'              => 2
+        ];
+
+        CashTransaction::insert($insertCashTransaction);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -121,6 +153,9 @@ class BackIncomeController extends Controller
      */
     public function edit($id)
     {
+        $data['parent_menu'] = $this->parent;
+        $data['unpaidBook'] = AccountReceivable::getUnpaidBooking();
+        $data['type'] = $this->type;
         $data['income'] = Income::all();
         $data['cash_account'] = CashAccount::all();
         $data['row'] = $this->model->find($id);
@@ -139,17 +174,26 @@ class BackIncomeController extends Controller
         $this->validate($request,[
             'date'  => 'required',
             'amount'  => 'required',
-            'income_id' => 'required',
-//            'type'  => 'required',
+            'type'  => 'required',
             'cash_account_recipient'  => 'required'
         ]);
+
+        if($request->input('type') == '2'){
+            $bookingId = $request->input('account_receivable_id');
+
+            AccountReceivable::where('booking_id', $bookingId)
+                ->update([
+                    'paid'  => 1
+                ]);
+        }
 
         $data = $this->model->find($id)->update([
             'date'      => $request->input('date'),
             'amount'      => $request->input('amount'),
             'desc'      => $request->input('description'),
-            'type'      => 1,
-            'income_id'      => $request->input('income_id'),
+            'type'      => $request->input('type'),
+            'income_id'      => ($request->input('income_id')) ? $request->input('income_id') : 0,
+            'account_receivable_id' => $request->input('account_receivable_id'),
             'cash_account_recipient'      => $request->input('cash_account_recipient'),
             'updated_by'      => Auth::id()
         ]);

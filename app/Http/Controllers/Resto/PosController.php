@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Resto;
 
 use App\BookingHeader;
+use App\CashTransaction;
 use App\Extracharge;
 use App\Guest;
 use App\OutletTransactionDetail;
@@ -316,7 +317,7 @@ class PosController extends Controller
             if($request->input('payment_method') != 1 && $request->input('payment_method') != 2){
                 $paid = $request->input('grand_total');
             }
-            OutletTransactionPayment::create([
+            $created = OutletTransactionPayment::create([
                 'transaction_id'     => $id,
                 'payment_method'     => $request->input('payment_method'),
                 'total_payment'     => $request->input('grand_total'),
@@ -334,6 +335,18 @@ class PosController extends Controller
                 'bank_transfer_recipient' => $request->input('cash_account_id'),
                 'guest_id'          => ($request->input('guest_id')) ? $request->input('guest_id') : 0
             ]);
+
+            // INSERT TO CASH TRANSACTION
+            $insertCashTransaction = [
+                'pos_id'        => $created->id,
+                'amount'            => $request->input('grand_total'),
+                'desc'              => 'Outlet Posting',
+                'cash_account_id'   => $request->input('cash_account_id'),
+                'payment_method'    => $request->input('payment_method'),
+                'type'              => 2
+            ];
+
+            CashTransaction::insert($insertCashTransaction);
         }
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');

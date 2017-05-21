@@ -20,6 +20,10 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Category</th>
+                                <th>Purchase Date</th>
+                                <th>Purchase Amount</th>
+                                <th>Quantity</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -29,6 +33,10 @@
                                 @foreach($rows as $val)
                                     <tr class="odd gradeX">
                                         <td>{{$val->property_attribute_name}}</td>
+                                        <td>{{\App\PropertyAttribute::categoryName($val->type)}}</td>
+                                        <td>{{($val->purchase_date == null) ? date('j F Y', strtotime($val->created_at)) : date('j F Y', strtotime($val->purchase_date))}}</td>
+                                        <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->purchase_amount)}}</td>
+                                        <td>{{$val->qty}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->property_attribute_status)!!}</td>
                                         <td>
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->property_attribute_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
