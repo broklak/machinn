@@ -10,7 +10,9 @@
     </div>
     <div class="container-fluid">
         <hr>
+        @if($user['employee_type_id'] == 1)
         <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -31,7 +33,9 @@
                                         <td>{{$val->department_name}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->department_status)!!}</td>
                                         <td>
+                                            @if($user['employee_type_id'] == 1)
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->department_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

@@ -12,7 +12,9 @@
     </div>
     <div class="container-fluid">
         <hr>
+        @if($user['employee_type_id'] == 1)
         <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -37,12 +39,14 @@
                                         <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->cash_account_amount)}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->cash_account_status)!!}</td>
                                         <td>
+                                            @if($user['employee_type_id'] == 1)
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->cash_account_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
                                             @if($val->type == 1)
                                             <a onclick="return confirm('You will delete {{$val->cash_account_name}}, continue? ')"
                                                class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->cash_account_id])}}"
                                                title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
                                             </a>
+                                            @endif
                                             @endif
                                         </td>
                                     </tr>

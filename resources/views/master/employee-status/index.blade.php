@@ -10,7 +10,9 @@
     </div>
     <div class="container-fluid">
         <hr>
+        @if($user['employee_type_id'] == 1)
         <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -31,6 +33,7 @@
                                         <td>{{$val->employee_status_name}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->employee_status_active)!!}</td>
                                         <td>
+                                            @if($user['employee_type_id'] == 1)
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->employee_status_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
                                             <a onclick="return confirm('You will delete {{$val->employee_status_name}}, continue? ')"
                                                class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->employee_status_id])}}"
@@ -40,6 +43,7 @@
                                                 <a onclick="return confirm('You will activate {{$val->employee_status_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->employee_status_id, 'status' => $val->employee_status_active])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
                                             @else
                                                 <a onclick="return confirm('You will deactivate {{$val->employee_status_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->employee_status_id, 'status' => $val->employee_status_active])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>
+                                            @endif
                                             @endif
                                         </td>
                                     </tr>

@@ -35,7 +35,7 @@
                                         <td>{{$model->getFloorName($val->room_floor_id)}}</td>
                                         <td><span class="label label-{{\App\Helpers\GlobalHelper::setButtonStatus($val->hk_status)}}">{{\App\Helpers\GlobalHelper::setStatusName($val->hk_status)}}</span></td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->room_number_code])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->room_number_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
                                             <a onclick="return confirm('You will delete {{$val->room_number_code}}, continue? ')"
                                                class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->room_number_id])}}"
                                                title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
