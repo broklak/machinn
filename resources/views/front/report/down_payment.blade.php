@@ -7,7 +7,7 @@
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
         <h1>
-            @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.down-payment') Deposit
+            @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.down-payment' || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.down-payment') Deposit
             @else Cash and Credit
             @endif
                 {{$master_module}}
@@ -33,6 +33,14 @@
                         <input type="submit" style="vertical-align: top" class="btn btn-primary">
                     </form>
                 </div>
+                <div style="float: right">
+                    @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.down-payment' || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.down-payment')
+                        <a href="{{route('back.excel.deposit')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                    @else
+                        <a href="{{route('back.excel.cashCredit')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                    @endif
+                </div>
+                <div style="clear: both;"></div>
             </div>
         </div>
         {!! session('displayMessage') !!}

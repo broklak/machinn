@@ -38,6 +38,10 @@
                 </form>
             </div>
         @endif
+        <div style="float: right">
+            <a href="{{route('back.excel.bank')}}?start={{$start}}&end={{$end}}" class="btn btn-success">Export to CSV</a>
+        </div>
+        <div style="clear: both;"></div>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">

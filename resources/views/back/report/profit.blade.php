@@ -25,6 +25,10 @@
                     <input type="hidden" name="type" value="transaction">
                 </form>
             </div>
+        <div style="float: right">
+            <a href="{{route('back.excel.profit')}}?start={{$start}}&end={{$end}}" class="btn btn-success">Export to CSV</a>
+        </div>
+        <div style="clear: both;"></div>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">

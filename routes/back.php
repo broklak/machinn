@@ -54,5 +54,23 @@ Route::get('back/report/expense', 'Back\ReportController@expense')->name("back.r
 Route::get('back/report/asset', 'Back\ReportController@asset')->name("back.report.asset");
 Route::get('back/report/trial', 'Back\ReportController@asset')->name("back.report.trial");
 
+// EXPORT TO CSV
+Route::get('back/excel/guest-bill', 'Back\ExcelController@guestBill')->name("back.excel.guestBill");
+Route::get('back/excel/deposit', 'Back\ExcelController@deposit')->name("back.excel.deposit");
+Route::get('back/excel/cash-credit', 'Back\ExcelController@cashCredit')->name("back.excel.cashCredit");
+Route::get('back/excel/front-pos', 'Back\ExcelController@frontPos')->name("back.excel.frontPos");
+Route::get('back/excel/source', 'Back\ExcelController@source')->name("back.excel.source");
+Route::get('back/excel/booking', 'Back\ExcelController@booking')->name("back.excel.booking");
+Route::get('back/excel/salespos', 'Back\ExcelController@salespos')->name("back.excel.salespos");
+Route::get('back/excel/itempos', 'Back\ExcelController@itempos')->name("back.excel.itempos");
+Route::get('back/excel/arrival', 'Back\ExcelController@arrival')->name("back.excel.arrival");
+Route::get('back/excel/occupied', 'Back\ExcelController@occupied')->name("back.excel.occupied");
+Route::get('back/excel/outstanding', 'Back\ExcelController@outstanding')->name("back.excel.outstanding");
+Route::get('back/excel/void', 'Back\ExcelController@void')->name("back.excel.void");
+Route::get('back/excel/bank', 'Back\ExcelController@bank')->name("back.excel.bank");
+Route::get('back/excel/profit', 'Back\ExcelController@profit')->name("back.excel.profit");
+Route::get('back/excel/expense', 'Back\ExcelController@expense')->name("back.excel.expense");
+Route::get('back/excel/asset', 'Back\ExcelController@asset')->name("back.excel.asset");
+
 Route::get('back/dashboard', 'Back\DashboardController@index')->name("back.dashboard");
 Route::resource('back/account-receivable', 'Back\AccountReceivableController');

@@ -9,10 +9,13 @@ class Report extends Model
 {
     /**
      * @param $filter
+     * @param bool $csv
      * @return mixed
      */
-    public function guestBill($filter) {
+    public function guestBill($filter, $csv = false) {
         $where[] = ['booking_header.checkout', '=', 1];
+
+        $limit = ($csv) ? 1000000000 : config('app.limitPerPage');
 
         $getBooking = DB::table('booking_header')
             ->select(DB::raw('booking_header.booking_id, booking_code, room_list, first_name, last_name, checkin_date, checkout_date,
@@ -32,11 +35,11 @@ class Report extends Model
             ->orderBy('booking_header.booking_id', 'desc')
             ->where($where)
             ->whereBetween('checkin_date', [$filter['start'], $filter['end']])
-            ->paginate(config('app.limitPerPage'));
+            ->paginate($limit);
 
         $booking = array();
         foreach($getBooking as $row) {
-            $booking[] = $row;
+            $booking[] = ($csv) ? (array) $row : $row;
         }
 
         $data['booking'] = $booking;
@@ -46,7 +49,7 @@ class Report extends Model
     }
 
     public function downPayment($filter, $down = 1) {
-        $whereAll[] = ['booking_payment.type', '=', 1];
+        $whereAll[] = ['booking_payment.type', '=', $down];
         $whereCashFo = [
             ['booking_payment.type', '=', $down],
             ['payment_method', '=', 1]
@@ -150,17 +153,19 @@ class Report extends Model
     /**
      * @param $start
      * @param int $type
+     * @param bool $csv
      * @return mixed
      */
-    public function getArrival ($start, $type = 1){
+    public function getArrival ($start, $type = 1, $csv = false){
         $type = ($type == 1) ? 'checkin_date' : 'checkout_date';
+        $limit = ($csv) ? 1000000000 : config('app.limitPerPage');
         $getBooking = DB::table('booking_header')
                     ->select(DB::raw("booking_code, checkin_date, checkout_date, room_list, first_name, last_name, title, adult_num, child_num,
                         (select count(*) from booking_room where booking_id = booking_header.booking_id AND room_transaction_date = '$start'  GROUP BY booking_id)
                         AS total_room"))
                     ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
                     ->where($type, $start)
-                    ->paginate(config('app.limitPerPage'));
+                    ->paginate($limit);
 
         return $getBooking;
     }
@@ -183,10 +188,12 @@ class Report extends Model
 
     /**
      * @param int $status
+     * @param bool $csv
      * @return mixed
      */
-    public function getOutstandingBooking ($status = 0){
+    public function getOutstandingBooking ($status = 0, $csv = false){
         $where[] = ['payment_status', '<>', 3];
+        $limit = ($csv) ? 1000000000 : config('app.limitPerPage');
         if($status != 0){
             $where[] = ['booking_status', '=', $status];
         }
@@ -200,7 +207,7 @@ class Report extends Model
                             ->join('partners', 'booking_header.partner_id', '=', 'partners.partner_id')
                             ->where($where)
                             ->whereIn('booking_status', [1,2])
-                            ->paginate(config('app.limitPerPage'));
+                            ->paginate($limit);
 
         return $outstanding;
     }

@@ -30,6 +30,10 @@
                         <input type="submit" style="vertical-align: top" class="btn btn-primary">
                 </div>
             </div>
+                <div style="float: right">
+                    <a href="{{route('back.excel.void')}}?start={{$start}}&end={{$end}}" class="btn btn-success">Export to CSV</a>
+                </div>
+                <div style="clear: both;"></div>
             </form>
         </div>
         {!! session('displayMessage') !!}

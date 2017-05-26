@@ -364,6 +364,7 @@ class BookingController extends Controller
             '11' => 'November',
             '12' => 'December',
         ];
+        $data['numericMonth'] = $month;
         $data['year_list'] = 5;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
         $data['year'] = date('Y', strtotime(date("$year-$month-1")));

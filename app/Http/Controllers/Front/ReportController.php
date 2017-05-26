@@ -62,6 +62,7 @@ class ReportController extends Controller
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
+        $data['numericMonth'] = $month;
         $data['year'] = date('Y', strtotime(date("$year-$month-1")));
         $data['start'] = $start;
         $data['end'] = $end;
@@ -89,6 +90,7 @@ class ReportController extends Controller
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
+        $data['numericMonth'] = $month;
         $data['year'] = date('Y', strtotime(date("$year-$month-1")));
         $data['start'] = $start;
         $data['end'] = $end;
@@ -132,6 +134,7 @@ class ReportController extends Controller
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
+        $data['numericMonth'] = $month;
         $data['year'] = date('Y', strtotime(date("$year-$month-1")));
         $data['start'] = $start;
         $data['end'] = $end;
@@ -159,6 +162,7 @@ class ReportController extends Controller
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
         $data['year'] = date('Y', strtotime(date("$year-$month-1")));
+        $data['numericMonth'] = $month;
         $data['start'] = $start;
         $data['end'] = $end;
         $data['filter'] = $filter;

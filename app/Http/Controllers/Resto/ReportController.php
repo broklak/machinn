@@ -62,6 +62,7 @@ class ReportController extends Controller
         $data['rows'] = $pos;
         $data['parent_menu'] = $this->parent;
         $data['month_list'] = $this->month;
+        $data['numericMonth'] = $month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
         $data['year'] = date('Y', strtotime(date("$year-$month-1")));
@@ -89,6 +90,7 @@ class ReportController extends Controller
         $data['name'] = $name;
         $data['parent_menu'] = $this->parent;
         $data['month_list'] = $this->month;
+        $data['numericMonth'] = $month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
         $data['year'] = date('Y', strtotime(date("$year-$month-1")));

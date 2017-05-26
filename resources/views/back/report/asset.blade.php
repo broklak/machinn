@@ -26,6 +26,10 @@
                 </div>
             </form>
         </div>
+        <div style="float: right">
+            <a href="{{route('back.excel.asset')}}?start={{$start}}&end={{$end}}&category={{$category}}" class="btn btn-success">Export to CSV</a>
+        </div>
+        <div style="clear: both;"></div>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">

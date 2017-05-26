@@ -22,6 +22,10 @@
                         </select>
                     </form>
                 </div>
+                <div style="float: right">
+                    <a href="{{route('back.excel.outstanding')}}?status={{$status}}" class="btn btn-success">Export to CSV</a>
+                </div>
+                <div style="clear: both;"></div>
             </div>
         </div>
         {!! session('displayMessage') !!}

@@ -37,6 +37,10 @@
                         </select>
                     </div>
                 </form>
+                <div style="float: right">
+                    <a href="{{route('back.excel.itempos')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                </div>
+                <div style="clear: both;"></div>
             </div>
         </div>
         {!! session('displayMessage') !!}
