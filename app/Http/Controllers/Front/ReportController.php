@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\BookingHeader;
 use App\Report;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\OutletTransactionHeader;
 use App\Http\Controllers\Controller;
@@ -48,7 +49,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function guestBill (Request $request){
-
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = date("$year-$month-01");
@@ -77,6 +80,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function downPayment (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = date("$year-$month-01");
@@ -105,6 +111,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function frontPos(Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 months'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
         $filter['bill_number'] = $request->input('bill_number');
@@ -121,6 +130,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function cashCredit (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = date("$year-$month-01");
@@ -148,6 +160,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function source (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = date("$year-$month-01");
@@ -175,6 +190,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function arrival (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d');
 
         $arrival = $this->model->getArrival($start);
@@ -194,6 +212,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function occupied (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $datediff = strtotime($end) - strtotime($start);
@@ -221,6 +242,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function outstanding (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $status = ($request->input('status')) ? $request->input('status') : 0;
         $rows = $this->model->getOutstandingBooking($status);
         $data = [
@@ -236,6 +260,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function void (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $status = ($request->input('status')) ? $request->input('status') : 0;

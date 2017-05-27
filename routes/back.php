@@ -72,5 +72,8 @@ Route::get('back/excel/profit', 'Back\ExcelController@profit')->name("back.excel
 Route::get('back/excel/expense', 'Back\ExcelController@expense')->name("back.excel.expense");
 Route::get('back/excel/asset', 'Back\ExcelController@asset')->name("back.excel.asset");
 
+Route::get('setting/employee/delete/{id}', 'Master\EmployeeController@softDelete')->name('setting.employee.delete');
+Route::resource('setting/employee', 'Master\EmployeeController', ['as' => 'setting']);
+
 Route::get('back/dashboard', 'Back\DashboardController@index')->name("back.dashboard");
 Route::resource('back/account-receivable', 'Back\AccountReceivableController');

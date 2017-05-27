@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\PropertyFloor;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -42,6 +43,9 @@ class PropertyFloorController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 5, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -55,6 +59,9 @@ class PropertyFloorController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 5, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         return view("master.".$this->module.".create", $data);
     }
@@ -67,6 +74,9 @@ class PropertyFloorController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 5, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'property_floor_name'  => 'required|max:25'
         ]);
@@ -98,6 +108,9 @@ class PropertyFloorController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 5, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
@@ -112,6 +125,9 @@ class PropertyFloorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 5, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'property_floor_name'  => 'required|max:25'
         ]);
@@ -143,6 +159,9 @@ class PropertyFloorController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 5, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -164,6 +183,9 @@ class PropertyFloorController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 5, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

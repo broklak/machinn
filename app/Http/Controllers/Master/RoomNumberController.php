@@ -6,6 +6,7 @@ use App\BookingRoom;
 use App\PropertyFloor;
 use App\RoomNumber;
 use App\RoomType;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -60,6 +61,9 @@ class RoomNumberController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['status'] = config('app.roomStatus');
         $data['model'] = $this->model;
@@ -75,6 +79,9 @@ class RoomNumberController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['type'] = $this->type;
         $data['floor'] = $this->floor;
@@ -89,6 +96,9 @@ class RoomNumberController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'room_number_code'  => 'required|max:75|min:3',
             'room_type_id'  => 'required|numeric',
@@ -124,6 +134,9 @@ class RoomNumberController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['type'] = $this->type;
         $data['floor'] = $this->floor;
@@ -140,6 +153,9 @@ class RoomNumberController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'room_number_code'  => 'required|max:75|min:3',
             'room_type_id'  => 'required|numeric',
@@ -175,6 +191,9 @@ class RoomNumberController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         $data->room_number_status = $status;
@@ -190,6 +209,9 @@ class RoomNumberController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function viewRoom (Request $request){
+        if(!UserRole::checkAccess($subModule = 9, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = 'room-transaction';
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d');
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d', strtotime("+14 days"));
@@ -217,6 +239,9 @@ class RoomNumberController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -226,6 +251,9 @@ class RoomNumberController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function houseKeep(){
+        if(!UserRole::checkAccess($subModule = 9, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $checkin = date('Y-m-d');
         $checkout = date('Y-m-d', strtotime('+1 day'));
         $getRoom = RoomNumber::getRoomAvailable($checkin, $checkout, $filter = array());
@@ -246,6 +274,9 @@ class RoomNumberController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeHkStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         $data->hk_status = $status;

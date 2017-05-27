@@ -6,6 +6,7 @@ use App\AccountReceivable;
 use App\BackIncome;
 use App\CashTransaction;
 use App\Income;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +55,9 @@ class BackIncomeController extends Controller
      */
     public function index(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 16, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $type = ($request->input('type')) ? $request->input('type') : 0;
@@ -74,6 +78,9 @@ class BackIncomeController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 16, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['unpaidBook'] = AccountReceivable::getUnpaidBooking();
         $data['type'] = $this->type;
         $data['income'] = Income::all();
@@ -90,6 +97,9 @@ class BackIncomeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 16, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'date'  => 'required',
             'amount'  => 'required',
@@ -153,6 +163,9 @@ class BackIncomeController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 16, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['unpaidBook'] = AccountReceivable::getUnpaidBooking();
         $data['type'] = $this->type;
@@ -171,6 +184,9 @@ class BackIncomeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 16, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'date'  => 'required',
             'amount'  => 'required',
@@ -219,6 +235,9 @@ class BackIncomeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 16, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -240,6 +259,9 @@ class BackIncomeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 16, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

@@ -25,6 +25,7 @@ use App\RoomType;
 use App\Settlement;
 use App\Tax;
 use App\User;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -106,6 +107,9 @@ class CheckinController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = 'room-transaction';
         $data['floor'] = $this->floor;
         $data['room_type'] = $this->roomType;
@@ -127,6 +131,9 @@ class CheckinController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $guest_id = $request->input('guest_id');
         $guest = Guest::insertGuest($request->input(), $guest_id);
         $guest_id = ($guest_id == null) ? $guest->guest_id  : $guest_id;
@@ -144,6 +151,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function book($bookingId) {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         BookingHeader::find($bookingId)
                         ->update([
                             'booking_status' => 2 // ALREADY CHECKIN
@@ -163,6 +173,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function detail ($bookingId){
+        if(!UserRole::checkAccess($subModule = 6, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $header = BookingHeader::find($bookingId);
         $header->room_data = RoomNumber::getRoomDataList($header->room_list);
 
@@ -201,6 +214,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function extracharge(Request $request, $id){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $room = $request->input('room_id');
         $qty = $request->input('qty');
         $price = $request->input('price');
@@ -236,6 +252,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function rate(Request $request, $id){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $room_rate = $request->input('room_rate');
         $plan_rate = $request->input('plan_rate');
         $discount = $request->input('discount');
@@ -262,6 +281,9 @@ class CheckinController extends Controller
     }
 
     public function updateRoom (Request $request, $id) {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $header = BookingHeader::find($id);
         $input = $request->input();
         $room_number_list = explode(',',$input['room_number']);
@@ -336,6 +358,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function checkout ($id) {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         BookingHeader::find($id)->update([
             'checkout'  => 1
         ]);
@@ -361,6 +386,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function payment($bookingId){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $header = BookingHeader::find($bookingId);
         $header->room_data = RoomNumber::getRoomDataList($header->room_list);
         $header->grand_total = ($header->payment_status == 3) ? 0 : $header->grand_total;
@@ -426,6 +454,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function makePayment (Request $request, $id) {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $header = BookingHeader::find($id);
         BookingHeader::find($id)->update([
             'payment_status'    => 3, // LUNAS
@@ -521,6 +552,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function printReceipt($bookingId){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $header = BookingHeader::find($bookingId);
         $guest = Guest::withTrashed()->find($header->guest_id);
         $payment = BookingPayment::where('booking_id', $bookingId)->get();
@@ -554,6 +588,9 @@ class CheckinController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function printBill($bookingId){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $header = BookingHeader::find($bookingId);
         $guest = Guest::withTrashed()->find($header->guest_id);
         $downpayment = BookingPayment::where('booking_id', $bookingId)->where('type', 1)->get();

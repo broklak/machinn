@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\BookingHeader;
 use App\BookingRoom;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Guest;
@@ -39,6 +40,9 @@ class GuestController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 7, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $rows = $this->model->paginate(config('app.limitPerPage'));
         $data['rows'] = $rows;
@@ -52,6 +56,9 @@ class GuestController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 7, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $data['country'] = Country::where('country_status', 1)->get();
         $data['religion'] = config('app.religion');
@@ -67,6 +74,9 @@ class GuestController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 7, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'guest_title'  => 'required',
             'first_name'    => 'required|max:25',
@@ -124,6 +134,9 @@ class GuestController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 7, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $data['country'] = Country::where('country_status', 1)->get();
         $data['religion'] = config('app.religion');
@@ -141,6 +154,9 @@ class GuestController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 7, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'guest_title'  => 'required',
             'first_name'    => 'required|max:25',
@@ -194,6 +210,9 @@ class GuestController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function checkinReport(Request $request){
+        if(!UserRole::checkAccess($subModule = 7, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
@@ -209,6 +228,9 @@ class GuestController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function statistic(Request $request){
+        if(!UserRole::checkAccess($subModule = 7, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $type = ($request->input('type')) ? $request->input('type') : 'gender';
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
@@ -226,6 +248,9 @@ class GuestController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function inhouse (Request $request){
+        if(!UserRole::checkAccess($subModule = 6, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $paid = $request->input('paid');
         $type = $request->input('type');
         $data['parent_menu'] = ($paid) ? 'cashier' : $this->module;
@@ -259,6 +284,9 @@ class GuestController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 7, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';

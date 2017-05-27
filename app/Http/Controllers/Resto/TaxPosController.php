@@ -43,6 +43,9 @@ class TaxPosController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -68,6 +71,9 @@ class TaxPosController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['row'] = $this->model->find($id);
         return view("resto.".$this->module.".edit", $data);
@@ -82,6 +88,9 @@ class TaxPosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'name'  => 'required|max:75|min:3',
             'percentage'  => 'required',

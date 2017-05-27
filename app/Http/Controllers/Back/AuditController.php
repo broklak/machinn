@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\BookingHeader;
 use App\NightAudit;
 use App\OutletTransactionHeader;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -27,6 +28,9 @@ class AuditController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function room (Request $request){
+        if(!UserRole::checkAccess($subModule = 14, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $status = ($request->input('status')) ? $request->input('status') : 0;
@@ -48,6 +52,9 @@ class AuditController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function processRoom (Request $request){
+        if(!UserRole::checkAccess($subModule = 14, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $audit = $request->input('audit');
 
         foreach($audit as $val){
@@ -71,6 +78,9 @@ class AuditController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function voidRoom ($bookingId){
+        if(!UserRole::checkAccess($subModule = 14, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         BookingHeader::find($bookingId)->update([
             'audited'   => 0
         ]);
@@ -86,6 +96,9 @@ class AuditController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function outlet (Request $request){
+        if(!UserRole::checkAccess($subModule = 14, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $status = ($request->input('status')) ? $request->input('status') : 0;
@@ -107,6 +120,9 @@ class AuditController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function processOutlet (Request $request){
+        if(!UserRole::checkAccess($subModule = 14, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $audit = $request->input('audit');
 
         foreach($audit as $val){
@@ -130,6 +146,9 @@ class AuditController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function voidOutlet ($transaction_id){
+        if(!UserRole::checkAccess($subModule = 14, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         OutletTransactionHeader::find($transaction_id)->update([
             'audited'   => 0
         ]);

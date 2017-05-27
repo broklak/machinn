@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Banquet;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -35,6 +36,9 @@ class BanquetController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -48,6 +52,9 @@ class BanquetController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         return view("master.".$this->module.".create", $data);
     }
@@ -60,6 +67,9 @@ class BanquetController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'banquet_name'  => 'required|max:75|min:3',
             'banquet_start'  => 'required|max:75|min:3',
@@ -97,6 +107,9 @@ class BanquetController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
@@ -111,6 +124,9 @@ class BanquetController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'banquet_name'  => 'required|max:75|min:3',
             'banquet_start'  => 'required|max:75|min:3',
@@ -147,6 +163,9 @@ class BanquetController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -168,6 +187,9 @@ class BanquetController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

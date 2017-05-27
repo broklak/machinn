@@ -13,6 +13,7 @@ use App\FrontExpenses;
 use App\OutletTransactionPayment;
 use App\PropertyAttribute;
 use App\Report;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -60,6 +61,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function cash (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $type = ($request->input('type')) ? $request->input('type') : 'balance';
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
@@ -81,6 +85,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function profit(Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
 
@@ -110,6 +117,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function expense (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 month'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
         $filter['department_id'] = ($request->input('department_id')) ? $request->input('department_id') : 0;
@@ -129,6 +139,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function asset (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $category = ($request->input('category')) ? $request->input('category') : 0;
@@ -155,6 +168,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function trial (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
 

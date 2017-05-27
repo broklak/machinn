@@ -6,6 +6,7 @@ use App\RoomAttribute;
 use App\RoomRate;
 use App\RoomRateDateType;
 use App\RoomType;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -59,6 +60,9 @@ class RoomTypeController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
@@ -73,6 +77,9 @@ class RoomTypeController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['attribute'] = $this->attribute;
         return view("master.".$this->module.".create", $data);
@@ -86,6 +93,9 @@ class RoomTypeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'room_type_name'  => 'required|max:75|min:3',
             'room_type_max_adult'  => 'required|numeric',
@@ -139,6 +149,9 @@ class RoomTypeController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['weekday'] = $this->rate->where('room_rate_day_type_id', 1)->where('room_rate_type_id', $id)->first();
         $data['weekend'] = $this->rate->where('room_rate_day_type_id', 2)->where('room_rate_type_id', $id)->first();
@@ -156,6 +169,9 @@ class RoomTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'room_type_name'  => 'required|max:75|min:3',
             'room_type_max_adult'  => 'required|numeric',
@@ -204,6 +220,9 @@ class RoomTypeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -225,6 +244,9 @@ class RoomTypeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

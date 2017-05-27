@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
 //         $this->call(TaxSeeder::class);
 //         $this->call(DepartmentSeeder::class);
          $this->call(EmployeeTypeSeeder::class);
+         $this->call(SubmoduleSeeder::class);
     }
 }

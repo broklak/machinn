@@ -40,9 +40,9 @@ Route::get('master/employee-status/delete/{id}', 'Master\EmployeeStatusControlle
 Route::get('master/employee-status/change-status/{id}/{status}', 'Master\EmployeeStatusController@changeStatus')->name('employee-status.change-status');
 Route::resource('master/employee-status', 'Master\EmployeeStatusController');
 
-Route::get('master/employee-type/delete/{id}', 'Master\EmployeeTypeController@softDelete')->name('employee-type.delete');
-Route::get('master/employee-type/change-status/{id}/{status}', 'Master\EmployeeTypeController@changeStatus')->name('employee-type.change-status');
-Route::resource('master/employee-type', 'Master\EmployeeTypeController');
+Route::get('setting/employee-type/delete/{id}', 'Master\EmployeeTypeController@softDelete')->name('employee-type.delete');
+Route::get('setting/employee-type/change-status/{id}/{status}', 'Master\EmployeeTypeController@changeStatus')->name('employee-type.change-status');
+Route::resource('setting/employee-type', 'Master\EmployeeTypeController');
 
 Route::get('profile', 'Master\EmployeeController@showProfile')->name('profile');
 Route::post('update-profile', 'Master\EmployeeController@changeProfile')->name('update-hotel');

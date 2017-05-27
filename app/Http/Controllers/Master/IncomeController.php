@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Income;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -44,6 +45,9 @@ class IncomeController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -57,6 +61,9 @@ class IncomeController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['type'] = $this->type;
         return view("master.".$this->module.".create", $data);
@@ -70,6 +77,9 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'income_name'  => 'required|max:75|min:3',
             'income_date'  => 'required',
@@ -105,6 +115,9 @@ class IncomeController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['type'] = $this->type;
         $data['row'] = $this->model->find($id);
@@ -120,6 +133,9 @@ class IncomeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'income_name'  => 'required|max:75|min:3',
             'income_date'  => 'required'
@@ -154,6 +170,9 @@ class IncomeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -175,6 +194,9 @@ class IncomeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

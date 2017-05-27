@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\BookingRoom;
 use App\OutletTransactionHeader;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -16,6 +17,9 @@ class DashboardController extends Controller
 
     public function index (Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 9, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
 

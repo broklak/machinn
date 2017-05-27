@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Master;
 
 use App\EmployeeType;
+use App\Submodules;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -24,6 +26,11 @@ class EmployeeTypeController extends Controller
      */
     private $parent;
 
+    /**
+     * @var
+     */
+    private $submodules;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -33,6 +40,8 @@ class EmployeeTypeController extends Controller
         $this->module = 'employee-type';
 
         $this->parent = 'employees';
+
+        $this->submodules = Submodules::all();
     }
 
     /**
@@ -42,6 +51,9 @@ class EmployeeTypeController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -55,6 +67,10 @@ class EmployeeTypeController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'create')){
+            return view("auth.unauthorized");
+        }
+        $data['submodules'] = $this->submodules;
         $data['parent_menu'] = $this->parent;
         return view("master.".$this->module.".create", $data);
     }
@@ -67,13 +83,25 @@ class EmployeeTypeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'employee_type_name'  => 'required|max:75|min:3'
         ]);
 
-        $this->model->create([
+        $created = $this->model->create([
             'employee_type_name'   => $request->input('employee_type_name')
         ]);
+
+        $insert = [
+            'create'    => $request->input('create'),
+            'read'    => $request->input('read'),
+            'update'    => $request->input('update'),
+            'delete'    => $request->input('delete'),
+        ];
+
+        $this->insertRole($insert, $created->employee_type_id);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -98,6 +126,10 @@ class EmployeeTypeController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
+            return view("auth.unauthorized");
+        }
+        $data['submodules'] = $this->submodules;
         $data['parent_menu'] = $this->parent;
         $data['row'] = $this->model->find($id);
         return view("master.".$this->module.".edit", $data);
@@ -112,6 +144,9 @@ class EmployeeTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'employee_type_name'  => 'required|max:75|min:3'
         ]);
@@ -121,6 +156,15 @@ class EmployeeTypeController extends Controller
         $data->employee_type_name = $request->input('employee_type_name');
 
         $data->save();
+
+        $insert = [
+            'create'    => $request->input('create'),
+            'read'    => $request->input('read'),
+            'update'    => $request->input('update'),
+            'delete'    => $request->input('delete'),
+        ];
+
+        $this->insertRole($insert, $id);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -143,6 +187,9 @@ class EmployeeTypeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -164,8 +211,67 @@ class EmployeeTypeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
+        UserRole::where('employee_type_id', $id)->delete();
+        UserRole::clearRoleCache($id);
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $insert
+     * @param $roleId
+     */
+    private function insertRole ($insert, $roleId) {
+        // DELETE FIRST IF EXIST
+        UserRole::where('employee_type_id', $roleId)->delete();
+        UserRole::clearRoleCache($roleId);
+
+        $create = ($insert['create']) ? $insert['create'] : [];
+        $read = ($insert['read']) ? $insert['read'] : [];
+        $update = ($insert['update']) ? $insert['update'] : [];
+        $delete = ($insert['delete']) ? $insert['delete'] : [];
+
+        foreach($create as $key => $value){
+            UserRole::create([
+                'employee_type_id'  => $roleId,
+                'submodule_id'      => $value,
+                'type'              => 'create'
+            ]);
+            UserRole::insertToCache($roleId, $value, 'create');
+        }
+
+        foreach($read as $key => $value){
+            UserRole::create([
+                'employee_type_id'  => $roleId,
+                'submodule_id'      => $value,
+                'type'              => 'read'
+            ]);
+
+            UserRole::insertToCache($roleId, $value, 'read');
+        }
+
+        foreach($update as $key => $value){
+            UserRole::create([
+                'employee_type_id'  => $roleId,
+                'submodule_id'      => $value,
+                'type'              => 'update'
+            ]);
+
+            UserRole::insertToCache($roleId, $value, 'update');
+        }
+
+        foreach($delete as $key => $value){
+            UserRole::create([
+                'employee_type_id'  => $roleId,
+                'submodule_id'      => $value,
+                'type'              => 'delete'
+            ]);
+
+            UserRole::insertToCache($roleId, $value, 'delete');
+        }
     }
 }

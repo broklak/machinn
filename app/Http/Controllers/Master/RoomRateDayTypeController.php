@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\RoomRateDateType;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -42,6 +43,9 @@ class RoomRateDayTypeController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['days'] = $this->listOfDays();
         $rows = $this->model->paginate();
         $data['rows'] = $rows;
@@ -56,6 +60,9 @@ class RoomRateDayTypeController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['days'] = $this->listOfDays();
         return view("master.".$this->module.".create", $data);
@@ -69,6 +76,9 @@ class RoomRateDayTypeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $day = $this->listOfDays();
 
         foreach($day as $key => $val){
@@ -115,6 +125,9 @@ class RoomRateDayTypeController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['days'] = $this->listOfDays();
         $data['row'] = $this->model->find($id);
@@ -130,6 +143,9 @@ class RoomRateDayTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 1, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'room_rate_day_type_name'  => 'required|max:75|min:3'
         ]);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Resto;
 
 use App\PosCategory;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -43,6 +44,9 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $category_name = $request->input('name');
         $category_type = $request->input('type');
 
@@ -67,6 +71,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         return view("resto.".$this->module.".create", $data);
     }
@@ -79,6 +86,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'name'  => 'required|max:75|min:3'
         ]);
@@ -114,6 +124,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['row'] = $this->model->find($id);
         return view("resto.".$this->module.".edit", $data);
@@ -128,6 +141,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'name'  => 'required|max:75|min:3'
         ]);
@@ -161,6 +177,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -182,6 +201,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

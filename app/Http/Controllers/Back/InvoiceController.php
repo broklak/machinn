@@ -7,6 +7,7 @@ use App\Department;
 use App\Helpers\GlobalHelper;
 use App\Invoice;
 use App\Partner;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,9 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 15, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $status = ($request->input('status')) ? $request->input('status') : 0;
@@ -67,6 +71,9 @@ class InvoiceController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 15, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['partner'] = Partner::all();
         $data['department'] = Department::all();
         $data['cost'] = Cost::all();
@@ -82,6 +89,9 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 15, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'invoice_date'  => 'required',
             'due_date'  => 'required',
@@ -128,6 +138,9 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 15, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['partner'] = Partner::all();
         $data['department'] = Department::all();
         $data['cost'] = Cost::all();
@@ -145,6 +158,9 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 15, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'invoice_date'  => 'required',
             'due_date'  => 'required',
@@ -186,6 +202,9 @@ class InvoiceController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 15, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -207,6 +226,9 @@ class InvoiceController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 15, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

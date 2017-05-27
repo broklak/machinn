@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Extracharge;
 use App\ExtrachargeGroup;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -50,6 +51,9 @@ class ExtrachargeController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
@@ -64,6 +68,9 @@ class ExtrachargeController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $data['type'] = $this->type;
         $data['group'] = $this->group;
@@ -78,6 +85,9 @@ class ExtrachargeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'extracharge_name'  => 'required|max:75|min:3',
             'extracharge_price'  => 'required|numeric',
@@ -116,6 +126,9 @@ class ExtrachargeController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->module;
         $data['type'] = $this->type;
         $data['group'] = $this->group;
@@ -132,6 +145,9 @@ class ExtrachargeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'extracharge_name'  => 'required|max:75|min:3',
             'extracharge_price'  => 'required|numeric'
@@ -167,6 +183,9 @@ class ExtrachargeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -188,6 +207,9 @@ class ExtrachargeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

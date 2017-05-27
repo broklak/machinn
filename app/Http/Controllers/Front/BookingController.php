@@ -19,6 +19,7 @@ use App\RoomPlan;
 use App\RoomRateDateType;
 use App\RoomType;
 use App\Settlement;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -146,6 +147,9 @@ class BookingController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request) {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $type = $request->input('type');
         $data['parent_menu'] = $this->parent;
         if($type == 'housekeep'){
@@ -169,6 +173,9 @@ class BookingController extends Controller
      */
     public function create(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['month'] = [
             '1' => 'January',
@@ -209,6 +216,9 @@ class BookingController extends Controller
      * @return string
      */
     public function store(Request $request){
+        if(!UserRole::checkAccess($subModule = 6, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $guest_id = $request->input('guest_id');
         $guest = Guest::insertGuest($request->input(), $guest_id);
         $guest_id = ($guest_id == null) ? $guest->guest_id  : $guest_id;
@@ -232,6 +242,9 @@ class BookingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $header = BookingHeader::find($id);
         $guest_id = $request->input('guest_id');
         $guest = Guest::insertGuest($request->input(), $guest_id);
@@ -254,6 +267,9 @@ class BookingController extends Controller
      */
     public function edit($id, Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 6, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['month'] = [
             '1' => 'January',
@@ -298,6 +314,9 @@ class BookingController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showdownPayment($bookingId){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['header'] = BookingHeader::getBookingDetail($bookingId);
         $data['payment'] = BookingPayment::where('booking_id', $bookingId)->get();
@@ -310,6 +329,9 @@ class BookingController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function voidBooking(Request $request, $bookingId){
+        if(!UserRole::checkAccess($subModule = 6, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         BookingHeader::find($bookingId)->update([
             'booking_status' => 4,
             'payment_status' => ($request->input('void_type') == 1) ? 4 : 1,
@@ -343,6 +365,9 @@ class BookingController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function report(Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = 'report-front';
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');

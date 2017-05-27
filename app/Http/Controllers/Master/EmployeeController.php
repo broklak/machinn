@@ -6,6 +6,7 @@ use App\Department;
 use App\EmployeeStatus;
 use App\EmployeeType;
 use App\User;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -49,6 +50,11 @@ class EmployeeController extends Controller
      */
     private $parent;
 
+    /**
+     * @var
+     */
+    private $url;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -66,6 +72,8 @@ class EmployeeController extends Controller
         $this->religion = config('app.religion');
 
         $this->parent = 'employees';
+
+        $this->url = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? 'setting.employee' : 'employee';
     }
 
     /**
@@ -75,6 +83,11 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'read')){
+            return view("auth.unauthorized");
+        }
+        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? 'User' : 'Employee';
+        $data['url'] = $this->url;
         $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
@@ -89,6 +102,11 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'create')){
+            return view("auth.unauthorized");
+        }
+        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? 'User' : 'Employee';
+        $data['url'] = $this->url;
         $data['parent_menu'] = $this->parent;
         $data['religion'] = $this->religion;
         $data['type'] = $this->type;
@@ -105,6 +123,9 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'username' => 'required|max:50|unique:users',
             'password' => 'required|min:4',
@@ -136,7 +157,7 @@ class EmployeeController extends Controller
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->url.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -158,6 +179,11 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
+            return view("auth.unauthorized");
+        }
+        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? 'User' : 'Employee';
+        $data['url'] = $this->url;
         $data['parent_menu'] = $this->parent;
         $data['religion'] = $this->religion;
         $data['type'] = $this->type;
@@ -176,6 +202,9 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'username' => 'required|max:50',
         ]);
@@ -205,7 +234,7 @@ class EmployeeController extends Controller
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
-        return redirect(route($this->module.".index"))->with('displayMessage', $message);
+        return redirect(route($this->url.".index"))->with('displayMessage', $message);
     }
 
     /**
@@ -225,6 +254,9 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         $data->employee_type_status = $status;
@@ -268,6 +300,9 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -277,6 +312,9 @@ class EmployeeController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showProfile() {
+        if(!UserRole::checkAccess($subModule = 18, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['row'] = DB::table('hotel_profile')->first();
         return view('master.'.$this->module.'.company', $data);
     }
@@ -286,6 +324,9 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeProfile(Request $request){
+        if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $name = $request->input('name');
         $phone = $request->input('phone');
         $fax = $request->input('fax');

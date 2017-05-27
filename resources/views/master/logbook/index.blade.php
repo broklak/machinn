@@ -37,7 +37,7 @@
                                         <td>{{($val->to_date == null) ? '' : date('j F Y', strtotime($val->to_date))}}</td>
                                         <td>{{($val->done == 1) ? 'Done' : 'Not Done'}}</td>
                                         <td>
-                                            @if($val->done == 0))
+                                            @if($val->done == 0)
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->logbook_id])}}?type={{$type}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
                                             <a style="margin-right: 20px" onclick="return confirm('You will delete this message, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->logbook_id, 'status' => $val->logbook_status])}}?type={{$type}}">
                                                 <i class="icon-remove" aria-hidden="true"></i> Delete

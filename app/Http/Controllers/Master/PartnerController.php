@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Partner;
 use App\PartnerGroup;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -50,6 +51,9 @@ class PartnerController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 4, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
@@ -64,6 +68,9 @@ class PartnerController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 4, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['group'] = $this->group;
         return view("master.".$this->module.".create", $data);
@@ -77,6 +84,9 @@ class PartnerController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 4, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'partner_name'  => 'required|max:75|min:3',
             'partner_group_id'  => 'required',
@@ -116,6 +126,9 @@ class PartnerController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 4, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['group'] = $this->group;
         $data['row'] = $this->model->find($id);
@@ -131,6 +144,9 @@ class PartnerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 4, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'partner_name'  => 'required|max:75|min:3',
             'discount_weekend'   => 'required',
@@ -169,6 +185,9 @@ class PartnerController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 4, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -190,6 +209,9 @@ class PartnerController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 4, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

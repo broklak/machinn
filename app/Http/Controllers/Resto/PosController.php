@@ -13,6 +13,7 @@ use App\PosItem;
 use App\PosTable;
 use App\PosTax;
 use App\User;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -87,6 +88,9 @@ class PosController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
+        if(!UserRole::checkAccess($subModule = 13, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 months'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
@@ -107,6 +111,9 @@ class PosController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 13, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['table'] = PosTable::all();
         $data['waiters'] = User::where('department_id', 4)->get();
         $data['parent_menu'] = $this->parent;
@@ -128,6 +135,9 @@ class PosController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 13, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $total_price = 0;
         $total_discount = 0;
         $price = $request->input('subtotal');
@@ -200,6 +210,9 @@ class PosController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 13, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['month'] = [
             '1' => 'January',
             '2' => 'February',
@@ -240,6 +253,9 @@ class PosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 13, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $total_price = 0;
         $total_discount = 0;
         $price = $request->input('subtotal');
@@ -361,6 +377,9 @@ class PosController extends Controller
      */
     public function changeStatus($id, $status, Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 13, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $back = $request->input('back');
         $data = OutletTransactionHeader::find($id);
 
@@ -391,6 +410,9 @@ class PosController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function printReceipt($transactionId){
+        if(!UserRole::checkAccess($subModule = 13, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $header = OutletTransactionHeader::find($transactionId);
         $detail = OutletTransactionDetail::where('transaction_id', $transactionId)->get();
         $data = [
@@ -411,6 +433,9 @@ class PosController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function activeOrder(Request $request){
+        if(!UserRole::checkAccess($subModule = 13, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['dine'] = OutletTransactionHeader::where('delivery_type', 1)->where('status', 1)->where('source', 2)->get();
         $data['room'] = OutletTransactionHeader::where('delivery_type', 2)->where('status', 1)->where('source', 2)->get();
@@ -424,6 +449,9 @@ class PosController extends Controller
      */
     public function setDelivery($id, $status)
     {
+        if(!UserRole::checkAccess($subModule = 13, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = OutletTransactionDetail::find($id);
 
         $data->delivery_status = $status;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Resto;
 use App\PosCategory;
 use App\PosItem;
 use App\PosTax;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,9 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $item_name = $request->input('name');
         $item_type = $request->input('type');
 
@@ -70,6 +74,9 @@ class ItemController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['tax'] = PosTax::all();
         $data['category'] = PosCategory::all();
         $data['parent_menu'] = $this->parent;
@@ -84,6 +91,9 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'name'  => 'required|max:75|min:3',
             'category_id'  => 'required|max:75',
@@ -131,6 +141,9 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['tax'] = PosTax::all();
         $data['category'] = PosCategory::all();
         $data['parent_menu'] = $this->parent;
@@ -147,6 +160,9 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'name'  => 'required|max:75|min:3',
             'category_id'  => 'required|max:75',
@@ -190,6 +206,9 @@ class ItemController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -211,6 +230,9 @@ class ItemController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 12, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
@@ -221,6 +243,9 @@ class ItemController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function stock (Request $request){
+        if(!UserRole::checkAccess($subModule = 12, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $item_name = $request->input('name');
         $item_type = $request->input('type');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Resto;
 
 use App\OutletTransactionDetail;
 use App\OutletTransactionHeader;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Report;
 use App\Http\Controllers\Controller;
@@ -49,6 +50,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function sales (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $filter['start'] = date("$year-$month-01");
@@ -75,6 +79,9 @@ class ReportController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function item (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $order = $request->input('order');

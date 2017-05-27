@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Bank;
 use App\Settlement;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -50,6 +51,9 @@ class SettlementController extends Controller
      */
     public function index()
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
         $rows = $this->model->paginate();
@@ -64,6 +68,9 @@ class SettlementController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['bank'] = $this->bank;
         return view("master.".$this->module.".create", $data);
@@ -77,6 +84,9 @@ class SettlementController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'settlement_name'  => 'required|max:75|min:3',
             'settlement_bank_id'  => 'required',
@@ -110,6 +120,9 @@ class SettlementController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['bank'] = $this->bank;
         $data['row'] = $this->model->find($id);
@@ -125,6 +138,9 @@ class SettlementController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'settlement_name'  => 'required|max:75|min:3'
         ]);
@@ -157,6 +173,9 @@ class SettlementController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -178,6 +197,9 @@ class SettlementController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 3, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

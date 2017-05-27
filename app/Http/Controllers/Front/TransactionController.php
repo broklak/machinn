@@ -7,6 +7,7 @@ use App\CashTransaction;
 use App\Cost;
 use App\Department;
 use App\FrontExpenses;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +72,9 @@ class TransactionController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 month'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d', strtotime('+1 month'));
         $filter['bill_number'] = $request->input('bill_number');
@@ -90,6 +94,9 @@ class TransactionController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['cost'] = $this->cost;
         $data['department'] = $this->department;
@@ -105,6 +112,9 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'amount'  => 'required|numeric',
             'cost_id' => 'required',
@@ -148,6 +158,9 @@ class TransactionController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['cost'] = $this->cost;
         $data['department'] = $this->department;
@@ -165,6 +178,9 @@ class TransactionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'amount'  => 'required|numeric',
             'cost_id' => 'required',
@@ -193,6 +209,9 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         if($status == 1){
@@ -216,6 +235,9 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $this->model->find($id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->url.$this->module.".index"))->with('displayMessage', $message);

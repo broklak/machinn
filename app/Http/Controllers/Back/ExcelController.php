@@ -21,6 +21,7 @@ use App\PropertyAttribute;
 use App\Report;
 use App\RoomNumber;
 use App\User;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -40,6 +41,9 @@ class ExcelController extends Controller
     }
 
     public function guestBill (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $monthWord = date('F', mktime(0, 0, 0, $month, 10));
@@ -74,6 +78,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function deposit (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $monthWord = date('F', mktime(0, 0, 0, $month, 10));
@@ -106,6 +113,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function cashCredit (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $monthWord = date('F', mktime(0, 0, 0, $month, 10));
@@ -139,6 +149,9 @@ class ExcelController extends Controller
      */
     public function frontPos(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 months'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
         $filter['bill_number'] = $request->input('bill_number');
@@ -168,6 +181,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function source (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = date("$year-$month-01");
@@ -197,6 +213,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function booking(Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = 'report-front';
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
@@ -283,6 +302,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function salespos (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $monthWord = date('F', mktime(0, 0, 0, $month, 10));
@@ -319,6 +341,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function itempos (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $month = ($request->input('month')) ? $request->input('month') : date('m');
         $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $monthWord = date('F', mktime(0, 0, 0, $month, 10));
@@ -353,6 +378,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function arrival (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d');
         $word = date('d_m_Y', strtotime($start));
         $arrival = $this->model->getArrival($start, 1, true);
@@ -400,6 +428,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function occupied (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $word = date('d_m_Y', strtotime($end));
@@ -427,6 +458,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function outstanding (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $status = ($request->input('status')) ? $request->input('status') : 0;
         $rows = $this->model->getOutstandingBooking($status);
 
@@ -455,6 +489,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function void (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $status = ($request->input('status')) ? $request->input('status') : 0;
@@ -484,6 +521,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function bank (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $account = ($request->input('cash_account_id')) ? $request->input('cash_account_id') : 0;
@@ -523,6 +563,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function profit(Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $word = date('d_m_Y', strtotime($end));
@@ -577,6 +620,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function expense (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 month'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
         $filter['department_id'] = ($request->input('department_id')) ? $request->input('department_id') : 0;
@@ -608,6 +654,9 @@ class ExcelController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function asset (Request $request){
+        if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $word = date('d_m_Y', strtotime($end));
         $category = ($request->input('category')) ? $request->input('category') : 0;

@@ -6,6 +6,7 @@ use App\Department;
 use App\EmployeeStatus;
 use App\EmployeeType;
 use App\User;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -67,6 +68,9 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 2, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = 'info';
         $data['department'] = $this->department;
         $data['name'] = $request->input('name');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HouseKeep;
 
 use App\Damage;
 use App\RoomNumber;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,9 @@ class DamageController extends Controller
      */
     public function index(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $lost = $request->input('lost');
         $type = 2;
         if($lost == '1'){
@@ -73,6 +77,9 @@ class DamageController extends Controller
      */
     public function create(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $lost = $request->input('lost');
         if($lost == '1'){
             $this->module = 'lostasset';
@@ -93,6 +100,9 @@ class DamageController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $get = '';
         $this->validate($request,[
             'date'  => 'required',
@@ -135,6 +145,9 @@ class DamageController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['room'] = RoomNumber::all();
         $data['parent_menu'] = $this->parent;
         $data['EmployeeModel'] = new User();
@@ -152,6 +165,9 @@ class DamageController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $get = '';
         $this->validate($request,[
             'date'  => 'required',
@@ -180,6 +196,9 @@ class DamageController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         $data->status = $status;
@@ -195,6 +214,9 @@ class DamageController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function softDelete($id) {
+        if(!UserRole::checkAccess($subModule = 11, $type = 'delete')){
+            return view("auth.unauthorized");
+        }
         $get = '';
         $data = $this->model->find($id);
         if($data->type == 1){

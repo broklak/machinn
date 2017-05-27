@@ -2,20 +2,14 @@
     <ul>
         @include('layout.menu.master')
 
-        @if($user['department_id'] == 1 || $user['employee_type_id'] == 1)
-            @include('layout.menu.front')
-        @endif
+        @include('layout.menu.front')
 
-        @if($user['department_id'] == 4 || $user['employee_type_id'] == 1)
-            @include('layout.menu.house')
-        @endif
+        @include('layout.menu.house')
 
-        @if($user['department_id'] == 3 || $user['employee_type_id'] == 1)
-            @include('layout.menu.resto')
-        @endif
+        @include('layout.menu.resto')
 
-        @if($user['department_id'] == 2 || $user['employee_type_id'] == 1)
-            @include('layout.menu.back')
-        @endif
+        @include('layout.menu.back')
+
+        @include('layout.menu.settings')
     </ul>
 </div>

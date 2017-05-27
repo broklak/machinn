@@ -2,7 +2,6 @@
 <script src="{{ asset("js") }}/jquery-ui.js"></script>
 <script src="{{ asset("js") }}/bootstrap.min.js"></script>
 <script src="{{ asset("js") }}/matrix.js?v=0.2"></script>
-
 <script src="{{ asset("js") }}/jquery.peity.min.js"></script>
 <script src="{{ asset("js") }}/jquery.gritter.min.js"></script>
 

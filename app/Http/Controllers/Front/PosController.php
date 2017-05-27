@@ -8,6 +8,7 @@ use App\Guest;
 use App\OutletTransactionDetail;
 use App\OutletTransactionHeader;
 use App\OutletTransactionPayment;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -82,6 +83,9 @@ class PosController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $filter['start'] = ($request->input('start')) ? $request->input('start') : date('Y-m-d', strtotime('-1 months'));
         $filter['end'] = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
@@ -100,6 +104,9 @@ class PosController extends Controller
      */
     public function create()
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['cash_account'] = $this->cash_account;
         $data['cc_type'] = $this->ccType;
@@ -119,6 +126,9 @@ class PosController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $total_price = 0;
         $total_discount = 0;
         $price = $request->input('subtotal');
@@ -169,6 +179,9 @@ class PosController extends Controller
      */
     public function edit($id)
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data['parent_menu'] = $this->parent;
         $data['detail'] = OutletTransactionDetail::where('transaction_id', $id)->get();
         $data['payment'] = OutletTransactionPayment::where('transaction_id', $id)->first();
@@ -192,6 +205,9 @@ class PosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $total_price = 0;
         $total_discount = 0;
         $price = $request->input('subtotal');
@@ -269,6 +285,9 @@ class PosController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status) {
+        if(!UserRole::checkAccess($subModule = 8, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = OutletTransactionHeader::find($id);
 
         if($status == 2){

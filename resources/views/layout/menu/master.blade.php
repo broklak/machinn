@@ -40,9 +40,6 @@
                 <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'employee-status') class="active" @endif>
                     <a href="{{route('employee-status.index')}}">Employee Status</a>
                 </li>
-                <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'employee-type') class="active" @endif>
-                    <a href="{{route('employee-type.index')}}">Employee Type</a>
-                </li>
                 <li @if(\Illuminate\Support\Facades\Request::segment(2) == 'employee') class="active" @endif>
                     <a href="{{route('employee.index')}}">Employee</a>
                 </li>

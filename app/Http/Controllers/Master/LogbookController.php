@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Department;
 use App\Logbook;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
@@ -53,6 +54,9 @@ class LogbookController extends Controller
      */
     public function index(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 10, $type = 'read')){
+            return view("auth.unauthorized");
+        }
         $type = $request->input('type');
         Cache::forget(self::cacheKey);
         $data['parent_menu'] = $this->parent;
@@ -71,6 +75,9 @@ class LogbookController extends Controller
      */
     public function create(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 10, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $type = $request->input('type');
         $data['type'] = $type;
         $data['parent_menu'] = $this->parent;
@@ -86,6 +93,9 @@ class LogbookController extends Controller
      */
     public function store(Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 10, $type = 'create')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'logbook_message'  => 'required|max:250',
         ]);
@@ -121,6 +131,9 @@ class LogbookController extends Controller
      */
     public function edit($id, Request $request)
     {
+        if(!UserRole::checkAccess($subModule = 10, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $type = $request->input('type');
         $data['type'] = $type;
         $data['parent_menu'] = $this->parent;
@@ -138,6 +151,9 @@ class LogbookController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!UserRole::checkAccess($subModule = 10, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $this->validate($request,[
             'logbook_message'  => 'required|max:250',
         ]);
@@ -173,6 +189,9 @@ class LogbookController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status, Request $request) {
+        if(!UserRole::checkAccess($subModule = 10, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
 
         $type = $request->input('type');
@@ -192,9 +211,13 @@ class LogbookController extends Controller
 
     /**
      * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function done($id, Request $request) {
+        if(!UserRole::checkAccess($subModule = 10, $type = 'update')){
+            return view("auth.unauthorized");
+        }
         $data = $this->model->find($id);
         $type = $request->input('type');
 
