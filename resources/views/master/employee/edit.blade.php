@@ -31,6 +31,14 @@
                                             <input value="{{$row->username}}" id="name" required type="text" name="username" />
                                         </div>
                                     </div>
+                                    @if($user['employee_type_id'] == 1)
+                                        <div class="control-group">
+                                            <label class="control-label">Password <br />(Fill if you want to change password for this user)</label>
+                                            <div class="controls">
+                                                <input id="password" type="text" name="password" />
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="control-group">
                                         <label class="control-label">{{$header}} Department</label>
                                         <div class="controls">

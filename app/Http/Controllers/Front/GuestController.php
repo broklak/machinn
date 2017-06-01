@@ -239,7 +239,7 @@ class GuestController extends Controller
         $data['rows'] = Guest::getStatistic($start, $end, $type);
         $data['start'] = $start;
         $data['end'] = $end;
-        $data['type'] = $type;
+        $data['typeGender'] = $type;
         return view("master.".$this->module.".statistic", $data);
     }
 

@@ -31,12 +31,12 @@
                                                 <input value="{{old('username')}}" id="name" required type="text" name="username" />
                                             </div>
                                         </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Password</label>
-                                            <div class="controls">
-                                                <input id="password" required type="text" name="password" />
-                                            </div>
-                                        </div>
+                                         <div class="control-group">
+                                             <label class="control-label">Password</label>
+                                             <div class="controls">
+                                                 <input id="password" required type="text" name="password" />
+                                             </div>
+                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">{{$header}} Department</label>
                                             <div class="controls">

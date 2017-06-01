@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -56,7 +57,7 @@ class UserRole extends Model
      */
     public static function checkAccess($submoduleId, $type, $roleId = null){
         $role = ($roleId == null) ? Auth::user()->employee_type_id : $roleId;
-        $data = Cache::get('role-'.$role);;
+        $data = Cache::get('role-'.$role);
         if(empty($data)){
             return false;
         }
@@ -66,5 +67,43 @@ class UserRole extends Model
         }
 
         return true;
+    }
+
+    /**
+     * @param $listSubmodule
+     * @return bool
+     */
+    public static function validateMenu ($listSubmodule){
+        if(!Auth::user()){
+            return false;
+        }
+        $role = Auth::user()->employee_type_id;
+        $submodules = explode(',', $listSubmodule);
+
+        $data = Cache::get('role-'.$role);
+
+        foreach($data as $key => $value){
+            $submodule = explode('-', $value);
+
+            if(in_array($submodule[0], $submodules)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    public static function showMenu (){
+        $file = \Illuminate\Support\Facades\File::get("../database/data/Menu.json");
+        $data = json_decode($file, true);
+        $menu = [];
+        foreach($data as $key => $val){
+            $menu[$key] = self::validateMenu($val);
+        }
+
+        return $menu;
     }
 }

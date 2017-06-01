@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Resto;
 
 use App\PosTax;
+use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

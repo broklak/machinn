@@ -31,15 +31,15 @@
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
-                            <li @if($type == 'gender') class="active" @endif><a href="{{route($route.'guest.statistic')}}">Gender</a></li>
-                            <li @if($type == 'age') class="active" @endif><a href="{{route($route.'guest.statistic')}}?type=age">Age</a></li>
-                            <li @if($type == 'religion') class="active" @endif><a href="{{route($route.'guest.statistic')}}?type=religion">Religion</a></li>
+                            <li @if($typeGender == 'gender') class="active" @endif><a href="{{route($route.'guest.statistic')}}">Gender</a></li>
+                            <li @if($typeGender == 'age') class="active" @endif><a href="{{route($route.'guest.statistic')}}?type=age">Age</a></li>
+                            <li @if($typeGender == 'religion') class="active" @endif><a href="{{route($route.'guest.statistic')}}?type=religion">Religion</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
                         <div id="gender" class="tab-pane active">
                             <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
-                                <h5>{{ucfirst($type)}} Statistics</h5>
+                                <h5>{{ucfirst($typeGender)}} Statistics</h5>
                             </div>
                             <div class="widget-content">
                                 @if(count($rows) > 0)

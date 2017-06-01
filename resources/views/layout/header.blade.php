@@ -17,7 +17,7 @@
                 <span class="text">Welcome {{ucfirst($user['name'])}}</span></a>
             <ul class="dropdown-menu">
                 <li><a href="{{route('change-password')}}"><i class="icon icon-lock"></i> Change Password</a></li>
-                @if($user['employee_type_id'] == 1)
+                @if($menu['setting'])
                     <li><a href="{{route('profile')}}"><i class="icon icon-building"></i> Change Hotel Profile</a></li>
                 @endif
             </ul>

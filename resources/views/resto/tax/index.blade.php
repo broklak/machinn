@@ -15,7 +15,7 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
-                        <h5>Category Item List</h5>
+                        <h5>Tax Resto List</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <table class="table table-bordered table-striped">

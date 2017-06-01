@@ -1,15 +1,27 @@
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
     <ul>
-        @include('layout.menu.master')
+        @if($menu['master'])
+            @include('layout.menu.master')
+        @endif
 
-        @include('layout.menu.front')
+        @if($menu['front'])
+            @include('layout.menu.front')
+        @endif
 
-        @include('layout.menu.house')
+        @if($menu['house'])
+            @include('layout.menu.house')
+        @endif
 
-        @include('layout.menu.resto')
+        @if($menu['resto'])
+            @include('layout.menu.resto')
+        @endif
 
-        @include('layout.menu.back')
+        @if($menu['back'])
+            @include('layout.menu.back')
+        @endif
 
-        @include('layout.menu.settings')
+        @if($menu['setting'])
+            @include('layout.menu.settings')
+        @endif
     </ul>
 </div>

@@ -231,6 +231,12 @@ class EmployeeController extends Controller
         $data->bank_number     = $request->input('bank_number');
         $data->bank_account_name     = $request->input('bank_account_name');
 
+        $newpass = $request->input('password');
+
+        if($newpass){
+            $data->password = bcrypt($newpass);
+        }
+
         $data->save();
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
