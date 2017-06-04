@@ -676,6 +676,7 @@ class CheckinController extends Controller
         BookingPayment::create([
             'booking_id'    => $bookingId,
             'guest_id'      => $bookingData->guest_id,
+            'type'          => 10,
             'payment_method' => 1, // DEPOSIT MUST BE CASH PAID TO FRONT OFFICE,
             'total_payment' => $amount,
             'deposit'       => 1,
