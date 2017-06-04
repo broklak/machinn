@@ -17,7 +17,7 @@ class BookingPayment extends Model
      */
     protected $fillable = [
         'booking_id', 'payment_method', 'type', 'total_payment', 'card_type', 'card_number', 'cc_type_id', 'bank', 'settlement_id', 'card_name',
-        'card_expiry_month', 'card_expiry_year', 'bank_transfer_recipient', 'created_by', 'guest_id', 'flow_type', 'checkout'
+        'card_expiry_month', 'card_expiry_year', 'bank_transfer_recipient', 'created_by', 'guest_id', 'flow_type', 'checkout', 'deposit'
     ];
 
     /**
@@ -28,9 +28,13 @@ class BookingPayment extends Model
     /**
      * @param $type
      * @param null $extrachargeId
+     * @param int $deposit
      * @return string
      */
-    public static function setDescription($type, $extrachargeId = null) {
+    public static function setDescription($type, $extrachargeId = null, $deposit = 0) {
+        if($deposit == 1){
+            return "Check In Deposit";
+        }
         $name = '';
         if($extrachargeId != null){
             $extrachargeName = Extracharge::find($extrachargeId);

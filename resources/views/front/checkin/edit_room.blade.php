@@ -1,4 +1,5 @@
 <form id="form-booking" method="post" action="{{route('checkin.room-edit', ['id' => $header->booking_id])}}">
+    {{csrf_field()}}
     <div id="error_messages" style="margin-top: 20px">
 
     </div>
@@ -85,7 +86,7 @@
     <input style="display: block;width: 100%" type="submit" class="btn btn-primary" value="SAVE">
     <input type="hidden" value="{{$header->room_list}}" name="room_number" id="room_number">
     <input type="hidden" name="total_rates" value="0" id="total_rates">
-
+</form>
     {{--MODAL--}}
 
     <div id="modalSelectRoom" class="modal large hide">
@@ -117,17 +118,7 @@
                     </div>
                 </div>
             </form>
-            <table class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th>Room Number</th>
-                    <th>Room Type</th>
-                    <th>Floor</th>
-                    <th>Room Rate Weekdays</th>
-                    <th>Room Rate Weekends</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
+            <table class="table table-bordered view-room">
                 <tbody id="listRoom">
                 <tr>
                     <td style="text-align: center" colspan="7">Please Select Check In and Check Out Date</td>
@@ -136,4 +127,3 @@
             </table>
         </div>
     </div>
-</form>

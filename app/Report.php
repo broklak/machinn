@@ -23,11 +23,11 @@ class Report extends Model
                             booking_header.partner_id, partner_name, booking_header.type, booking_status,checkout,
                             (select total_payment from booking_payment where booking_id = booking_header.booking_id and type = 1 limit 1) as down_payment,
                             booking_header.grand_total, (select SUM(total_payment) from booking_extracharge where booking_id = booking_header.booking_id GROUP BY booking_id) as extra,
-                            (select SUM(total_payment) from booking_payment where payment_method IN (1,2) AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_cash,
-                            (select SUM(total_payment) from booking_payment where payment_method = 3 AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_credit,
-                            (select SUM(total_payment) from booking_payment where payment_method = 4 AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_bank,
-                            (select SUM(total_payment) from booking_payment where type = 5 AND booking_id = booking_header.booking_id GROUP BY booking_id) as refund,
-                            (select SUM(total_payment) from booking_payment where type <> 5 AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_received,
+                            (select SUM(total_payment) from booking_payment where payment_method IN (1,2) AND deposit = 0 AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_cash,
+                            (select SUM(total_payment) from booking_payment where payment_method = 3 AND deposit = 0 AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_credit,
+                            (select SUM(total_payment) from booking_payment where payment_method = 4 AND deposit = 0 AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_bank,
+                            (select SUM(total_payment) from booking_payment where type = 5 AND booking_id = booking_header.booking_id AND deposit = 0 GROUP BY booking_id) as refund,
+                            (select SUM(total_payment) from booking_payment where type <> 5 AND deposit = 0 AND booking_id = booking_header.booking_id GROUP BY booking_id) as total_received,
                             (select name from users where id = booking_header.created_by) as creby, (select name from users where id = booking_header.updated_by) as modby
                             '))
             ->join('guests', 'booking_header.guest_id', '=', 'guests.guest_id')
@@ -48,7 +48,7 @@ class Report extends Model
         return $data;
     }
 
-    public function downPayment($filter, $down = 1) {
+    public function cashCredit($filter, $down = 1) {
         $whereAll[] = ['booking_payment.type', '=', $down];
         $whereCashFo = [
             ['booking_payment.type', '=', $down],
@@ -71,17 +71,17 @@ class Report extends Model
         ];
 
         $dataAll = DB::table('booking_header')
-                    ->select(DB::raw('booking_header.booking_id, booking_header.booking_code, booking_payment.created_at, room_list,
+            ->select(DB::raw('booking_header.booking_id, booking_header.booking_code, booking_payment.created_at, room_list,
                         (select total_payment from booking_payment where booking_id = booking_header.booking_id and payment_method IN (1,2) limit 1) as total_cash,
                         (select total_payment from booking_payment where booking_id = booking_header.booking_id and payment_method = 3 limit 1) as total_credit,
                         (select total_payment from booking_payment where booking_id = booking_header.booking_id and payment_method = 4 limit 1) as total_bank,
                         total_payment,
                         (select name from users where id = booking_header.created_by) as creby'))
-                    ->join('booking_payment', 'booking_header.booking_id', '=', 'booking_payment.booking_id')
-                    ->orderBy('booking_header.booking_id', 'desc')
-                    ->where($whereAll)
-                    ->whereBetween('booking_payment.created_at', [$filter['start'], $filter['end']])
-                    ->get();
+            ->join('booking_payment', 'booking_header.booking_id', '=', 'booking_payment.booking_id')
+            ->orderBy('booking_header.booking_id', 'desc')
+            ->where($whereAll)
+            ->whereBetween('booking_payment.created_at', [$filter['start'], $filter['end']])
+            ->get();
 
 
         $datacashFo = DB::table('booking_header')
@@ -130,6 +130,28 @@ class Report extends Model
         $data['cashbo'] = $datacashBo;
         $data['credit'] = $dataCredit;
         $data['bank'] = $dataBank;
+
+        return $data;
+    }
+
+    /**
+     * @param $filter
+     * @return mixed
+     */
+    public function downPayment($filter) {
+        $where = [];
+        $start = date('Y-m-d 00:00:00', strtotime($filter['start']));
+        $end = date('Y-m-d 23:59:59', strtotime($filter['end']));
+        if(isset($filter['status']) && $filter['status'] != -1){
+            $where[] = ['status', '=', $filter['status']];
+        }
+        $data = DB::table('booking_deposit')
+            ->select(DB::raw('booking_code, booking_deposit.status, amount, booking_deposit.created_at,
+                    (select username from users where id = booking_deposit.updated_by) AS refunded_by'))
+            ->join('booking_header', 'booking_header.booking_id', '=', 'booking_deposit.booking_id')
+            ->where($where)
+            ->whereBetween('booking_deposit.created_at', [$start, $end])
+            ->paginate(config('app.limitPerPage'));
 
         return $data;
     }

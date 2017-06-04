@@ -90,9 +90,10 @@ class ReportController extends Controller
 
         $filter['start'] = $start;
         $filter['end'] = $end;
+        $filter['status'] = ($request->input('status') == null) ? -1 : $request->input('status');
         $report = $this->model->downPayment($filter);
 
-        $data['parent_menu'] = $this->parent;
+        $data['parent_menu'] = $this->parent;;
         $data['month_list'] = $this->month;
         $data['year_list'] = self::YEAR_LIMIT;
         $data['month'] = date('F', strtotime(date("$year-$month-1")));
@@ -140,7 +141,7 @@ class ReportController extends Controller
 
         $filter['start'] = $start;
         $filter['end'] = $end;
-        $report = $this->model->downPayment($filter, $down = 4);
+        $report = $this->model->cashCredit($filter, $down = 4);
 
         $data['parent_menu'] = $this->parent;
         $data['month_list'] = $this->month;
@@ -152,7 +153,7 @@ class ReportController extends Controller
         $data['end'] = $end;
         $data['filter'] = $filter;
         $data['rows'] = $report;
-        return view('front.report.down_payment', $data);
+        return view('front.report.cash_credit', $data);
     }
 
     /**

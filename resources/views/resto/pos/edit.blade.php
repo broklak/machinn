@@ -6,7 +6,7 @@
     @php $route_name = 'resto.pos'; @endphp
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <h1>Resto POS</h1>
     </div>
     <div class="container-fluid"><hr>
         <a href="{{route($route_name.'.index')}}" class="btn btn-success">View Transaction</a>

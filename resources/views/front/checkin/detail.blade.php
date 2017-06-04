@@ -55,16 +55,16 @@
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#guestInformation">Guest Information</a></li>
-                            <li><a data-toggle="tab" href="#roomInformation">Room Information</a></li>
-                            <li><a data-toggle="tab" href="#guestHistory">Guest History</a></li>
-                            <li><a data-toggle="tab" href="#rateInformation">Rate Information</a></li>
-                            <li><a data-toggle="tab" href="#billInformation">Guest Bill Information</a></li>
-                            <li><a data-toggle="tab" href="#extracharge">Extra Charges</a></li>
+                            <li @if($tab == 'guest') class="active" @endif><a data-toggle="tab" href="#guestInformation">Guest Information</a></li>
+                            <li @if($tab == 'room') class="active" @endif><a data-toggle="tab" href="#roomInformation">Room Information</a></li>
+                            <li @if($tab == 'history') class="active" @endif><a data-toggle="tab" href="#guestHistory">Guest History</a></li>
+                            <li @if($tab == 'rate') class="active" @endif><a data-toggle="tab" href="#rateInformation">Rate Information</a></li>
+                            <li @if($tab == 'bill') class="active" @endif><a  data-toggle="tab" href="#billInformation">Guest Bill Information</a></li>
+                            <li @if($tab == 'extra') class="active" @endif><a data-toggle="tab" href="#extracharge">Extra Charges</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
-                        <div id="guestInformation" class="tab-pane active">
+                        <div id="guestInformation" class="tab-pane @if($tab == 'guest') active @endif">
                             <div class="widget-title"> <span class="icon"> <i class="icon-user"></i> </span>
                                 <h5>Guest Information</h5>
                             </div>
@@ -72,7 +72,7 @@
                                 @include('front.checkin.guest_info')
                             </div>
                         </div>
-                        <div id="roomInformation" class="tab-pane">
+                        <div id="roomInformation" class="tab-pane @if($tab == 'room') active @endif">
                             <div class="widget-title"> <span class="icon"> <i class="icon-user"></i> </span>
                                 <h5>Room Information</h5>
                             </div>
@@ -80,7 +80,7 @@
                                 @include('front.checkin.edit_room')
                             </div>
                         </div>
-                        <div id="guestHistory" class="tab-pane">
+                        <div id="guestHistory" class="tab-pane @if($tab == 'history') active @endif">
                             <div class="widget-title"> <span class="icon"> <i class="icon-file"></i> </span>
                                 <h5>Guest History</h5>
                             </div>
@@ -88,7 +88,7 @@
                                 @include('front.checkin.guest_history')
                             </div>
                         </div>
-                        <div id="rateInformation" class="tab-pane">
+                        <div id="rateInformation" class="tab-pane @if($tab == 'rate') active @endif">
                             <div class="widget-title"> <span class="icon"> <i class="icon-file"></i> </span>
                                 <h5>Rate Information</h5>
                             </div>
@@ -96,7 +96,7 @@
                                 @include('front.checkin.rate_info')
                             </div>
                         </div>
-                        <div id="billInformation" class="tab-pane">
+                        <div id="billInformation" class="tab-pane @if($tab == 'bill') active @endif">
                             <div class="widget-title"> <span class="icon"> <i class="icon-money"></i> </span>
                                 <h5>Guest Bill Information</h5>
                             </div>
@@ -104,7 +104,7 @@
                                 @include('front.checkin.bill_info')
                             </div>
                         </div>
-                        <div id="extracharge" class="tab-pane">
+                        <div id="extracharge" class="tab-pane @if($tab == 'extra') active @endif">
                             <div class="widget-title"> <span class="icon"> <i class="icon-shopping-cart"></i> </span>
                                 <h5>Extra Charges</h5>
                             </div>

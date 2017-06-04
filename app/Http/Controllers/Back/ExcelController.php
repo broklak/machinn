@@ -89,15 +89,15 @@ class ExcelController extends Controller
 
         $filter['start'] = $start;
         $filter['end'] = $end;
-        $report = $this->model->downPayment($filter);
-        $data = $report['all'];
+        $data = $this->model->downPayment($filter);
 
         $csv = [];
         foreach($data as $key => $value) {
             $csv[$key]['booking_code'] = $value->booking_code;
             $csv[$key]['date'] = date('j F Y', strtotime($value->created_at));
-            $csv[$key]['room_list'] = RoomNumber::getRoomCodeList($value->room_list);
-            $csv[$key]['total_deposit'] = GlobalHelper::moneyFormat($value->total_payment);
+            $csv[$key]['total_deposit'] = GlobalHelper::moneyFormat($value->amount);
+            $csv[$key]['status'] = ($value->status == 0) ? 'Not Refunded' : 'Refunded';
+            $csv[$key]['refunded_by'] = $value->refunded_by;
 
         }
         return Excel::create('DepositReport_'.$monthWord.'_'.$year, function($excel) use ($csv) {
@@ -124,7 +124,7 @@ class ExcelController extends Controller
 
         $filter['start'] = $start;
         $filter['end'] = $end;
-        $report = $this->model->downPayment($filter, $down = 4);
+        $report = $this->model->cashCredit($filter, $down = 4);
         $data = $report['all'];
 
         $csv = [];

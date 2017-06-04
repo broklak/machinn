@@ -127,20 +127,7 @@
             data     : {"checkin" : dateIn, "checkout" : dateOut, "type" : type, "floor" : floor},
             url      : "{{route('ajax.searchRoom')}}",
             success  : function(result) {
-                $('#listRoom').html("");
-                obj = JSON.parse(result);
-                i = 0;
-                $.each(obj, function(key, value) {
-                    listRoom.push('<tr>');
-                    listRoom.push('<td>'+value.room_number_code+'</td>');
-                    listRoom.push('<td>'+value.room_type_name+'</td>');
-                    listRoom.push('<td>'+value.property_floor_name+'</td>');
-                    listRoom.push('<td>'+toMoney(value.room_rate_weekdays)+'</td>');
-                    listRoom.push('<td>'+toMoney(value.room_rate_weekends)+'</td>');
-                    listRoom.push('<td><a data-id="'+value.room_number_id+'" data-weekdays="'+value.room_rate_weekdays+'" data-weekends="'+value.room_rate_weekends+'" data-type="'+value.room_type_id+'" data-typename="'+value.room_type_name+'" data data-code="'+value.room_number_code+'" class="btn btn-success chooseRoom">Choose</a></td>');
-                });
-                listRoomElement = listRoom.join(" ");
-                $('#listRoom').html(listRoomElement);
+                $('#listRoom').html(result);
 
                 $('.chooseRoom').click(function(){
                     chooseRoom($(this));
@@ -418,5 +405,15 @@
         $('#grand_rate_text').html(toMoney(grand_total));
 
         return grand_total;
+    }
+
+    function formatMoney(elem) {
+        var n = parseInt(elem.val().replace(/\D/g, ''), 10);
+
+        if (isNaN(n)) {
+            elem.val('0');
+        } else {
+            elem.val(n.toLocaleString());
+        }
     }
 </script>

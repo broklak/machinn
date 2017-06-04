@@ -6,7 +6,7 @@
     @php $route_name = 'resto.pos'; @endphp
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Outlet Posting</h1>
+        <h1>Resto POS</h1>
     </div>
     <div class="container-fluid">
         <hr>

@@ -6,7 +6,7 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">Role</a> <a href="#" class="current">Edit Role</a> </div>
-        <h1>Role</h1>
+        <h1>Role Management</h1>
     </div>
     <div class="container-fluid"><hr>
         <a class="btn btn-success" href="javascript:history.back()">Back to list</a>

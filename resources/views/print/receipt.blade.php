@@ -142,6 +142,17 @@
             </td>
         </tr>
 
+        @if(isset($deposit))
+            <tr class="item">
+                <td>
+                    Description
+                </td>
+
+                <td>
+                    Check In Deposit
+                </td>
+            </tr>
+        @else
         <tr class="item">
             <td>
                 Bill Number
@@ -151,6 +162,7 @@
                 {{$bill_number}}
             </td>
         </tr>
+        @endif
 
         <tr class="item">
             <td>

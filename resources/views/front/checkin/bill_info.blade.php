@@ -1,3 +1,6 @@
+@if(count($deposit) == 0)
+<a href="#modalDeposit" data-toggle="modal" class="btn btn-primary">Add Deposit</a>
+@endif
 <div class="row-fluid">
     <div class="span6">
         <table class="">
@@ -47,36 +50,52 @@
                 <th class="head1">Description</th>
                 <th class="head0">Payment Method</th>
                 <th class="head0 right">Amount</th>
+                <th class="head0">Action</th>
             </tr>
             </thead>
             <tbody>
             @foreach($payment as $key => $val)
                 <tr>
                     <td>{{date('j F Y', strtotime($val['created_at']))}}</td>
-                    <td>{{\App\BookingPayment::setDescription($val->type, $val->extracharge_id)}}</td>
+                    <td>{{\App\BookingPayment::setDescription($val->type, $val->extracharge_id, $val->deposit)}}</td>
                     <td>{!! \App\BookingPayment::setPaymentMethodDescription($val->payment_method, $val->card_name, $val->card_type, $val->card_number, $val->bank_transfer_recipient)!!}</td>
                     <td class="right"><strong>{{\App\Helpers\GlobalHelper::moneyFormat($val->total_payment)}}</strong></td>
+                    <td>
+                        @if($val->deposit == 1)
+                            <a href="#" onClick="window.open('{{route('checkin.print-deposit', ['id' => $val->booking_payment_id])}}','pagename','resizable,height=800,width=750');
+                                    return false;" class="btn btn-success">Print Receipt</a><noscript>
+                                You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                                </a>
+                            </noscript>
+                            <a onclick="return confirm('You will void deposit of this booking, continue?')" class="btn btn-danger"
+                               href="{{route('checkin.void-deposit', ['bookingPaymentId' => $val->booking_payment_id])}}">Void Deposit</a>
+                        @endif
                 </tr>
             @endforeach
             </tbody>
         </table>
-        <table class="table table-bordered table-invoice-full hide">
-            <tbody>
-            <tr>
-                <td class="msg-invoice" width="85%"><h4>Payment method: </h4>
-                    <a href="#" class="tip-bottom" title="Wire Transfer">Wire transfer</a> |  <a href="#" class="tip-bottom" title="Bank account">Bank account #</a> |  <a href="#" class="tip-bottom" title="SWIFT code">SWIFT code </a>|  <a href="#" class="tip-bottom" title="IBAN Billing address">IBAN Billing address </a></td>
-                <td class="right"><strong>Subtotal</strong> <br>
-                    <strong>Tax (5%)</strong> <br>
-                    <strong>Discount</strong></td>
-                <td class="right"><strong>$7,000 <br>
-                        $600 <br>
-                        $50</strong></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="pull-right hide">
-            <h4><span>Amount Due:</span> $7,650.00</h4>
-            <br>
-            <a class="btn btn-primary btn-large pull-right" href="">Pay Invoice</a> </div>
+    </div>
+</div>
+
+<div id="modalDeposit" class="modal hide">
+    <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button">×</button>
+        <h3>Deposit Booking #{{$header->booking_code}}</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" method="post" action="{{route("$route_name.deposit", ['booking_id' => $header->booking_id])}}">
+            {{csrf_field()}}
+            <div id="form-search-guest" class="step">
+                <div class="control-group">
+                    <label class="control-label">Deposit Amount</label>
+                    <div class="controls">
+                        <input onkeyup="formatMoney($(this))" name="amount" type="text" required />
+                    </div>
+                </div>
+                <div class="form-actions text-center">
+                    <button type="submit" class="btn btn-success">Add Deposit</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

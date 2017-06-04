@@ -178,19 +178,29 @@
                                     <th class="head1">Description</th>
                                     <th class="head0">Payment Method</th>
                                     <th class="head0 right">Amount</th>
+                                    <th class="head0">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($payment as $key => $val)
                                     <tr>
                                         <td>{{date('j F Y', strtotime($val['created_at']))}}</td>
-                                        <td>{{\App\BookingPayment::setDescription($val->type, $val->extracharge_id)}}</td>
+                                        <td>{{\App\BookingPayment::setDescription($val->type, $val->extracharge_id, $val->deposit)}}</td>
                                         <td>{!! \App\BookingPayment::setPaymentMethodDescription($val->payment_method, $val->card_name, $val->card_type, $val->card_number, $val->bank_transfer_recipient)!!}</td>
                                         <td class="right"><strong>{{\App\Helpers\GlobalHelper::moneyFormat($val->total_payment)}}</strong></td>
+                                        <td>
+                                        @if($val->deposit == 1 && !$refundDeposit)
+                                            <a onclick="return confirm('You will refund deposit to the guest, continue?')" class="btn btn-success"
+                                               href="{{route('checkin.refund-deposit', ['bookingPaymentId' => $val->booking_payment_id])}}">Refund
+                                            </a>
+                                        @elseif($val->deposit == 1 && $refundDeposit)
+                                            <label class="label label-success">REFUNDED</label>
+                                        @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="4" style="text-align: right;font-weight: bold;font-size: 14px">TOTAL PAID BILLS :
+                                    <td colspan="5" style="text-align: right;font-weight: bold;font-size: 14px">TOTAL PAID BILLS :
                                         {{\App\Helpers\GlobalHelper::moneyFormat($total_paid)}}
                                     </td>
                                 </tr>

@@ -1,4 +1,4 @@
-<script>
+    <script>
     $(function() {
         $('#checkin').datepicker({
             dateFormat : 'yy-mm-dd',

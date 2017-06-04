@@ -134,10 +134,11 @@ class GlobalHelper
 
     /**
      * @param $bookingId
+     * @param $deposit
      * @return string
      */
-    public static function generateReceipt($bookingId){
-        $prefix = 'B';
+    public static function generateReceipt($bookingId, $deposit = false){
+        $prefix = ($deposit) ? 'D' : 'B';
         $length = 5;
         $lenZero = $length - strlen($bookingId);
         $zero = '';
@@ -293,7 +294,7 @@ class GlobalHelper
 
                     $html .= '<span class="'.$status.' room-opt"><input style="margin-top:-2px" '.$checkable.' '.$checked.' class="chooseRoom" id="room-check-'.$room['room_number_id'].'"
                                data-id="'.$room['room_number_id'].'" data-weekdays="'.$room['room_rate_weekdays'].'"
-                               data-weekends="'.$room['room_rate_weekdays'].'" data-type="'.$room['room_type_id'].'"
+                               data-weekends="'.$room['room_rate_weekends'].'" data-typename="'.$room['room_type_name'].'" data-type="'.$room['room_type_id'].'"
                                data-code="'.$room['room_number_code'].'" type="checkbox" />
                                <label style="vertical-align:top" for="room-check-'.$room['room_number_id'].'">'.$room['room_number_code'].'</label></span>';
                     if($room_total % 10 == 0){

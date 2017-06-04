@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\AccountReceivable;
 use App\Bank;
+use App\BookingDeposit;
 use App\BookingExtracharge;
 use App\BookingHeader;
 use App\BookingPayment;
@@ -169,13 +170,16 @@ class CheckinController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param $bookingId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function detail ($bookingId){
+    public function detail (Request $request,$bookingId){
         if(!UserRole::checkAccess($subModule = 6, $type = 'read')){
             return view("auth.unauthorized");
         }
+
+        $tabActive = ($request->input('tab')) ? $request->input('tab') : 'guest';
         $header = BookingHeader::find($bookingId);
         $header->room_data = RoomNumber::getRoomDataList($header->room_list);
 
@@ -185,10 +189,12 @@ class CheckinController extends Controller
         $history = Guest::getHistoryCheckin($header->guest_id);
         $extra = BookingExtracharge::where('booking_id', $bookingId)->get();
         $charge = Extracharge::where('extracharge_status', 1)->get();
-
+        $deposit = BookingDeposit::where('booking_id', $bookingId)->first();
 
         $data = [
+            'tab'       => $tabActive,
             'header'    => $header,
+            'deposit'    => $deposit,
             'history'   => $history,
             'guest'     => $guest,
             'detail'    => $detail,
@@ -243,7 +249,7 @@ class CheckinController extends Controller
         }
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save extracharges');
-        return redirect(route("checkin.detail", ['id' => $id]))->with('displayMessage', $message);
+        return redirect(route("checkin.detail", ['id' => $id]).'?tab=extra')->with('displayMessage', $message);
     }
 
     /**
@@ -277,7 +283,7 @@ class CheckinController extends Controller
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save rate');
-        return redirect(route("checkin.detail", ['id' => $id]))->with('displayMessage', $message);
+        return redirect(route("checkin.detail", ['id' => $id]).'?tab=rate')->with('displayMessage', $message);
     }
 
     public function updateRoom (Request $request, $id) {
@@ -350,7 +356,7 @@ class CheckinController extends Controller
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save room information');
-        return redirect(route("checkin.detail", ['id' => $id]))->with('displayMessage', $message);
+        return redirect(route("checkin.detail", ['id' => $id]).'?tab=room')->with('displayMessage', $message);
     }
 
     /**
@@ -400,13 +406,17 @@ class CheckinController extends Controller
         $extra = BookingExtracharge::where('booking_id', $bookingId)->where('status', 1)->get();
         $charge = Extracharge::where('extracharge_status', 1)->get();
         $resto = OutletTransactionHeader::where('booking_id', $bookingId)->where('status', '<>', '3')->get();
+        $deposit = BookingDeposit::where('booking_id', $bookingId)->first();
 
+        $unRefundedDeposit = ($deposit->status == 0) ? $deposit->amount : 0;
+        $refundedDeposit = ($deposit->status == 1) ? $deposit->amount : 0;
         $total_unpaid_resto = OutletTransactionHeader::getUnpaidResto($bookingId);
         $total_paid = BookingPayment::getTotalPaid($bookingId);
         $total_unpaid_extra = BookingExtracharge::getTotalUnpaid($bookingId);
-        $total_unpaid_all = ($header->payment_status == 3) ? 0 : BookingHeader::getTotalUnpaid($header->grand_total, $total_paid, $total_unpaid_extra + $total_unpaid_resto);
+        $total_unpaid_all = ($header->payment_status == 3) ? 0 : BookingHeader::getTotalUnpaid($header->grand_total, $total_paid, $total_unpaid_extra + $total_unpaid_resto + $refundedDeposit);
 
         $data = [
+            'refundDeposit' => (isset($deposit->status) && $deposit->status == 1) ? true : false,
             'resto'     => $resto,
             'header'    => $header,
             'history'   => $history,
@@ -424,7 +434,7 @@ class CheckinController extends Controller
             'total_unpaid_all'  => $total_unpaid_all,
             'total_unpaid_extra'  => $total_unpaid_extra,
             'total_unpaid_resto'  => $total_unpaid_resto,
-            'total_paid'  => $total_paid
+            'total_paid'  => $total_paid - $refundedDeposit
         ];
 
         $data['parent_menu'] = 'guest';
@@ -557,7 +567,7 @@ class CheckinController extends Controller
         }
         $header = BookingHeader::find($bookingId);
         $guest = Guest::withTrashed()->find($header->guest_id);
-        $payment = BookingPayment::where('booking_id', $bookingId)->get();
+        $payment = BookingPayment::where('booking_id', $bookingId)->where('deposit', 0)->get();
 
         $total = 0;
         foreach($payment as $key => $value){
@@ -651,6 +661,129 @@ class CheckinController extends Controller
         ];
 
         return view("print.bill", $data);
+    }
+
+    /**
+     * @param Request $request
+     * @param $bookingId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deposit(Request $request, $bookingId){
+        $bookingData = BookingHeader::find($bookingId);
+        $amount = str_replace(',', '', $request->input('amount'));
+
+        // INSERT TO BOOKING PAYMENT FIRST
+        BookingPayment::create([
+            'booking_id'    => $bookingId,
+            'guest_id'      => $bookingData->guest_id,
+            'payment_method' => 1, // DEPOSIT MUST BE CASH PAID TO FRONT OFFICE,
+            'total_payment' => $amount,
+            'deposit'       => 1,
+            'created_by'    => Auth::id()
+        ]);
+
+        // INSERT TO CASH TRANSACTION
+        CashTransaction::insert([
+            'booking_id'        => $bookingId,
+            'amount'            => $amount,
+            'desc'              => 'Check In Deposit',
+            'payment_method'    => 1,
+            'type'              => 2
+        ]);
+
+        BookingDeposit::create([
+            'booking_id'    => $bookingId,
+            'amount'        => $amount,
+            'created_by'    => Auth::id()
+        ]);
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to save deposit.');
+        return redirect(route("checkin.detail", ['id' => $bookingId]).'?tab=bill')->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $bookingPaymentId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function voidDeposit ($bookingPaymentId){
+        $bookingPayment = BookingPayment::find($bookingPaymentId);
+
+        BookingDeposit::where('booking_id', $bookingPayment->booking_id)->delete();
+
+        // INSERT TO CASH TRANSACTION
+        CashTransaction::insert([
+            'booking_id'        => $bookingPayment->booking_id,
+            'amount'            => $bookingPayment->total_payment,
+            'desc'              => 'Void Deposit',
+            'payment_method'    => 1,
+            'type'              => 1
+        ]);
+
+        $bookingPayment->delete();
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to void deposit.');
+        return redirect(route("checkin.detail", ['id' => $bookingPayment->booking_id]).'?tab=bill')->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $bookingPaymentId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function refundDeposit ($bookingPaymentId){
+        $bookingPayment = BookingPayment::find($bookingPaymentId);
+
+        BookingDeposit::where('booking_id', $bookingPayment->booking_id)
+            ->update([
+                'status'    => 1,
+                'updated_by' => Auth::id()
+        ]);
+
+        // INSERT TO CASH TRANSACTION
+        CashTransaction::insert([
+            'booking_id'        => $bookingPayment->booking_id,
+            'amount'            => $bookingPayment->total_payment,
+            'desc'              => 'Refund Deposit',
+            'payment_method'    => 1,
+            'type'              => 1
+        ]);
+
+        $message = GlobalHelper::setDisplayMessage('success', 'Success to refund deposit.');
+        return redirect(route("checkin.payment", ['id' => $bookingPayment->booking_id]))->with('displayMessage', $message);
+    }
+
+    /**
+     * @param $bookingPaymentId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function printDeposit($bookingPaymentId){
+        if(!UserRole::checkAccess($subModule = 8, $type = 'read')){
+            return view("auth.unauthorized");
+        }
+
+        $payment = BookingPayment::find($bookingPaymentId);
+        $guest = Guest::withTrashed()->find($payment->guest_id);
+        $header = BookingHeader::find($payment->booking_id);
+
+        $total = $payment->total_payment;
+        $created = ($header->updated_by) ? User::getName($header->updated_by) : User::getName($header->created_by);
+
+        $data = [
+            'deposit'   => 1,
+            'name'  => $guest->first_name.' '.$guest->last_name,
+            'admin' => $created,
+            'header' => $header,
+            'bill_number' => GlobalHelper::generateReceipt($bookingPaymentId, $deposit = true),
+            'total' => GlobalHelper::moneyFormat($total),
+            'date'  => date('l, j F Y'),
+            'created_at'  => date('j-F-Y H:i:s'),
+            'hotel_name'   => session('name'),
+            'hotel_phone'   => session('phone'),
+            'hotel_fax'   => session('fax'),
+            'hotel_email'   => session('email'),
+            'hotel_address'   => session('address')
+        ];
+
+        return view("print.receipt", $data);
     }
 
 }
