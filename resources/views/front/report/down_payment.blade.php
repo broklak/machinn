@@ -67,8 +67,10 @@
                                 <th>Booking Code</th>
                                 <th>Date</th>
                                 <th>Status</th>
-                                <th>Refunded By</th>
-                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Deposit Amount</th>
+                                <th>Refund Amount</th>
+                                <th>Deposit Kept</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -77,14 +79,16 @@
                                 <tr>
                                     <td>{{$value->booking_code}}</td>
                                     <td>{{date('j F Y', strtotime($value->created_at))}}</td>
-                                    <td>{{($value->status == 1) ? 'Refunded' : 'Not Refunded'}}</td>
-                                    <td>{{$value->refunded_by}}</td>
+                                    <td>{!! ($value->status == 1) ? 'Refunded by <b>'.$value->refunded_by.'</b>' : 'Not Refunded' !!}</td>
+                                    <td>{{$value->desc}}</td>
                                     <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormat($value->amount)}}</td>
+                                    <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormat($value->refund_amount)}}</td>
+                                    <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormat($value->total_kept)}}</td>
                                 </tr>
-                                @php $total = $total + $value->amount; @endphp
+                                @php $total = $total + $value->total_kept; @endphp
                             @endforeach
                             <tr>
-                                <td style="text-align: right" class="summary-td" colspan="4">TOTAL</td>
+                                <td style="text-align: right" class="summary-td" colspan="6">TOTAL</td>
                                 <td style="text-align: right" class="summary-td">
                                     {{\App\Helpers\GlobalHelper::moneyFormat($total)}}
                                 </td>

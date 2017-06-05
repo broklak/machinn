@@ -147,7 +147,7 @@ class Report extends Model
         }
         $data = DB::table('booking_deposit')
             ->select(DB::raw('booking_code, booking_deposit.status, amount, booking_deposit.created_at,
-                    (select username from users where id = booking_deposit.updated_by) AS refunded_by'))
+                    (select username from users where id = booking_deposit.updated_by) AS refunded_by, booking_deposit.desc, refund_amount, (amount - refund_amount) AS total_kept'))
             ->join('booking_header', 'booking_header.booking_id', '=', 'booking_deposit.booking_id')
             ->where($where)
             ->whereBetween('booking_deposit.created_at', [$start, $end])
