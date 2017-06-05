@@ -95,9 +95,11 @@ class ExcelController extends Controller
         foreach($data as $key => $value) {
             $csv[$key]['booking_code'] = $value->booking_code;
             $csv[$key]['date'] = date('j F Y', strtotime($value->created_at));
-            $csv[$key]['total_deposit'] = GlobalHelper::moneyFormat($value->amount);
             $csv[$key]['status'] = ($value->status == 0) ? 'Not Refunded' : 'Refunded';
             $csv[$key]['refunded_by'] = $value->refunded_by;
+            $csv[$key]['deposit_amount'] = GlobalHelper::moneyFormat($value->amount);
+            $csv[$key]['refund_amount'] = GlobalHelper::moneyFormat($value->refund_amount);
+            $csv[$key]['deposit_kept'] = GlobalHelper::moneyFormat($value->total_kept);
 
         }
         return Excel::create('DepositReport_'.$monthWord.'_'.$year, function($excel) use ($csv) {
