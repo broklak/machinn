@@ -53,6 +53,9 @@ class BookingPayment extends Model
             case 4:
                 return 'Final Payment';
                 break;
+            case 5:
+                return 'Deposit Not Refunded';
+                break;
         }
     }
 
@@ -151,7 +154,7 @@ class BookingPayment extends Model
      * @return mixed
      */
     public static function getTotalPaid ($bookingId){
-        return parent::where('booking_id', $bookingId)->sum('total_payment');
+        return parent::where('booking_id', $bookingId)->where('deposit', 0)->sum('total_payment');
     }
 
     /**

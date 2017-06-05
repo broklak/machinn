@@ -180,6 +180,13 @@
             <td style="text-align: right">0</td>
         </tr>
         @endif
+        @if($total_refund != 0)
+            <tr class="item">
+                <td>Deposit Not Refunded</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($total_refund)}}</td>
+            </tr>
+        @endif
         @if($total_resto != 0)
         <tr class="item">
             <td>Restaurant</td>

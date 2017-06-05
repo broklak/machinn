@@ -15,7 +15,7 @@ class BookingDeposit extends Model
      * @var array
      */
     protected $fillable = [
-        'booking_id', 'amount', 'status', 'created_by', 'updated_by'
+        'booking_id', 'amount', 'status', 'created_by', 'updated_by', 'desc', 'refund_amount'
     ];
 
     /**

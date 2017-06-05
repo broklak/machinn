@@ -28,7 +28,7 @@ Route::get('front/checkin/print-bill/{bookingId}', 'Front\CheckinController@prin
 Route::get('front/checkin/print-deposit/{bookingPaymentId}', 'Front\CheckinController@printDeposit')->name('checkin.print-deposit');
 Route::post('front/checkin/void/{bookingId}', 'Front\CheckinController@deposit')->name("checkin.deposit");
 Route::get('front/checkin/void-deposit/{bookingPaymentId}', 'Front\CheckinController@voidDeposit')->name("checkin.void-deposit");
-Route::get('front/checkin/refund-deposit/{bookingPaymentId}', 'Front\CheckinController@refundDeposit')->name("checkin.refund-deposit");
+Route::post('front/checkin/refund-deposit/{bookingPaymentId}', 'Front\CheckinController@refundDeposit')->name("checkin.refund-deposit");
 
 Route::get('front/logbook/change-status/{id}/{status}', 'Master\LogbookController@changeStatus')->name('logbook.change-status');
 Route::get('front/logbook/done/{id}', 'Master\LogbookController@done')->name('logbook.done');
