@@ -130,16 +130,21 @@ class AuditController extends Controller
         }
         $audit = $request->input('audit');
 
-        foreach($audit as $val){
-            NightAudit::create([
-                'type'          =>  2,
-                'audited_by'    => Auth::id(),
-                'transaction_id'    => $val
-            ]);
+        if($audit){
+            foreach($audit as $val){
+                NightAudit::create([
+                    'type'          =>  2,
+                    'audited_by'    => Auth::id(),
+                    'transaction_id'    => $val
+                ]);
 
-            OutletTransactionHeader::find($val)->update([
-                'audited'   => 1
-            ]);
+                OutletTransactionHeader::find($val)->update([
+                    'audited'   => 1
+                ]);
+            }
+        } else {
+            $message = GlobalHelper::setDisplayMessage('warning', 'No Transaction Selected');
+            return redirect(route("back.night.room"))->with('displayMessage', $message);
         }
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to make night audit for selected transaction');
