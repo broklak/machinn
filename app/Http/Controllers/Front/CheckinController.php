@@ -408,8 +408,7 @@ class CheckinController extends Controller
         $resto = OutletTransactionHeader::where('booking_id', $bookingId)->where('status', '<>', '3')->get();
         $deposit = BookingDeposit::where('booking_id', $bookingId)->first();
 
-        $unRefundedDeposit = ($deposit->status == 0) ? $deposit->amount : 0;
-        $refundedDeposit = ($deposit->status == 1) ? $deposit->amount : 0;
+        $refundedDeposit = (isset($deposit->status) && $deposit->status == 1) ? $deposit->amount : 0;
         $total_unpaid_resto = OutletTransactionHeader::getUnpaidResto($bookingId);
         $total_paid = BookingPayment::getTotalPaid($bookingId);
         $total_unpaid_extra = BookingExtracharge::getTotalUnpaid($bookingId);
