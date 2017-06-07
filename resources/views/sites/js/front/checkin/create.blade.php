@@ -19,7 +19,7 @@
 
         $('#checkout').datepicker({
             dateFormat : 'yy-mm-dd',
-            minDate : 0,
+            minDate : 1,
             onSelect: function (selectedDate) {
                 resetRoom();
 
