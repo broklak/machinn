@@ -60,18 +60,26 @@
                     <td>{{\App\BookingPayment::setDescription($val->type, $val->extracharge_id, $val->deposit)}}</td>
                     <td>{!! \App\BookingPayment::setPaymentMethodDescription($val->payment_method, $val->card_name, $val->card_type, $val->card_number, $val->bank_transfer_recipient)!!}</td>
                     <td class="right"><strong>{{\App\Helpers\GlobalHelper::moneyFormat($val->total_payment)}}</strong></td>
-                    <td>
-                        @if($val->deposit == 1)
-                            <a href="#" onClick="window.open('{{route('checkin.print-deposit', ['id' => $val->booking_payment_id])}}','pagename','resizable,height=800,width=750');
-                                    return false;" class="btn btn-success">Print Receipt</a><noscript>
-                                You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
-                                </a>
-                            </noscript>
-                            <a onclick="return confirm('You will void deposit of this booking, continue?')" class="btn btn-danger"
-                               href="{{route('checkin.void-deposit', ['bookingPaymentId' => $val->booking_payment_id])}}">Void Deposit</a>
-                        @endif
+                    <td></td>
                 </tr>
             @endforeach
+            @if(!empty($deposit))
+                <tr>
+                    <td>{{date('j F Y', strtotime($deposit->created_at))}}</td>
+                    <td>Check In Deposit</td>
+                    <td>Cash to Front Office</td>
+                    <td>{{\App\Helpers\GlobalHelper::moneyFormat($deposit->amount)}}</td>
+                    <td>
+                        <a href="#" onClick="window.open('{{route('checkin.print-deposit', ['id' => $header->booking_id])}}','pagename','resizable,height=800,width=750');
+                                return false;" class="btn btn-success">Print Receipt</a><noscript>
+                            You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
+                            </a>
+                        </noscript>
+                        <a onclick="return confirm('You will void deposit of this booking, continue?')" class="btn btn-danger"
+                           href="{{route('checkin.void-deposit', ['bookingId' => $header->booking_id])}}">Void Deposit</a>
+                    </td>
+                </tr>
+            @endif
             </tbody>
         </table>
     </div>

@@ -244,6 +244,78 @@
                         </div>
                     </div>
                 @endif
+                @if(!empty($deposit))
+                <div class="widget-box title">
+                    <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
+                        <h5>Deposit</h5>
+                    </div>
+                    <div class="widget-content tab-content">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Deposit Amount</th>
+                                <th>Refund Amount</th>
+                                <th>Deposit Kept</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{\App\Helpers\GlobalHelper::moneyFormatReport($deposit->amount)}}</td>
+                                    <td>{{\App\Helpers\GlobalHelper::moneyFormatReport($deposit->refund_amount)}}</td>
+                                    <td>{{\App\Helpers\GlobalHelper::moneyFormatReport($deposit->amount - $deposit->refund_amount)}}</td>
+                                    <td>{{$deposit->desc}}</td>
+                                    <td>
+                                        @if($deposit->status == 0)
+                                            <a href="#modalRefund" class="btn btn-success" data-toggle="modal">Refund</a>
+                                            <div id="modalRefund" class="modal hide">
+                                                <div class="modal-header">
+                                                    <button data-dismiss="modal" class="close" type="button">×</button>
+                                                    <h3>Refund Deposit</h3>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-horizontal" id="refundForm" method="post" action="{{route("$route_name.refund-deposit", ['depositId' => $deposit->id])}}">
+                                                        {{csrf_field()}}
+                                                        <div id="form-search-guest" class="step">
+                                                            <div class="control-group">
+                                                                <label class="control-label">Total Deposit</label>
+                                                                <div class="controls">
+                                                                    <input value="{{\App\Helpers\GlobalHelper::moneyFormatReport($deposit->amount)}}" readonly name="text_deposit" type="text" required />
+                                                                </div>
+                                                            </div>
+                                                            <div class="control-group">
+                                                                <label class="control-label">Refund Amount</label>
+                                                                <div class="controls">
+                                                                    <input onkeyup="formatMoney($(this))" id="refund-amount" name="refund_amount" type="text" required />
+                                                                </div>
+                                                            </div>
+                                                            <div class="control-group">
+                                                                <label class="control-label">Refund Description</label>
+                                                                <div class="controls">
+                                                                        <textarea name="desc">
+
+                                                                        </textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-actions text-center">
+                                                                <input type="hidden" id="total_deposit" name="total_deposit" value="{{$deposit->amount}}">
+                                                                <button type="submit" class="btn btn-success">Refund Deposit</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <label class="label label-success">REFUNDED</label>
+                                        @endif
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
         <form id="form-payment" class="form-horizontal" action="{{route("$route_name.make-payment", ['id' => $header->booking_id])}}" method="post">

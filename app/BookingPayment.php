@@ -154,7 +154,7 @@ class BookingPayment extends Model
      * @return mixed
      */
     public static function getTotalPaid ($bookingId){
-        return parent::where('booking_id', $bookingId)->where('deposit', 0)->sum('total_payment');
+        return parent::where('booking_id', $bookingId)->where('deposit', 0)->where('type', '<>', 5)->sum('total_payment');
     }
 
     /**
