@@ -190,6 +190,11 @@ $(document).ready(function(){
 	$('#lightbox').live('click', function() { 
 		$('#lightbox').hide(200);
 	});
+
+	$(window).load(function() {
+		// Animate loader off screen
+		$(".se-pre-con").fadeOut("slow");
+	});
 	
 });
 

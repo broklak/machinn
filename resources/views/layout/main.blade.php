@@ -12,6 +12,8 @@
 </head>
 <body>
 
+    <div class="se-pre-con"></div>
+
     <!-- HEADER
     ================================================== -->
     @include("layout.header")

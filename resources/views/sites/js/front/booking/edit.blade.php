@@ -330,10 +330,16 @@
             type    : 'GET',
             data    : {"type" : roomType, "rateWeekdays" : weekdayRate, "rateWeekends" : weekendRate, "checkin" : checkinDate, "checkout" : checkoutDate, "totalRates" : totalRates, "action" : action},
             url     : "{{route('ajax.getTotalRoomRates')}}",
+            beforeSend : function (){
+                $(".se-pre-con").fadeIn("slow");
+                $("#modalSelectRoom").hide();
+            },
             success : function(result){
                 obj = JSON.parse(result);
                 $('#total_rates').val(obj.total_rates);
                 $('#booking_rate').val(toMoney(obj.total_rates));
+                $("#modalSelectRoom").show();
+                $(".se-pre-con").fadeOut("slow");
             }
         });
     }
