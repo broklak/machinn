@@ -25,7 +25,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Description</th>
-                                <th>Amount</th>
+                                <th>Opening Balance</th>
+                                <th>Opening Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -36,7 +37,8 @@
                                     <tr class="odd gradeX">
                                         <td>{{$val->cash_account_name}}</td>
                                         <td>{{$val->cash_account_desc}}</td>
-                                        <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->cash_account_amount)}}</td>
+                                        <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->open_balance)}}</td>
+                                        <td>{{($val->open_date != null) ? date('j F Y', strtotime($val->open_date)) : '' }}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->cash_account_status)!!}</td>
                                         <td>
                                             @if($user['employee_type_id'] == 1)

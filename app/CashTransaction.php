@@ -15,7 +15,7 @@ class CashTransaction extends Model
      * @var array
      */
     protected $fillable = [
-        'cash_account_id', 'amount', 'desc', 'type', 'booking_id', 'expense_id', 'pos_id', 'income_id'
+        'cash_account_id', 'amount', 'desc', 'type', 'booking_id', 'expense_id', 'pos_id', 'income_id', 'mutation_id'
     ];
 
     /**
@@ -40,7 +40,7 @@ class CashTransaction extends Model
             }
 
             // UPDATE NOMINAL
-            self::updateMasterAmount($data['cash_account_id'], $data['type'], $data['amount']);
+//            self::updateMasterAmount($data['cash_account_id'], $data['type'], $data['amount']);
 
             return parent::create($data);
         }
@@ -83,6 +83,35 @@ class CashTransaction extends Model
         $data = parent::whereBetween('created_at', [$start, $end])
             ->where($where)
             ->get();
+
+        return $data;
+    }
+
+    /**
+     * @param $end
+     * @return array
+     */
+    public static function getBalanceReport ($end){
+        $end = date('Y-m-d 23:59:59', strtotime($end));
+
+        $data = [];
+        $dataCash = CashAccount::all();
+
+        foreach($dataCash as $key => $value){
+            $data[$key]['cash_account_name'] = $value->cash_account_name;
+            $data[$key]['cash_account_id'] = $value->cash_account_id;
+            $totalCredit = $totalDebit = 0;
+            $start = (empty($value->open_date)) ? date('Y-m-d 00:00:00', strtotime('2017-01-01')) : date('Y-m-d 00:00:00', strtotime($value->open_date));
+            $getTransaction = self::getTransaction($start, $end, $value->cash_account_id);
+            foreach($getTransaction as $keyTr => $valTr){
+                if($valTr->type == 1){
+                    $totalDebit = $totalDebit + $valTr->amount;
+                } else {
+                    $totalCredit = $totalCredit + $valTr->amount;
+                }
+            }
+            $data[$key]['cash_account_amount'] = $value->open_balance + $totalCredit - $totalDebit;
+        }
 
         return $data;
     }

@@ -17,7 +17,7 @@ class CashAccount extends Model
      * @var array
      */
     protected $fillable = [
-        'cash_account_name', 'cash_account_desc', 'cash_account_amount'
+        'cash_account_name', 'cash_account_desc', 'cash_account_amount', 'open_date', 'open_balance'
     ];
 
     /**

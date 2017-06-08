@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\CashAccount;
+use App\CashTransaction;
 use App\Mutation;
 use App\UserRole;
 use Illuminate\Http\Request;
@@ -94,7 +95,7 @@ class MutationController extends Controller
             'to'  => 'required',
         ]);
 
-        $this->model->create([
+        $created = $this->model->create([
             'date'      => $request->input('date'),
             'amount'      => $request->input('amount'),
             'desc'      => $request->input('description'),
@@ -103,6 +104,29 @@ class MutationController extends Controller
             'created_by'      => Auth::id(),
             'status'        => 0
         ]);
+
+        // INSERT TO CASH TRANSACTION
+        $insertCashTransaction =
+                [
+                    'mutation_id'        => $created->id,
+                    'amount'            => $request->input('amount'),
+                    'desc'              => $request->input('description'),
+                    'cash_account_id'   => $request->input('from'),
+                    'payment_method'    => 4,
+                    'type'              => 1
+                ];
+        CashTransaction::insert($insertCashTransaction);
+
+        $insertCashTransaction =
+            [
+                'mutation_id'        => $created->id,
+                'amount'            => $request->input('amount'),
+                'desc'              => $request->input('description'),
+                'cash_account_id'   => $request->input('to'),
+                'payment_method'    => 4,
+                'type'              => 2
+            ];
+        CashTransaction::insert($insertCashTransaction);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);

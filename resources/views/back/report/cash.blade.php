@@ -21,7 +21,7 @@
                             <select name="cash_account_id" onchange="this.form.submit()">
                                 <option value="0">All Account</option>
                                 @foreach($balance as $val)
-                                    <option @if($account == $val->cash_account_id) selected @endif value="{{$val->cash_account_id}}">{{$val->cash_account_name}}</option>
+                                    <option @if($account == $val['cash_account_id']) selected @endif value="{{$val['cash_account_id']}}">{{$val['cash_account_name']}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -37,6 +37,28 @@
                     <input type="hidden" name="type" value="transaction">
                 </form>
             </div>
+            @else
+                <div>
+                    <div class="control-group">
+                        <label class="control-label">Choose Report Time</label>
+                        <div class="controls">
+                            <form>
+                                <select onchange="this.form.submit()" name="month">
+                                    @foreach($month_list as $key => $val)
+                                        <option @if($month == $val) selected @endif value="{{$key}}">{{$val}}</option>
+                                    @endforeach
+                                </select>
+                                <select onchange="this.form.submit()" name="year">
+                                    @for($x=0; $x < $year_list; $x++)
+                                        <option @if($year == date('Y')-$x) selected @endif>{{date('Y') - $x}}</option>
+                                    @endfor
+                                </select>
+                                <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                            </form>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
         @endif
         <div style="float: right">
             <a href="{{route('back.excel.bank')}}?start={{$start}}&end={{$end}}" class="btn btn-success">Export to CSV</a>
@@ -49,6 +71,10 @@
                 <div class="text-center">
                     <h3>{{date('j F Y', strtotime($start))}} - {{date('j F Y', strtotime($end))}}</h3>
                 </div>
+                @else
+                    <div class="text-center">
+                        <h3>{{$month}} {{$year}}</h3>
+                    </div>
                 @endif
                 <div class="widget-box">
                     <div class="widget-title">
@@ -71,10 +97,10 @@
                                     @php $totalBalance = 0; @endphp
                                     @foreach($balance as $val)
                                         <tr class="odd gradeX">
-                                            <td>{{$val->cash_account_name}}</td>
-                                            <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->cash_account_amount)}}</td>
+                                            <td>{{$val['cash_account_name']}}</td>
+                                            <td>{{\App\Helpers\GlobalHelper::moneyFormat($val['cash_account_amount'])}}</td>
                                         </tr>
-                                        @php $totalBalance = $totalBalance + $val->cash_account_amount; @endphp
+                                        @php $totalBalance = $totalBalance + $val['cash_account_amount']; @endphp
                                     @endforeach
                                     <tr>
                                         <td class="summary-td" style="text-align: right">TOTAL</td>

@@ -526,10 +526,13 @@ class ExcelController extends Controller
         if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
             return view("auth.unauthorized");
         }
+        $month = ($request->input('month')) ? $request->input('month') : date('m');
+        $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
         $account = ($request->input('cash_account_id')) ? $request->input('cash_account_id') : 0;
-        $balance = CashAccount::all();
+        $endBalance = date("$year-$month-t");
+        $balance = CashTransaction::getBalanceReport($endBalance);
         $word = date('d_m_Y', strtotime($end));
         $transaction = CashTransaction::getTransaction($start, $end, $account);
 
@@ -537,8 +540,8 @@ class ExcelController extends Controller
         $csvTransaction = [];
 
         foreach($balance as $key => $value){
-            $csvBalance[$key]['account_name'] = $value->cash_account_name;
-            $csvBalance[$key]['balance'] = GlobalHelper::moneyFormat($value->cash_account_amount);
+            $csvBalance[$key]['account_name'] = $value['cash_account_name'];
+            $csvBalance[$key]['balance'] = GlobalHelper::moneyFormat($value['cash_account_amount']);
         }
 
         foreach($transaction as $key => $value){

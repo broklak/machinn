@@ -38,9 +38,15 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Amount</label>
+                                    <label class="control-label">Opening Balance</label>
                                     <div class="controls">
-                                        <input value="{{old('cash_account_amount')}}" id="amount" required type="text" style="width: 30em" name="cash_account_amount" />
+                                        <input value="{{old('open_balance')}}" id="amount" required type="text" style="width: 30em" name="open_balance" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Opening Date</label>
+                                    <div class="controls">
+                                        <input value="{{old('open_date')}}" class="datepicker" data-date-format="yyyy-mm-dd" id="open_date" required type="text" style="width: 30em" name="open_date" />
                                     </div>
                                 </div>
                             </div>

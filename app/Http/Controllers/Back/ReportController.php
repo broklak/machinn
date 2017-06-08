@@ -64,13 +64,24 @@ class ReportController extends Controller
         if(!UserRole::checkAccess($subModule = 17, $type = 'read')){
             return view("auth.unauthorized");
         }
+        $month = ($request->input('month')) ? $request->input('month') : date('m');
+        $year = ($request->input('year')) ? $request->input('year') : date('Y');
         $type = ($request->input('type')) ? $request->input('type') : 'balance';
         $start = ($request->input('checkin_date')) ? $request->input('checkin_date') : date('Y-m-d', strtotime("-1 month"));
         $end = ($request->input('checkout_date')) ? $request->input('checkout_date') : date('Y-m-d');
+        $endBalance = date("$year-$month-t");
+
         $account = ($request->input('cash_account_id')) ? $request->input('cash_account_id') : 0;
         $data['parent_menu'] = $this->parent;
-        $balance = CashAccount::all();
+        $balance = CashTransaction::getBalanceReport($endBalance);
+
         $transaction = CashTransaction::getTransaction($start, $end, $account);
+
+        $data['month_list'] = $this->month;
+        $data['year_list'] = self::YEAR_LIMIT;
+        $data['month'] = date('F', strtotime(date("$year-$month-1")));
+        $data['numericMonth'] = $month;
+        $data['year'] = date('Y', strtotime(date("$year-$month-1")));
         $data['balance'] = $balance;
         $data['transaction'] = $transaction;
         $data['account'] = $account;

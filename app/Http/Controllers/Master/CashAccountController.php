@@ -80,13 +80,16 @@ class CashAccountController extends Controller
         $this->validate($request,[
             'cash_account_name'  => 'required|max:75|min:3',
             'cash_account_desc'  => 'max:255|min:3',
-            'cash_account_amount'  => 'required|numeric',
+            'open_balance'  => 'required|numeric',
+            'open_date'  => 'required',
         ]);
 
         $this->model->create([
             'cash_account_name'   => $request->input('cash_account_name'),
             'cash_account_desc'   => $request->input('cash_account_desc'),
-            'cash_account_amount' => $request->input('cash_account_amount'),
+            'cash_account_amount' => 0,
+            'open_date' => $request->input('open_date'),
+            'open_balance' => $request->input('open_balance'),
         ]);
 
         $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
@@ -135,14 +138,16 @@ class CashAccountController extends Controller
         $this->validate($request,[
             'cash_account_name'  => 'required|max:75|min:3',
             'cash_account_desc'  => 'max:255|min:3',
-            'cash_account_amount'  => 'required|numeric',
+            'open_balance'  => 'required|numeric',
+            'open_date'  => 'required'
         ]);
 
         $data = $this->model->find($id);
 
         $data->cash_account_name = $request->input('cash_account_name');
         $data->cash_account_desc = $request->input('cash_account_desc');
-        $data->cash_account_amount = $request->input('cash_account_amount');
+        $data->open_date = $request->input('open_date');
+        $data->open_balance = $request->input('open_balance');
 
         $data->save();
 
