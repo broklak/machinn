@@ -188,6 +188,30 @@ class MutationController extends Controller
             'updated_by'      => Auth::id()
         ]);
 
+        CashTransaction::where('mutation_id', $id)->delete();
+        // INSERT TO CASH TRANSACTION
+        $insertCashTransaction =
+            [
+                'mutation_id'        => $id,
+                'amount'            => $request->input('amount'),
+                'desc'              => $request->input('description'),
+                'cash_account_id'   => $request->input('from'),
+                'payment_method'    => 4,
+                'type'              => 1
+            ];
+        CashTransaction::insert($insertCashTransaction);
+
+        $insertCashTransaction =
+            [
+                'mutation_id'        => $id,
+                'amount'            => $request->input('amount'),
+                'desc'              => $request->input('description'),
+                'cash_account_id'   => $request->input('to'),
+                'payment_method'    => 4,
+                'type'              => 2
+            ];
+        CashTransaction::insert($insertCashTransaction);
+
         $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
@@ -237,6 +261,7 @@ class MutationController extends Controller
             return view("auth.unauthorized");
         }
         $this->model->find($id)->delete();
+        CashTransaction::where('mutation_id', $id)->delete();
         $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
