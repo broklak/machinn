@@ -282,29 +282,13 @@
             <h3>Available Rooms</h3>
         </div>
         <div class="modal-body">
-            {{--<form id="searchRoomForm" class="form-horizontal">--}}
-                {{--{{csrf_field()}}--}}
-                {{--<div id="form-search-guest" class="step">--}}
-                    {{--<div class="control-group">--}}
-                        {{--<label class="control-label">Filter Room</label>--}}
-                        {{--<div class="controls">--}}
-                            {{--<select id="room_type_filter" name="room_type">--}}
-                                {{--<option value="0" selected>All Room Type</option>--}}
-                                {{--@foreach($room_type as $key => $val)--}}
-                                    {{--<option value="{{$val['room_type_id']}}">{{$val['room_type_name']}}</option>--}}
-                                {{--@endforeach--}}
-                            {{--</select>--}}
-                            {{--<select id="floor_filter" name="floor">--}}
-                                {{--<option value="0" selected>All Floor</option>--}}
-                                {{--@foreach($floor as $key => $val)--}}
-                                    {{--<option value="{{$val['property_floor_id']}}">{{$val['property_floor_name']}}</option>--}}
-                                {{--@endforeach--}}
-                            {{--</select>--}}
-                            {{--<input type="submit" value="Search" class="btn btn-primary" />--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</form>--}}
+            <div class="legend-status" style="margin-top: 10px">
+                <span class="vacant">&nbsp;</span><span class="legend-title">Vacant</span>
+                <span class="occupied">&nbsp;</span><span class="legend-title">Occupied</span>
+                <span class="guaranteed">&nbsp;</span><span class="legend-title">Guaranteed</span>
+                <span class="tentative">&nbsp;</span><span class="legend-title">Tentative</span>
+            </div>
+            <div style="clear: both;margin-top: 20px"></div>
             <table class="table table-bordered view-room">
                 <tbody id="listRoom">
                 <tr>

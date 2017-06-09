@@ -40,14 +40,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="form-wizard-1" class="step">
-                                <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Date</label>
-                                    <div class="controls">
-                                        <input type="text" name="income_date" value="{{$row->income_date}}" data-date-format="yyyy-mm-dd" class="datepicker">
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-actions">
                                 <input id="next" class="btn btn-primary" type="submit" value="Save" />
                                 <div id="status"></div>

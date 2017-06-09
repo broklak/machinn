@@ -35,7 +35,7 @@
                                         <div class="control-group">
                                             <label class="control-label">Password <br />(Fill if you want to change password for this user)</label>
                                             <div class="controls">
-                                                <input id="password" type="text" name="password" />
+                                                <input id="password" type="password" name="password" />
                                             </div>
                                         </div>
                                     @endif

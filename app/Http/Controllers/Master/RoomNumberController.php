@@ -100,13 +100,13 @@ class RoomNumberController extends Controller
             return view("auth.unauthorized");
         }
         $this->validate($request,[
-            'room_number_code'  => 'required|max:75|min:3',
+            'room_number_code'  => 'required|max:75|min:3|unique:room_numbers',
             'room_type_id'  => 'required|numeric',
             'room_floor_id'  => 'required|numeric',
         ]);
 
         $this->model->create([
-            'room_number_code'   => $request->input('room_number_code'),
+            'room_number_code'   => $request->input('room_number'),
             'room_type_id'   => $request->input('room_type_id'),
             'room_floor_id'   => $request->input('room_floor_id')
         ]);
@@ -157,7 +157,7 @@ class RoomNumberController extends Controller
             return view("auth.unauthorized");
         }
         $this->validate($request,[
-            'room_number_code'  => 'required|max:75|min:3',
+            'room_number_code'  => 'required|max:75|min:3|unique:room_numbers',
             'room_type_id'  => 'required|numeric',
             'room_floor_id'  => 'required|numeric',
         ]);

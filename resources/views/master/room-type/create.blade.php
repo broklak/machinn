@@ -32,7 +32,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Group</label>
+                                    <label class="control-label">Room Attributes</label>
                                     <div class="controls">
                                         <select multiple name="room_type_attributes[]">
                                             <option disabled selected>Choose more than one attribute</option>

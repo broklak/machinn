@@ -24,6 +24,8 @@
                                 <th>Name</th>
                                 <th>Max Adult</th>
                                 <th>Max Child</th>
+                                <th>Weekdays Rate</th>
+                                <th>Weekends Rate</th>
                                 <th>Banquet</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -36,6 +38,8 @@
                                         <td>{{$val->room_type_name}}</td>
                                         <td>{{$val->room_type_max_adult}}</td>
                                         <td>{{$val->room_type_max_child}}</td>
+                                        <td>{{\App\RoomRate::getRate(1, $val->room_type_id)}}</td>
+                                        <td>{{\App\RoomRate::getRate(2, $val->room_type_id)}}</td>
                                         <td>{{\App\Helpers\GlobalHelper::setYesOrNo($val->room_type_banquet)}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->room_type_status)!!}</td>
                                         <td>

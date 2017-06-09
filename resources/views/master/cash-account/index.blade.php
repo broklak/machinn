@@ -8,12 +8,12 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <h1>Cash and Bank Account</h1>
     </div>
     <div class="container-fluid">
         <hr>
         @if($user['employee_type_id'] == 1)
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New Cash and Bank Account</a>
         @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">

@@ -34,14 +34,6 @@
                             </div>
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
-                                    <label class="control-label">{{$master_module}} Date</label>
-                                    <div class="controls">
-                                        <input type="text" name="cost_date" value="{{$row->cost_date}}" data-date-format="yyyy-mm-dd" class="datepicker">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="form-wizard-1" class="step">
-                                <div class="control-group">
                                     <label class="control-label">{{$master_module}} Amount</label>
                                     <div class="controls">
                                         <input value="{{$row->cost_amount}}" type="number" name="cost_amount">

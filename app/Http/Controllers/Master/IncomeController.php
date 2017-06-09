@@ -82,13 +82,12 @@ class IncomeController extends Controller
         }
         $this->validate($request,[
             'income_name'  => 'required|max:75|min:3',
-            'income_date'  => 'required',
             'income_amount' => 'required'
         ]);
 
         $this->model->create([
             'income_name'   => $request->input('income_name'),
-            'income_date'   => $request->input('income_date'),
+            'income_date'   => date('Y-m-d'),
             'income_amount'   => $request->input('income_amount')
         ]);
 
@@ -137,14 +136,13 @@ class IncomeController extends Controller
             return view("auth.unauthorized");
         }
         $this->validate($request,[
-            'income_name'  => 'required|max:75|min:3',
-            'income_date'  => 'required'
+            'income_name'  => 'required|max:75|min:3'
         ]);
 
         $data = $this->model->find($id);
 
         $data->income_name = $request->input('income_name');
-        $data->income_date = $request->input('income_date');
+        $data->income_date = date('Y-m-d');
         $data->income_amount = $request->input('income_amount');
 
         $data->save();

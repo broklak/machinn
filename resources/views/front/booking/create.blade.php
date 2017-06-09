@@ -403,6 +403,13 @@
             <h3>Available Rooms</h3>
         </div>
         <div class="modal-body">
+            <div class="legend-status" style="margin-top: 10px">
+                <span class="vacant">&nbsp;</span><span class="legend-title">Vacant</span>
+                <span class="occupied">&nbsp;</span><span class="legend-title">Occupied</span>
+                <span class="guaranteed">&nbsp;</span><span class="legend-title">Guaranteed</span>
+                <span class="tentative">&nbsp;</span><span class="legend-title">Tentative</span>
+            </div>
+            <div style="clear: both;margin-top: 20px"></div>
             <table class="table table-bordered view-room">
                 <tbody id="listRoom">
                     <tr>
