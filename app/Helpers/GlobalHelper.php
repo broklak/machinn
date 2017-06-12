@@ -266,6 +266,7 @@ class GlobalHelper
                     $room_total++;
                     $checkable = '';
                     $checked = '';
+                    $unknown = false;
                     if($room['room_used'] == 0){
                         $status = 'vacant';
                     } else{
@@ -276,19 +277,20 @@ class GlobalHelper
                         } elseif($room['status'] == 4){
                             $status = 'tentative';
                         } else {
-                            $status = 'ooo';
+                            $status = 'occupied';
+                            $unknown = true;
                         }
                     }
 
-                    if($room['room_used'] != 0){
+                    if($room['room_used'] != 0 || $unknown){
                         $checkable = 'disabled';
                     }
 
-                    if($room['booking_id'] == $booking_id){
+                    if($room['booking_id'] == $booking_id && !$unknown){
                         $checkable = '';
                     }
 
-                    if($room['room_used'] > 0 && $room['booking_id'] == $booking_id){
+                    if($room['room_used'] > 0 && $room['booking_id'] == $booking_id && !$unknown){
                         $checked = 'checked';
                     }
 
@@ -371,4 +373,3 @@ class GlobalHelper
         return $html;
     }
 }
-
