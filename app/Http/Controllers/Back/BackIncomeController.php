@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\GlobalHelper;
 use App\CashAccount;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class BackIncomeController extends Controller
 {
@@ -38,6 +40,7 @@ class BackIncomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('language');
 
         $this->model = new BackIncome();
 
@@ -45,7 +48,7 @@ class BackIncomeController extends Controller
 
         $this->parent = 'back-transaction';
 
-        $this->type = [1 => 'Paid Up Capital', 2 => 'Account Receivable Payment', 3 => 'Others'];
+        $this->type = [1 => __('web.backIncomeTypeCapital'), 2 => __('web.backIncomeTypeAccount'), 3 => __('web.others')];
     }
 
     /**
@@ -81,6 +84,7 @@ class BackIncomeController extends Controller
         if(!UserRole::checkAccess($subModule = 16, $type = 'create')){
             return view("auth.unauthorized");
         }
+        $this->type = [1 => __('web.backIncomeTypeCapital'), 2 => __('web.backIncomeTypeAccount'), 3 => __('web.others')];
         $data['unpaidBook'] = AccountReceivable::getUnpaidBooking();
         $data['type'] = $this->type;
         $data['income'] = Income::all();
@@ -140,7 +144,7 @@ class BackIncomeController extends Controller
 
         CashTransaction::insert($insertCashTransaction);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -166,6 +170,7 @@ class BackIncomeController extends Controller
         if(!UserRole::checkAccess($subModule = 16, $type = 'update')){
             return view("auth.unauthorized");
         }
+        $this->type = [1 => __('web.backIncomeTypeCapital'), 2 => __('web.backIncomeTypeAccount'), 3 => __('web.others')];
         $data['parent_menu'] = $this->parent;
         $data['unpaidBook'] = AccountReceivable::getUnpaidBooking();
         $data['type'] = $this->type;
@@ -214,7 +219,7 @@ class BackIncomeController extends Controller
             'updated_by'      => Auth::id()
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -250,7 +255,7 @@ class BackIncomeController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -263,7 +268,7 @@ class BackIncomeController extends Controller
             return view("auth.unauthorized");
         }
         $this->model->find($id)->delete();
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successDelete'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

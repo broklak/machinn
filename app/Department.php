@@ -39,6 +39,6 @@ class Department extends Model
     public static function getName ($id){
         $data = parent::find($id);
 
-        return (isset($data->department_id)) ? $data->department_name : 'DELETED';
+        return (isset($data->department_id)) ? $data->department_name : __('web.deleted');
     }
 }

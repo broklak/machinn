@@ -103,7 +103,7 @@ class TaxPosController extends Controller
             'updated_by'   => Auth::id(),
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route('pos.'.$this->module.".index"))->with('displayMessage', $message);
     }
 }

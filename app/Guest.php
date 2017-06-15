@@ -214,7 +214,6 @@ class Guest extends Model
                         ->where($where)
                         ->join('guests', 'guests.guest_id', '=', 'booking_room.guest_id')
                         ->join('room_numbers', 'room_numbers.room_number_id', '=', 'booking_room.room_number_id')
-//                        ->groupBy('booking_room.room_number_id')
                         ->get();
 
         return $guest;

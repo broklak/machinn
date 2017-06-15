@@ -39,7 +39,7 @@ class Income extends Model
     public static function getName($id) {
         $data = parent::find($id);
 
-        return isset($data->income_name) ? $data->income_name : 'DELETED';
+        return isset($data->income_name) ? $data->income_name : __('web.deleted');
     }
 
 }

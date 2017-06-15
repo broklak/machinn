@@ -35,7 +35,7 @@ class Partner extends Model
     public static function getGroupName ($groupId) {
         $group = PartnerGroup::find($groupId);
 
-        return isset($group->partner_group_name) ? $group->partner_group_name : 'DELETED';
+        return isset($group->partner_group_name) ? $group->partner_group_name : __('web.deleted');
     }
 
     public static function getName ($id) {
@@ -44,6 +44,6 @@ class Partner extends Model
         }
 
         $name = parent::find($id);
-        return isset($name->partner_name) ? $name->partner_name : 'DELETED';
+        return isset($name->partner_name) ? $name->partner_name : __('web.deleted');
     }
 }

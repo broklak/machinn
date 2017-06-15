@@ -35,6 +35,6 @@ class RoomType extends Model
     public static function getAttributeName ($attributeId) {
         $attribute = RoomAttribute::find($attributeId);
 
-        return isset($attribute->room_attribute_name) ? $attribute->room_attribute_name : 'DELETED';
+        return isset($attribute->room_attribute_name) ? $attribute->room_attribute_name : __('web.deleted');
     }
 }

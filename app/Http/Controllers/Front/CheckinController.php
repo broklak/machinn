@@ -143,7 +143,7 @@ class CheckinController extends Controller
 
         BookingRoom::processBookingRoom($request->input(), $header, $source = 'checkin');
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to check in');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.succesCheckin'));
         return redirect(route("guest.inhouse"))->with('displayMessage', $message);
     }
 
@@ -165,7 +165,7 @@ class CheckinController extends Controller
                            'status'     => 2
                         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to check in');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.succesCheckin'));
         return redirect(route("checkin.detail", ['id' => $bookingId]))->with('displayMessage', $message);
     }
 
@@ -248,7 +248,7 @@ class CheckinController extends Controller
             }
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save extracharges');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successExtra'));
         return redirect(route("checkin.detail", ['id' => $id]).'?tab=extra')->with('displayMessage', $message);
     }
 
@@ -282,7 +282,7 @@ class CheckinController extends Controller
             'updated_by'    => Auth::id()
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save rate');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successRate'));
         return redirect(route("checkin.detail", ['id' => $id]).'?tab=rate')->with('displayMessage', $message);
     }
 
@@ -355,7 +355,7 @@ class CheckinController extends Controller
             'booking_room_id' => $room_new
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save room information');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successRoom'));
         return redirect(route("checkin.detail", ['id' => $id]).'?tab=room')->with('displayMessage', $message);
     }
 
@@ -383,7 +383,7 @@ class CheckinController extends Controller
             'checkout'  => 1
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to checkout. Proceed to payment now');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCheckout'));
         return redirect(route("checkin.payment", ['id' => $id]))->with('displayMessage', $message);
     }
 
@@ -551,7 +551,7 @@ class CheckinController extends Controller
 
         CashTransaction::insert($insertCashTransaction);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to make payment');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successPayment'));
         return redirect(route("checkin.payment", ['id' => $id]))->with('displayMessage', $message);
     }
 
@@ -677,17 +677,6 @@ class CheckinController extends Controller
         $bookingData = BookingHeader::find($bookingId);
         $amount = str_replace(',', '', $request->input('amount'));
 
-        // INSERT TO BOOKING PAYMENT FIRST
-//        BookingPayment::create([
-//            'booking_id'    => $bookingId,
-//            'guest_id'      => $bookingData->guest_id,
-//            'type'          => 10,
-//            'payment_method' => 1, // DEPOSIT MUST BE CASH PAID TO FRONT OFFICE,
-//            'total_payment' => $amount,
-//            'deposit'       => 1,
-//            'created_by'    => Auth::id()
-//        ]);
-
         // INSERT TO CASH TRANSACTION
         CashTransaction::insert([
             'booking_id'        => $bookingId,
@@ -703,7 +692,7 @@ class CheckinController extends Controller
             'created_by'    => Auth::id()
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save deposit.');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successSaveDeposit'));
         return redirect(route("checkin.detail", ['id' => $bookingId]).'?tab=bill')->with('displayMessage', $message);
     }
 
@@ -727,7 +716,7 @@ class CheckinController extends Controller
 
         $deposit->delete();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to void deposit.');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successVoidDeposit'));
         return redirect(route("checkin.detail", ['id' => $bookingId]).'?tab=bill')->with('displayMessage', $message);
     }
 
@@ -758,7 +747,7 @@ class CheckinController extends Controller
             'type'              => 1
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to refund deposit.');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successRefundDeposit'));
         return redirect(route("checkin.payment", ['id' => $deposit->booking_id]))->with('displayMessage', $message);
     }
 

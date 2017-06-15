@@ -40,9 +40,9 @@ class Lost extends Model
      */
     public static function getStatus($status, $updated_by){
         if($status == 1){
-            return 'Lost';
+            return __('web.lost');
         }
 
-        return 'Returned';
+        return __('web.returned');
     }
 }

@@ -9,6 +9,14 @@
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
     <ul class="nav">
+      <li class="dropdown">
+          <a title="" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle" href="#"><i class="icon icon-caret-down"></i>
+              <span class="text">@lang('web.chooseLanguage')</span></a>
+          <ul class="dropdown-menu">
+            <li @if((App::isLocale('en'))) style="background-color:#000" @endif><a @if((App::isLocale('en'))) style="color:#fff" @endif href="{{route('language', ['locale' => 'en'])}}">English</a></li>
+            <li @if((App::isLocale('id'))) style="background-color:#000" @endif><a @if((App::isLocale('id'))) style="color:#fff" @endif href="{{route('language', ['locale' => 'id'])}}">Bahasa</a></li>
+          </ul>
+      </li>
         <li class=""><a id="show-notif" title="" href="javascript:void(0)"><i class="icon icon-bell"></i> <span class="text">Notification</span>
             <span class="label label-important" id="notif-num">0</span>
             </a></li>

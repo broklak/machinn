@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +11,7 @@
 */
 Route::get('/', 'Master\RoomNumberController@viewRoom');
 Route::get('home', 'Master\RoomNumberController@viewRoom');
+Route::get('language/{locale}', 'HomeController@changeLanguage')->name('language');
 
 
 

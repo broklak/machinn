@@ -107,9 +107,7 @@ class LogbookController extends Controller
             'created_by'   => Auth::id(),
         ]);
 
-
-
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($this->module.".index").'?type='.$request->input('grant_type'))->with('displayMessage', $message);
     }
 
@@ -167,7 +165,7 @@ class LogbookController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index").'?type='.$request->input('grant_type'))->with('displayMessage', $message);
     }
 
@@ -205,7 +203,7 @@ class LogbookController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of logbook');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route($this->module.".index").'?type='.$type)->with('displayMessage', $message);
     }
 
@@ -225,7 +223,7 @@ class LogbookController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to set done reminder');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index").'?type='.$type)->with('displayMessage', $message);
     }
 }

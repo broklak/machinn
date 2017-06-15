@@ -88,9 +88,9 @@ class OutletTransactionHeader extends Model
      */
     public static function getDeliveryType($type){
         if($type == 1){
-            return 'Dine In';
+            return __('web.deliveryTypeDine');
         }
-        return 'Room Service';
+        return __('web.deliveryTypeRoom');
     }
 
     /**

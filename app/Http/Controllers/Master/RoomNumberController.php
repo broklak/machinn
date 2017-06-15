@@ -10,6 +10,7 @@ use App\UserRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\GlobalHelper;
+use Illuminate\Support\Facades\App;
 
 class RoomNumberController extends Controller
 {
@@ -111,7 +112,7 @@ class RoomNumberController extends Controller
             'room_floor_id'   => $request->input('room_floor_id')
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -170,7 +171,7 @@ class RoomNumberController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -200,7 +201,7 @@ class RoomNumberController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of room '.$data->room_number_code);
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -243,7 +244,7 @@ class RoomNumberController extends Controller
             return view("auth.unauthorized");
         }
         $this->model->find($id)->delete();
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successDelete'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -283,7 +284,7 @@ class RoomNumberController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of room '.$data->room_number_code);
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route("house.dashboard"))->with('displayMessage', $message);
     }
 }

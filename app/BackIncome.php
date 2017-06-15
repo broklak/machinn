@@ -60,18 +60,18 @@ class BackIncome extends Model
         $type = $data->type;
 
         if($type == 1){
-            return 'Paid Up Capital';
+            return __('web.backIncomeTypeCapital');
         }
 
         if($type == 2){
-            return 'Account Receivable Payment <br /> Booking Code '.BookingHeader::getBookingCode($data['account_receivable_id']);
+            return __('web.backIncomeTypeAccount').'<br /> Booking Code '.BookingHeader::getBookingCode($data['account_receivable_id']);
         }
 
         if($type == 3){
             $income = Income::find($data->income_id);
             $name = (isset($income->income_name)) ? $income->income_name : '';
 
-            return 'Others <br /> '.$name;
+            return __('web.others').' <br /> '.$name;
         }
     }
 }

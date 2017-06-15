@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SetUserRole;
 use App\Console\Commands\SetNoShowBooking;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,7 +16,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\WarmUpCache::class,
-        Commands\SetNoShowBooking::class
+        Commands\SetNoShowBooking::class,
+        Commands\SetUserRole::class
     ];
 
     /**

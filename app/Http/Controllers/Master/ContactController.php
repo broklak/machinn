@@ -101,7 +101,7 @@ class ContactController extends Controller
 
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -159,7 +159,7 @@ class ContactController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -195,7 +195,7 @@ class ContactController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->contact_name);
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -208,7 +208,7 @@ class ContactController extends Controller
             return view("auth.unauthorized");
         }
         $this->model->find($id)->delete();
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successDelete'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

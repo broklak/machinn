@@ -35,6 +35,6 @@ class Settlement extends Model
     public static function getBankName ($bankId) {
         $group = Bank::find($bankId);
 
-        return isset($group->bank_name) ? $group->bank_name : 'DELETED';
+        return isset($group->bank_name) ? $group->bank_name : __('web.deleted');
     }
 }

@@ -44,7 +44,7 @@ class RoomNumber extends Model
     public static function getTypeName ($typeId) {
         $type = RoomType::find($typeId);
 
-        return isset($type->room_type_name) ? $type->room_type_name : 'DELETED';
+        return isset($type->room_type_name) ? $type->room_type_name : __('web.deleted');
     }
 
     /**
@@ -54,7 +54,7 @@ class RoomNumber extends Model
     public static function getPlanName ($planId) {
         $plan = RoomPlan::find($planId);
 
-        return isset($plan->room_plan_name) ? $plan->room_plan_name : 'DELETED';
+        return isset($plan->room_plan_name) ? $plan->room_plan_name : __('web.deleted');
     }
 
     /**
@@ -64,7 +64,7 @@ class RoomNumber extends Model
     public static function getFloorName ($floorId) {
         $floor = PropertyFloor::find($floorId);
 
-        return isset($floor->property_floor_name) ? $floor->property_floor_name : 'DELETED';
+        return isset($floor->property_floor_name) ? $floor->property_floor_name : __('web.deleted');
     }
 
     /**
@@ -73,7 +73,7 @@ class RoomNumber extends Model
      */
     public static function getCode ($id){
         $data = parent::find($id);
-        return isset($data->room_number_code) ? $data->room_number_code : 'DELETED';
+        return isset($data->room_number_code) ? $data->room_number_code : __('web.deleted');
     }
 
     /**

@@ -156,7 +156,7 @@ class EmployeeController extends Controller
             'bank_account_name'     => $request->input('bank_account_name')
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($this->url.".index"))->with('displayMessage', $message);
     }
 
@@ -239,7 +239,7 @@ class EmployeeController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->url.".index"))->with('displayMessage', $message);
     }
 
@@ -269,7 +269,7 @@ class EmployeeController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->employee_type_name);
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -295,7 +295,7 @@ class EmployeeController extends Controller
 
             $user->save();
 
-            $message = GlobalHelper::setDisplayMessage('success', 'Success to change your password');
+            $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
             return redirect(route('change-password'))->with('displayMessage', $message);
         }
         return view('master.'.$this->module.'.change-password');
@@ -310,7 +310,7 @@ class EmployeeController extends Controller
             return view("auth.unauthorized");
         }
         $this->model->find($id)->delete();
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successDelete'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -356,7 +356,7 @@ class EmployeeController extends Controller
         session($data);
 
         DB::table('hotel_profile')->where('id', 1)->update($data);
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update hotel profile');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route("profile"))->with('displayMessage', $message);
     }
 }

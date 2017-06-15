@@ -34,8 +34,8 @@ class Tax extends Model
 
     public static function setTypeName ($type){
         if($type == 1){
-            return 'Charged to Customer';
+            return __('taxTypeCustomer');
         }
-        return 'Paid by Hotel';
+        return __('taxTypeHotel');
     }
 }

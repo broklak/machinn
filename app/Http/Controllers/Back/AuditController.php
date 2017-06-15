@@ -70,11 +70,11 @@ class AuditController extends Controller
                 ]);
             }
         } else {
-            $message = GlobalHelper::setDisplayMessage('warning', 'No Transaction Selected');
+            $message = GlobalHelper::setDisplayMessage('warning', __('msg.warningAudit'));
             return redirect(route("back.night.room"))->with('displayMessage', $message);
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to make night audit for selected transaction');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successMakeAudit'));
         return redirect(route("back.night.room"))->with('displayMessage', $message);
     }
 
@@ -92,7 +92,7 @@ class AuditController extends Controller
 
         NightAudit::where('booking_id', $bookingId)->delete();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to void night audit for selected transaction');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successVoidAudit'));
         return redirect(route("back.night.room"))->with('displayMessage', $message);
     }
 
@@ -143,11 +143,11 @@ class AuditController extends Controller
                 ]);
             }
         } else {
-            $message = GlobalHelper::setDisplayMessage('warning', 'No Transaction Selected');
+            $message = GlobalHelper::setDisplayMessage('warning', __('msg.warningAudit'));
             return redirect(route("back.night.room"))->with('displayMessage', $message);
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to make night audit for selected transaction');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successMakeAudit'));
         return redirect(route("back.night.outlet"))->with('displayMessage', $message);
     }
 
@@ -165,7 +165,7 @@ class AuditController extends Controller
 
         NightAudit::where('transaction_id', $transaction_id)->delete();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to void night audit for selected transaction');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successVoidAudit'));
         return redirect(route("back.night.outlet"))->with('displayMessage', $message);
     }
 }

@@ -34,6 +34,6 @@ class Logbook extends Model
 
     public static function getUserName ($userId) {
         $get_user = User::find($userId)->value('username');
-        return ($get_user) ? $get_user : 'DELETED';
+        return ($get_user) ? $get_user : __('web.deleted');
     }
 }

@@ -82,6 +82,10 @@ class UserRole extends Model
 
         $data = Cache::get('role-'.$role);
 
+        if(empty($data)){
+          return false;
+        }
+
         foreach($data as $key => $value){
             $submodule = explode('-', $value);
 
@@ -105,5 +109,13 @@ class UserRole extends Model
         }
 
         return $menu;
+    }
+
+    public static function generateRole (){
+        $data = parent::all();
+
+        foreach ($data as $key => $value) {
+            self::insertToCache($value->employee_type_id, $value->submodule_id, $value->type);
+        }
     }
 }

@@ -151,7 +151,7 @@ class AjaxController extends Controller
         $log = [];
         foreach($data as $key => $val){
             $log[] = [
-                'title' => '<a style="color:#fff" href="'.route('logbook.index').'">Message from '.User::getName($val['created_by']).'</a>',
+                'title' => '<a style="color:#fff" href="'.route('logbook.index').'">'.__('web.messageFrom').' '.User::getName($val['created_by']).'</a>',
                 'text' => '<a style="color:#fff" href="'.route('logbook.index').'">'.$val['logbook_message'].'</a>'
             ];
         }

@@ -111,7 +111,7 @@ class GuestController extends Controller
 
         $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($route.$this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -190,7 +190,7 @@ class GuestController extends Controller
         ]);
 
         $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($route.$this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -288,7 +288,7 @@ class GuestController extends Controller
             return view("auth.unauthorized");
         }
         $this->model->find($id)->delete();
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '';
         return redirect(route($route.$this->module.".index"))->with('displayMessage', $message);
     }

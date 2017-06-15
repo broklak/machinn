@@ -30,13 +30,13 @@ class OutletTransactionDetail extends Model
      */
     public static function getStatusName ($status) {
         if($status == 1){
-            return 'Draft';
+            return __('web.draft');
         } elseif($status == 2) {
-            return 'Billed';
+            return __('web.billed');
         } elseif($status == 3){
-            return 'Paid';
+            return __('web.paid');
         } else {
-            return 'Deleted';
+            return __('web.deleted');
         }
     }
 
@@ -46,10 +46,10 @@ class OutletTransactionDetail extends Model
      */
     public static function getDeliveryStatus($status){
         if($status == 1){
-            return '<span class="label label-success">Delivered</span>';
+            return '<span class="label label-success">'.__('web.deliveryStatusYes').'</span>';
         }
 
-        return '<span class="label label-warning">Not Delivered</span>';
+        return '<span class="label label-warning">'.__('web.deliveryStatusNo').'</span>';
     }
 
     /**

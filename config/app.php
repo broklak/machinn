@@ -249,4 +249,6 @@ return [
     'defaultCheckoutTime' => '14:00:00',
 
     'defaultCheckInTime' => '14:00:00',
+
+    'languageSupported' => ['id', 'end']
 ];

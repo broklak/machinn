@@ -167,7 +167,7 @@ class PosController extends Controller
             ]);
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return ($type == 2) ? redirect(route($this->module.".edit", ['id' => $header->transaction_id]))->with('displayMessage', $message) : redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -275,7 +275,7 @@ class PosController extends Controller
             CashTransaction::insert($insertCashTransaction);
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return ($type == 2) ? redirect(route($this->module.".edit", ['id' => $id]))->with('displayMessage', $message) : redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -291,10 +291,10 @@ class PosController extends Controller
         $data = OutletTransactionHeader::find($id);
 
         if($status == 2){
-            $act = 'void payment';
+            $act = __('web.voidPayment');
             OutletTransactionPayment::where('transaction_id', $id)->delete();
         } else {
-            $act = 'delete transaction';
+            $act = __('web.deleteTransaction');
         }
         $data->status = $status;
 
@@ -304,7 +304,7 @@ class PosController extends Controller
             'status' => $status
         ]);
 
-        $message = GlobalHelper::setDisplayMessage('success', "Success to $act");
+        $message = GlobalHelper::setDisplayMessage('success', __('web.success')." $act");
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }

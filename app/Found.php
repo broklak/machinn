@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -40,9 +39,8 @@ class Found extends Model
      */
     public static function getStatus($status, $updated_by){
         if($status == 1){
-            return 'Found';
+            return __('web.found');
         }
-
-        return 'Returned';
+        return __('web.returned');
     }
 }

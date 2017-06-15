@@ -198,7 +198,7 @@ class PosController extends Controller
             $item->save();
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return ($type == 2) ? redirect(route($this->module.".edit", ['id' => $header->transaction_id]))->with('displayMessage', $message) : redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -365,7 +365,7 @@ class PosController extends Controller
             CashTransaction::insert($insertCashTransaction);
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return ($type == 2) ? redirect(route($this->module.".edit", ['id' => $id]))->with('displayMessage', $message) : redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -384,12 +384,12 @@ class PosController extends Controller
         $data = OutletTransactionHeader::find($id);
 
         if ($status == 2) {
-            $act = 'void payment';
+            $act = __('web.voidPayment');
             OutletTransactionPayment::where('transaction_id', $id)->delete();
         } elseif ($status == 1){
-            $act = 'void billed';
+            $act = __('web.voidBilled');
         } else {
-            $act = 'delete transaction';
+            $act = __('web.deleteTransaction');
         }
         $data->status = $status;
 
@@ -401,7 +401,7 @@ class PosController extends Controller
 
         $url = ($back) ? route($this->module.'.edit', ['id' => $id]) : route($this->module.'.index');
 
-        $message = GlobalHelper::setDisplayMessage('success', "Success to $act");
+        $message = GlobalHelper::setDisplayMessage('success', __('web.success')." $act");
         return redirect($url)->with('displayMessage', $message);
     }
 
@@ -458,7 +458,7 @@ class PosController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', "Success to change delivery status");
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeDelivery'));
         return redirect(route($this->module.".active"))->with('displayMessage', $message);
     }
 }

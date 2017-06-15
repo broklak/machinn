@@ -55,11 +55,11 @@ class FrontExpenses extends Model
 
     public static function getStatusName ($status) {
         if($status == 1){
-            return 'Approved';
+            return __('web.approved');
         } elseif($status == 2) {
-            return 'Not Approved';
+            return __('web.notApproved');
         } else {
-            return 'Deleted';
+            return __('web.deleted');
         }
     }
 

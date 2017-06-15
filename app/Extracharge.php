@@ -34,18 +34,18 @@ class Extracharge extends Model
 
     public static function getStatus ($status){
         if($status == 1){
-            return 'Unpaid';
+            return __('web.unpaid');
         }
 
-        return 'Paid';
+        return __('web.paid');
     }
 
     public static function getTypeName($typeId){
         if($typeId == 1){
-            return 'One Time';
+            return __('web.extraTypeOne');
         }
 
-        return 'Reoccuring';
+        return __('web.extraTypeReoccur');
     }
 
     public static function getName ($id){

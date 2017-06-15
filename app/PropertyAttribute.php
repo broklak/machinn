@@ -39,16 +39,16 @@ class PropertyAttribute extends Model
     public static function categoryName ($category){
         switch($category){
             case 1:
-                return 'Furniture Hotel';
+                return __('web.propertyCategoryFurniture');
             break;
             case 2:
-                return 'Electronic';
+                return __('web.propertyCategoryElectronic');
             break;
             case 3;
-                return 'Kitchen Equipment';
+                return __('web.propertyCategoryKitchen');
             break;
             default;
-                return 'Others';
+                return __('web.others');
             break;
         }
 

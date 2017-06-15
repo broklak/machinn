@@ -42,19 +42,19 @@ class BookingPayment extends Model
         }
         switch($type) {
             case 1 :
-                return 'Down Payment';
+                return __('web.bookingPaymentDescriptionDown');
                 break;
             case 2 :
-                return 'Settlement';
+                return __('web.bookingPaymentDescriptionSettlement');
                 break;
             case 3 :
-                return 'Extra Charge - '.$name;
+                return __('web.bookingPaymentDescriptionExtra').' '.$name;
                 break;
             case 4:
-                return 'Final Payment';
+                return __('web.bookingPaymentDescriptionFinal');
                 break;
             case 5:
-                return 'Deposit Not Refunded';
+                return __('web.bookingPaymentDescriptionDeposit');
                 break;
         }
     }
@@ -69,15 +69,15 @@ class BookingPayment extends Model
      */
     public static function setPaymentMethodDescription($paymentMethod, $cardName, $cardType, $cardNumber, $bankRecipient){
         if($paymentMethod == 1){
-            return 'Cash to Front Office';
+            return __('web.paymentMethodDescriptionCashFront');
         } elseif($paymentMethod == 2){
-            return 'Cash to Back Office';
+            return __('web.paymentMethodDescriptionCashBack');
         } elseif($paymentMethod == 3){
-            $card = ($cardType == 1) ? 'Credit Card' : 'Debit Card';
-            return $card . '<br />' . substr($cardNumber, 0, -3) . 'XXX'. '<br /> Holder :'. $cardName;
+            $card = ($cardType == 1) ? return __('web.paymentMethodDescriptionCredit'); : __('web.paymentMethodDescriptionDebit');
+            return $card . '<br />' . substr($cardNumber, 0, -3) . 'XXX'. '<br /> '.__('web.paymentMethodDescriptionBankHolder').' :'. $cardName;
         } else {
             $bank = CashAccount::find($bankRecipient);
-            return 'Bank Transfer to '.$bank->cash_account_name. '<br />' . $bank->cash_account_desc;
+            return __('web.paymentMethodDescriptionBankNumber').$bank->cash_account_name. '<br />' . $bank->cash_account_desc;
         }
     }
 

@@ -27,10 +27,10 @@ class GlobalHelper
      */
     public static function getGender ($gender) {
         if($gender == 1){
-            return 'Male';
+            return __('web.male');
         }
 
-        return 'Female';
+        return __('web.female');
     }
 
     /**
@@ -69,7 +69,7 @@ class GlobalHelper
      */
     public static function setActivationStatus($status, $type = 'Active'){
         if($status == 0){
-            return '<span class="label label-important">Not '.$type.'</span>';
+            return '<span class="label label-important">'.__('web.no').' '.$type.'</span>';
         }
 
         return '<span class="label label-success">'.$type.'</span>';
@@ -81,10 +81,10 @@ class GlobalHelper
      */
     public static function setYesOrNo($status){
         if($status == 0){
-            return 'No';
+            return __('web.no');
         }
 
-        return 'Yes';
+        return __('web.yes');
     }
 
     /**
@@ -156,11 +156,11 @@ class GlobalHelper
      */
     public static function getBookingTypeName ($type) {
         if($type == 1){
-            return 'Guaranteed';
+            return __('web.bookingTypeGuaranteed');
         } else if($type == 2) {
-            return 'Tentative';
+            return __('web.bookingTypeTentative');
         } else {
-            return 'Checked In';
+            return __('web.bookingStatusAlready');
         }
     }
 
@@ -185,16 +185,17 @@ class GlobalHelper
     public static function getBookingStatus($status){
         switch($status){
             case 1:
-                return 'Wait to Checkin';
+                return __('web.bookingStatusWait');
                 break;
             case 2:
-                return 'Already Check In';
+                return __('web.bookingStatusAlready');
                 break;
             case 3:
-                return 'No Showing';
+                return __('web.bookingStatusNoShowing');
                 break;
             case 4:
-                return 'Void';
+                return __('web.bookingStatusVoid');
+                break;
         }
     }
 
@@ -204,11 +205,11 @@ class GlobalHelper
      */
     public static function setStatusName($status){
         if($status == 1){
-            return 'Ready';
+            return __('web.roomStatusReady');
         } elseif($status == 2){
-            return 'Dirty';
+            return __('web.roomStatusDirty');
         } else {
-            return 'Not Ready';
+            return __('web.roomStatusNotReady');
         }
     }
 
@@ -351,14 +352,14 @@ class GlobalHelper
                     $html .= '<button data-toggle="dropdown" class="btn btn-'.$status.' dropdown-toggle">'.$room['room_number_code'].'  &nbsp; <i class="icon icon-'.$hk.'"></i></button>';
                     $html .= '<ul class="dropdown-menu">';
                     if($room['hk_status'] == 1){
-                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 2]).'"><i class="icon icon-warning-sign"></i> Set Dirty</a></li>';
-                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 3]).'"><i class="icon icon-wrench"></i> Set Out of Order</a></li></ul>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 2]).'"><i class="icon icon-warning-sign"></i> '.__('web.set').__('web.roomStatusDirty').'</a></li>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 3]).'"><i class="icon icon-wrench"></i> '.__('web.set').__('web.roomStatusOut').'</a></li></ul>';
                     } elseif($room['hk_status'] == 2){
-                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 1]).'"><i class="icon icon-check"></i> Set Ready</a></li>';
-                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 3]).'"><i class="icon icon-wrench"></i> Set Out of Order</a></li></ul>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 1]).'"><i class="icon icon-check"></i> '.__('web.set').__('web.roomStatusReady').'</a></li>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 3]).'"><i class="icon icon-wrench"></i> '.__('web.set').__('web.roomStatusOut').'</a></li></ul>';
                     } else {
-                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 1]).'"><i class="icon icon-check"></i> Set Ready</a></li>';
-                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 2]).'"><i class="icon icon-warning-sign"></i> Set Dirty</a></li>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 1]).'"><i class="icon icon-check"></i> '.__('web.set').__('web.roomStatusReady').'</a></li>';
+                        $html .= '<li><a href="'.route('house.set', ['id' => $room['room_number_id'], 'status' => 2]).'"><i class="icon icon-warning-sign"></i> '.__('web.set').__('web.roomStatusDirty').'</a></li>';
                     }
 
                     $html .= '</div>';

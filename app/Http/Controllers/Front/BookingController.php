@@ -229,7 +229,7 @@ class BookingController extends Controller
 
         BookingPayment::processPayment($request->input(), $header);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to create new booking');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successMakeBooking'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -256,7 +256,7 @@ class BookingController extends Controller
 
         BookingPayment::processPayment($request->input(), $header);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -356,7 +356,7 @@ class BookingController extends Controller
             ]);
         }
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 

@@ -35,6 +35,6 @@ class Province extends Model
     public static function getCountryName ($groupId) {
         $group = Country::find($groupId);
 
-        return isset($group->country_name) ? $group->country_name : 'DELETED';
+        return isset($group->country_name) ? $group->country_name : __('web.deleted');
     }
 }

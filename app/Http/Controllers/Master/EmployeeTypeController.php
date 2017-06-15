@@ -103,7 +103,7 @@ class EmployeeTypeController extends Controller
 
         $this->insertRole($insert, $created->employee_type_id);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -166,7 +166,7 @@ class EmployeeTypeController extends Controller
 
         $this->insertRole($insert, $id);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -202,7 +202,7 @@ class EmployeeTypeController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status of '.$data->employee_type_name);
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -217,7 +217,7 @@ class EmployeeTypeController extends Controller
         UserRole::where('employee_type_id', $id)->delete();
         UserRole::clearRoleCache($id);
         $this->model->find($id)->delete();
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successDelete'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 

@@ -39,10 +39,10 @@ class PosCategory extends Model
      */
     public static function getTypeName($type){
         if($type == 1){
-            return 'Food';
+            return __('web.menuTypeFood');
         }
 
-        return 'Beverages';
+        return __('web.menuTypeBeverage');
     }
 
     /**

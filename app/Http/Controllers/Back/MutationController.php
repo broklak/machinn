@@ -128,7 +128,7 @@ class MutationController extends Controller
             ];
         CashTransaction::insert($insertCashTransaction);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to save new data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successCreateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -212,7 +212,7 @@ class MutationController extends Controller
             ];
         CashTransaction::insert($insertCashTransaction);
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to update data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successUpdateData'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -248,7 +248,7 @@ class MutationController extends Controller
 
         $data->save();
 
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to change status');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successChangeStatus'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 
@@ -262,7 +262,7 @@ class MutationController extends Controller
         }
         $this->model->find($id)->delete();
         CashTransaction::where('mutation_id', $id)->delete();
-        $message = GlobalHelper::setDisplayMessage('success', 'Success to delete data');
+        $message = GlobalHelper::setDisplayMessage('success', __('msg.successDelete'));
         return redirect(route($this->module.".index"))->with('displayMessage', $message);
     }
 }
