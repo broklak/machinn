@@ -5,11 +5,11 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">@lang('module.mutation')</a> <a href="#" class="current">@lang('web.edit') @lang('module.mutation')</a> </div>
+        <h1>@lang('module.mutation')</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
+        <a class="btn btn-success" href="javascript:history.back()">@lang('web.view') Data</a>
         @foreach($errors->all() as $message)
             <div style="margin: 20px 0" class="alert alert-error">
                 {{$message}}
@@ -19,23 +19,23 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Edit {{$master_module}} Data</h5>
+                        <h5>@lang('web.edit') @lang('module.mutation')</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->id])}}" method="post">
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
-                                    <label class="control-label"> Date</label>
+                                    <label class="control-label">@lang('web.date')</label>
                                     <div class="controls">
                                         <input id="date" value="{{$row->date}}" required type="text" name="date" data-date-format="yyyy-mm-dd" class="datepicker" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Account Sender</label>
+                                    <label class="control-label">@lang('web.accountSender')</label>
                                     <div class="controls">
                                         <select name="from">
-                                            <option disabled selected>Choose Sender</option>
+                                            <option disabled selected>@lang('web.choose')</option>
                                             @foreach($cash_account as $key => $val)
                                                 <option @if($row->from == $val['cash_account_id']) selected="selected" @endif value="{{$val['cash_account_id']}}">{{$val['cash_account_name']}}</option>
                                             @endforeach
@@ -43,10 +43,10 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Account Recipient</label>
+                                    <label class="control-label">@lang('web.accountReceiver')</label>
                                     <div class="controls">
                                         <select name="to">
-                                            <option disabled selected>Choose Recipient</option>
+                                            <option disabled selected>@lang('web.choose')</option>
                                             @foreach($cash_account as $key => $val)
                                                 <option @if($row->to == $val['cash_account_id']) selected="selected" @endif value="{{$val['cash_account_id']}}">{{$val['cash_account_name']}}</option>
                                             @endforeach
@@ -54,20 +54,20 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Amount</label>
+                                    <label class="control-label">@lang('web.amount')</label>
                                     <div class="controls">
                                         <input id="amount" value="{{$row->amount}}" required type="number" name="amount" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Description</label>
+                                    <label class="control-label">@lang('web.description')</label>
                                     <div class="controls">
                                         <input id="description" value="{{$row->desc}}" type="text" name="description" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <input id="next" class="btn btn-primary" type="submit" value="Save" />
+                                <input id="next" class="btn btn-primary" type="submit" value="@lang('web.save')" />
                                 <div id="status"></div>
                             </div>
                             <div id="submitted"></div>

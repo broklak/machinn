@@ -73,7 +73,7 @@ class BookingPayment extends Model
         } elseif($paymentMethod == 2){
             return __('web.paymentMethodDescriptionCashBack');
         } elseif($paymentMethod == 3){
-            $card = ($cardType == 1) ? return __('web.paymentMethodDescriptionCredit'); : __('web.paymentMethodDescriptionDebit');
+            $card = ($cardType == 1) ? __('web.paymentMethodDescriptionCredit') : __('web.paymentMethodDescriptionDebit');
             return $card . '<br />' . substr($cardNumber, 0, -3) . 'XXX'. '<br /> '.__('web.paymentMethodDescriptionBankHolder').' :'. $cardName;
         } else {
             $bank = CashAccount::find($bankRecipient);

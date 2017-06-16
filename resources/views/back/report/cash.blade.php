@@ -8,7 +8,7 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{ucfirst($type)}} {{$master_module}}</h1>
+        <h1>@lang('module.cashReport')</h1>
     </div>
     <div class="container-fluid">
         <hr>
@@ -16,10 +16,10 @@
             <div>
                 <form>
                     <div class="control-group">
-                        <label class="control-label">Choose Cash and Bank Account</label>
+                        <label class="control-label">@lang('web.choose') @lang('web.cashBankAccount')</label>
                         <div class="controls">
                             <select name="cash_account_id" onchange="this.form.submit()">
-                                <option value="0">All Account</option>
+                                <option value="0">@lang('web.allAccount')</option>
                                 @foreach($balance as $val)
                                     <option @if($account == $val['cash_account_id']) selected @endif value="{{$val['cash_account_id']}}">{{$val['cash_account_name']}}</option>
                                 @endforeach
@@ -27,11 +27,11 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">Choose Date Range</label>
+                        <label class="control-label">@lang('web.chooseDateRange')</label>
                         <div class="controls">
                             <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                             <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
-                            <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                            <input type="submit" style="vertical-align: top" value="@lang('web.submitSearch')" class="btn btn-primary">
                         </div>
                     </div>
                     <input type="hidden" name="type" value="transaction">
@@ -40,7 +40,7 @@
             @else
                 <div>
                     <div class="control-group">
-                        <label class="control-label">Choose Report Time</label>
+                        <label class="control-label">@lang('web.chooseDateRange')</label>
                         <div class="controls">
                             <form>
                                 <select onchange="this.form.submit()" name="month">
@@ -53,7 +53,7 @@
                                         <option @if($year == date('Y')-$x) selected @endif>{{date('Y') - $x}}</option>
                                     @endfor
                                 </select>
-                                <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                                <input type="submit" value="@lang('web.submitSearch')" style="vertical-align: top" class="btn btn-primary">
                             </form>
                         </div>
                         <div style="clear: both;"></div>
@@ -61,7 +61,7 @@
                 </div>
         @endif
         <div style="float: right">
-            <a href="{{route('back.excel.bank')}}?start={{$start}}&end={{$end}}" class="btn btn-success">Export to CSV</a>
+            <a href="{{route('back.excel.bank')}}?start={{$start}}&end={{$end}}" class="btn btn-success">@lang('web.exportCsv')</a>
         </div>
         <div style="clear: both;"></div>
         {!! session('displayMessage') !!}
@@ -79,8 +79,8 @@
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
-                            <li class="{{($type == 'balance') ? 'active' : ''}}"><a href="{{route('back.report.cash')}}">Balance Report</a></li>
-                            <li class="{{($type == 'transaction') ? 'active' : ''}}"><a href="{{route('back.report.cash')}}?type=transaction">Detail Transaction</a></li>
+                            <li class="{{($type == 'balance') ? 'active' : ''}}"><a href="{{route('back.report.cash')}}">@lang('module.balanceReport')</a></li>
+                            <li class="{{($type == 'transaction') ? 'active' : ''}}"><a href="{{route('back.report.cash')}}?type=transaction">@lang('module.detailTransaction')</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
@@ -88,8 +88,8 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Balance</th>
+                                    <th>@lang('web.name')</th>
+                                    <th>@lang('web.balance')</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -118,11 +118,11 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Account</th>
-                                    <th>Description</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
+                                    <th>@lang('web.date')</th>
+                                    <th>@lang('web.account')</th>
+                                    <th>@lang('web.description')</th>
+                                    <th>@lang('web.debit')</th>
+                                    <th>@lang('web.credit')</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -146,12 +146,12 @@
                                         <td class="summary-td">{{\App\Helpers\GlobalHelper::moneyFormat($totalCredit)}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3" class="summary-td" style="text-align: right">TOTAL BALANCE</td>
+                                        <td colspan="3" class="summary-td" style="text-align: right">TOTAL {{strtoupper(__('web.balance'))}}</td>
                                         <td colspan="2" class="summary-td" style="text-align: center">{{\App\Helpers\GlobalHelper::moneyFormat($totalCredit - $totalDebit)}}</td>
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="3" style="text-align: center">No Data Found</td>
+                                        <td colspan="3" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                                 </tbody>

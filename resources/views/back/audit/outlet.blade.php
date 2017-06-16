@@ -5,28 +5,28 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Outlet Night Audit</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.outletNightAudit')</a> </div>
+        <h1>@lang('module.outletNightAudit')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <form>
                 <div class="control-group">
-                    <label class="control-label">Choose Status</label>
+                    <label class="control-label">@lang('web.chooseStatus')</label>
                     <div class="controls">
                         <select name="status" onchange="this.form.submit()">
-                            <option @if($status == 0) selected @endif value="0">Not Audited</option>
-                            <option @if($status == 1) selected @endif value="1">Audited</option>
+                            <option @if($status == 0) selected @endif value="0">@lang('web.notAudited')</option>
+                            <option @if($status == 1) selected @endif value="1">@lang('web.audited')</option>
                         </select>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label">Choose Date Range</label>
+                    <label class="control-label">@lang('web.chooseDateRange')</label>
                     <div class="controls">
                         <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                         <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" value="@lang('web.submitSearch')" style="vertical-align: top" class="btn btn-primary">
                     </div>
                 </div>
             </form>
@@ -48,11 +48,11 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>Bill Number</th>
-                                        <th>Date</th>
-                                        <th>Guest</th>
-                                        <th>Type</th>
-                                        <th>Amount</th>
+                                        <th>@lang('web.billNumber')</th>
+                                        <th>@lang('web.date')</th>
+                                        <th>@lang('web.guest')</th>
+                                        <th>@lang('web.type')</th>
+                                        <th>@lang('web.amount')</th>
                                         <th>Audit</th>
                                     </tr>
                                     </thead>
@@ -66,8 +66,8 @@
                                             <td>{{\App\Helpers\GlobalHelper::moneyFormatReport($value->grand_total)}}</td>
                                             <td>
                                                 @if($value->audited == 1)
-                                                    <a onclick="return confirm('Are you sure to void audit this transaction?')"
-                                                       href="{{route('back.night.outlet.void', ['boking_id' => $value->transaction_id])}}" class="btn btn-danger">Void Audit</a>
+                                                    <a onclick="return confirm('@lang('msg.confirmVoidAudit')')"
+                                                       href="{{route('back.night.outlet.void', ['boking_id' => $value->transaction_id])}}" class="btn btn-danger">@lang('web.void') Audit</a>
                                                 @else
                                                     <input value="{{$value->transaction_id}}" type="checkbox" @if($value->audited == 1) disabled checked @endif name="audit[]">
                                                 @endif
@@ -76,7 +76,7 @@
                                     @endforeach
                                     @if($status == 0)
                                         <tr>
-                                            <td colspan="7" style="text-align: right"><input class="btn btn-primary" value="Make Night Audit" type="submit"></td>
+                                            <td colspan="7" style="text-align: right"><input class="btn btn-primary" value="@lang('web.makeNightAudit')" type="submit"></td>
                                         </tr>
                                     @endif
                                     </tbody>

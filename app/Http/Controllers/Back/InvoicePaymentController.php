@@ -135,6 +135,7 @@ class InvoicePaymentController extends Controller
         if(!UserRole::checkAccess($subModule = 15, $type = 'update')){
             return view("auth.unauthorized");
         }
+        $data['cash_account'] = CashAccount::all();
         $data['invoice'] = Invoice::where('paid', 0)->get();
         $data['parent_menu'] = $this->parent;
         $data['row'] = $this->model->find($id);

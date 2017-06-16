@@ -31,4 +31,7 @@ return [
     'successVoidDeposit' => 'Berhasil membatalkan deposit',
     'successRefundDeposit' => 'Berhasil mengembalikan deposit',
     'successChangeDelivery' => 'Berhasil mengubah status pengiriman',
+    'noData'  => 'Tidak ada data',
+    'confirmVoidAudit' => 'Anda yakin akan membatalkan audit transaksi ini ?',
+    'confirmDelete' => 'Anda yakin akan menghapus data :data ?',
 ];

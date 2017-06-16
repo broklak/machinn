@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-    @php $master_module = 'Income'; @endphp
+    @php $master_module = __('module.backIncome'); @endphp
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
         <h1>{{$master_module}}</h1>
@@ -13,27 +13,27 @@
         <div>
             <form>
                 <div class="control-group">
-                    <label class="control-label">Choose Type</label>
+                    <label class="control-label">@lang('web.choose') @lang('web.type')</label>
                     <div class="controls">
                         <select name="type" onchange="this.form.submit()">
-                            <option @if($typeIncome == 0) selected @endif value="0">All Type</option>
-                            <option @if($typeIncome == 1) selected @endif value="1">Paid Up Capital</option>
-                            <option @if($typeIncome == 2) selected @endif value="2">Account Receivable Payment</option>
-                            <option @if($typeIncome == 3) selected @endif value="3">Others</option>
+                            <option @if($typeIncome == 0) selected @endif value="0">@lang('web.allType')</option>
+                            <option @if($typeIncome == 1) selected @endif value="1">@lang('web.backIncomeTypeCapital')</option>
+                            <option @if($typeIncome == 2) selected @endif value="2">@lang('web.backIncomeTypeAccount')</option>
+                            <option @if($typeIncome == 3) selected @endif value="3">@lang('web.others')</option>
                         </select>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label">Choose Date Range</label>
+                    <label class="control-label">@lang('web.chooseDateRange')</label>
                     <div class="controls">
                         <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                         <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.submitSearch')" class="btn btn-primary">
                     </div>
                 </div>
             </form>
         </div>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">@lang('web.addButton') Data</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -45,13 +45,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Account Recipient</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-                                {{--<th>Status</th>--}}
-                                <th>Action</th>
+                                <th>@lang('web.date')</th>
+                                <th>@lang('web.type')</th>
+                                <th>@lang('web.accountRecipient')</th>
+                                <th>@lang('web.description')</th>
+                                <th>@lang('web.amount')</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,13 +62,12 @@
                                         <td>{{\App\CashAccount::getName($val->cash_account_recipient)}}</td>
                                         <td>{{$val->desc}}</td>
                                         <td>{{\App\Helpers\GlobalHelper::moneyFormatReport($val->amount)}}</td>
-{{--                                        <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->status, 'Approved')!!}</td>--}}
                                         <td>
                                             @if($val->status == 0)
-                                                <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                                <a onclick="return confirm('You will delete the data, continue? ')"
+                                                <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
+                                                <a onclick="return confirm('@lang('msg.confirmDelete')')"
                                                    class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->id])}}"
-                                                   title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                                   title="delete"><i class="icon-trash" aria-hidden="true"></i> @lang('web.delete')
                                                 </a>
                                             @endif
                                             {{--@if($val->status == 0)--}}
@@ -82,7 +80,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="9" style="text-align: center">No Data Found</td>
+                                    <td colspan="9" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

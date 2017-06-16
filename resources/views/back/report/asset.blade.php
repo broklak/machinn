@@ -6,28 +6,28 @@
     @php $route_name = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.transaction' : 'transaction'; @endphp
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Asset Report</h1>
+        <h1>@lang('module.assetReport')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <form>
                 <div class="control-group">
-                    <label class="control-label">Choose Asset Category</label>
+                    <label class="control-label">@lang('web.choose') @lang('web.type')</label>
                     <div class="controls">
                         <select name="category" onchange="this.form.submit()">
-                            <option value="0">All Category</option>
-                            <option @if($category == 1) selected @endif value="1">Furniture Hotel</option>
-                            <option @if($category == 2) selected @endif value="2">Electronic</option>
-                            <option @if($category == 3) selected @endif value="3">Kitchen Equipment</option>
-                            <option @if($category == 4) selected @endif value="4">Others</option>
+                            <option value="0">@lang('web.allType')</option>
+                            <option @if($category == 1) selected @endif value="1">@lang('web.propertyCategoryFurniture')</option>
+                            <option @if($category == 2) selected @endif value="2">@lang('web.propertyCategoryElectronic')</option>
+                            <option @if($category == 3) selected @endif value="3">@lang('web.propertyCategoryKitchen')</option>
+                            <option @if($category == 4) selected @endif value="4">@lang('web.others')</option>
                         </select>
                     </div>
                 </div>
             </form>
         </div>
         <div style="float: right">
-            <a href="{{route('back.excel.asset')}}?start={{$start}}&end={{$end}}&category={{$category}}" class="btn btn-success">Export to CSV</a>
+            <a href="{{route('back.excel.asset')}}?start={{$start}}&end={{$end}}&category={{$category}}" class="btn btn-success">@lang('web.exportCsv')</a>
         </div>
         <div style="clear: both;"></div>
         {!! session('displayMessage') !!}
@@ -38,11 +38,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Purchase Date</th>
-                                <th>Purchase Amount</th>
-                                <th>Quantity</th>
+                                <th>@lang('web.name')</th>
+                                <th>@lang('web.category')</th>
+                                <th>@lang('web.purchaseDate')</th>
+                                <th>@lang('web.amount')</th>
+                                <th>@lang('web.qty')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,7 +66,7 @@
                                 </tr>
                             @else
                                 <tr>
-                                    <td colspan="5" style="text-align: center">No Data Found</td>
+                                    <td colspan="5" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

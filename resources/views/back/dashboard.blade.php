@@ -6,18 +6,18 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}} Report</h1>
+        <h1>@lang('module.dashboard')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Date Range</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                     <form action="">
                         <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                         <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.submitSearch')" class="btn btn-primary">
                     </form>
                 </div>
             </div>
@@ -31,8 +31,8 @@
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#room">Room Sales</a></li>
-                            <li><a data-toggle="tab" href="#outlet">Outlet Sales</a></li>
+                            <li class="active"><a data-toggle="tab" href="#room">@lang('web.roomSales')</a></li>
+                            <li><a data-toggle="tab" href="#outlet">@lang('web.outletSales')</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
@@ -40,9 +40,9 @@
                             <table class="table table-bordered table-striped booking-report">
                                 <thead>
                                 <tr>
-                                    <th>ROOM TYPE</th>
-                                    <th>TOTAL ROOM SOLD</th>
-                                    <th>TOTAL AMOUNT SOLD</th>
+                                    <th>{{strtoupper(__('web.roomType'))}}</th>
+                                    <th>{{strtoupper(__('web.totalRoomSold'))}}</th>
+                                    <th>{{strtoupper(__('web.totalAmountSold'))}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -69,22 +69,22 @@
                                 <thead>
                                 <tr>
                                     <th>OUTLET</th>
-                                    <th>TOTAL BILL</th>
-                                    <th>TOTAL TAX</th>
-                                    <th>TOTAL SERVICE</th>
-                                    <th>TOTAL DISCOUNT</th>
+                                    <th>TOTAL {{strtoupper(__('web.bill'))}}</th>
+                                    <th>TOTAL {{strtoupper(__('web.tax'))}}</th>
+                                    <th>TOTAL {{strtoupper(__('web.service'))}}</th>
+                                    <th>TOTAL {{strtoupper(__('web.discount'))}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                  <tr>
-                                     <td>Outlet Dine In</td>
+                                     <td>@lang('web.deliveryTypeDine')</td>
                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($bill_dine)}}</td>
                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($tax_dine)}}</td>
                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($service_dine)}}</td>
                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($discount_dine)}}</td>
                                 </tr>
                                  <tr>
-                                     <td>Room Service</td>
+                                     <td>@lang('web.deliveryTypeRoom')</td>
                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($bill_service)}}</td>
                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($tax_service)}}</td>
                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormatReport($service_service)}}</td>

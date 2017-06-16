@@ -31,4 +31,7 @@ return [
     'successVoidDeposit' => 'Success to void deposit',
     'successRefundDeposit' => 'Success to refund deposit',
     'successChangeDelivery' => 'Success to change delivery status',
+    'noData'  => 'No Data Found',
+    'confirmVoidAudit' => 'Are you sure to void audit this transaction ?',
+    'confirmDelete' => 'Are you sure to delete this data :data ?',
 ];
