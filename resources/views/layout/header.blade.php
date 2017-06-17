@@ -17,19 +17,19 @@
             <li @if((App::isLocale('id'))) style="background-color:#000" @endif><a @if((App::isLocale('id'))) style="color:#fff" @endif href="{{route('language', ['locale' => 'id'])}}">Bahasa</a></li>
           </ul>
       </li>
-        <li class=""><a id="show-notif" title="" href="javascript:void(0)"><i class="icon icon-bell"></i> <span class="text">Notification</span>
+        <li class=""><a id="show-notif" title="" href="javascript:void(0)"><i class="icon icon-bell"></i> <span class="text">@lang('web.notification')</span>
             <span class="label label-important" id="notif-num">0</span>
             </a></li>
         <li class="dropdown">
             <a title="" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle" href="#"><i class="icon icon-caret-down"></i>
-                <span class="text">Welcome {{ucfirst($user['name'])}}</span></a>
+                <span class="text">@lang('web.welcome') {{ucfirst($user['name'])}}</span></a>
             <ul class="dropdown-menu">
-                <li><a href="{{route('change-password')}}"><i class="icon icon-lock"></i> Change Password</a></li>
+                <li><a href="{{route('change-password')}}"><i class="icon icon-lock"></i> @lang('web.changePassword')</a></li>
                 @if($menu['setting'])
-                    <li><a href="{{route('profile')}}"><i class="icon icon-building"></i> Change Hotel Profile</a></li>
+                    <li><a href="{{route('profile')}}"><i class="icon icon-building"></i> @lang('web.changeHotelProfile')</a></li>
                 @endif
             </ul>
         </li>
-        <li class=""><a title="" href="{{url('/logout')}}"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+        <li class=""><a title="" href="{{url('/logout')}}"><i class="icon icon-share-alt"></i> <span class="text">@lang('web.logout')</span></a></li>
     </ul>
 </div>

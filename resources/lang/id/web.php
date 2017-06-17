@@ -107,7 +107,7 @@ return [
     'invoiceDate' => 'Tanggal Invoice',
     'dueDate' => 'Tanggal Jatuh Tempo',
     'partner' => 'Partner',
-    'department' => 'Department',
+    'department' => 'Departemen',
     'cost' => 'Biaya',
     'invoiceNumber' => 'Nomor Invoice',
     'from' => 'Dari',
@@ -146,4 +146,9 @@ return [
     'tax' => 'Pajak',
     'service' => 'Service',
     'discount' => 'Discount',
+    'notification' => 'Notifikasi',
+    'welcome' => 'Halo',
+    'changePassword' => 'Ganti Kata Sandi',
+    'changeHotelProfile' => 'Ganti Profil Hotel',
+    'logout' => 'Keluar'
 ];

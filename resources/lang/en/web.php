@@ -146,4 +146,9 @@ return [
     'tax' => 'Tax',
     'service' => 'Service',
     'discount' => 'Discount',
+    'notification' => 'Notification',
+    'welcome' => 'Welcome',
+    'changePassword' => 'Change Password',
+    'changeHotelProfile' => 'Change Hotel Profile',
+    'logout' => 'Log Out'
 ];
