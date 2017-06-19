@@ -5,20 +5,20 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Sales {{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.salesReport')</a> </div>
+        <h1>@lang('module.salesReport')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Report Time</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                     <form>
                         <select onchange="this.form.submit()" name="delivery_type">
-                            <option @if($delivery_type == 0) selected @endif value="0">All Outlet</option>
-                            <option @if($delivery_type == 1) selected @endif value="1">Dine In</option>
-                            <option @if($delivery_type == 2) selected @endif value="2">Room Service</option>
+                            <option @if($delivery_type == 0) selected @endif value="0">@lang('web.allType')</option>
+                            <option @if($delivery_type == 1) selected @endif value="1">@lang('web.deliveryTypeDine')</option>
+                            <option @if($delivery_type == 2) selected @endif value="2">@lang('web.deliveryTypeRoom')</option>
                         </select>
                         <select name="month">
                             @foreach($month_list as $key => $val)
@@ -30,11 +30,11 @@
                                 <option @if($year == date('Y')-$x) selected @endif>{{date('Y') - $x}}</option>
                             @endfor
                         </select>
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </form>
                 </div>
                 <div style="float: right">
-                    <a href="{{route('back.excel.salespos')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                    <a href="{{route('back.excel.salespos')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">@lang('web.exportCsv')</a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -50,13 +50,13 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Bill Number</th>
-                                <th>Date</th>
-                                <th>Customer Name</th>
-                                <th>Total Bill</th>
-                                <th>Tax</th>
-                                <th>Service</th>
-                                <th>Discount</th>
+                                <th>@lang('web.billNumber')</th>
+                                <th>@lang('web.date')</th>
+                                <th>@lang('web.guest')</th>
+                                <th>@lang('web.amount')</th>
+                                <th>@lang('web.tax')</th>
+                                <th>@lang('web.service')</th>
+                                <th>@lang('web.discount')</th>
                                 <th>Grand Total</th>
                             </tr>
                             </thead>
@@ -83,20 +83,20 @@
                                     @php $discount = $discount + $val->total_discount @endphp
                                 @endforeach
                                 <tr>
-                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">TOTAL MENU PAYMENT : {{\App\Helpers\GlobalHelper::moneyFormatReport($billed)}}</td>
+                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">{{strtoupper(__('web.totalMenu'))}} : {{\App\Helpers\GlobalHelper::moneyFormatReport($billed)}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">TOTAL TAX PAYMENT : {{\App\Helpers\GlobalHelper::moneyFormatReport($tax)}}</td>
+                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">{{strtoupper(__('web.totalTax'))}} : {{\App\Helpers\GlobalHelper::moneyFormatReport($tax)}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">TOTAL SERVICE PAYMENT : {{\App\Helpers\GlobalHelper::moneyFormatReport($service)}}</td>
+                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">{{strtoupper(__('web.totalService'))}} : {{\App\Helpers\GlobalHelper::moneyFormatReport($service)}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">TOTAL DISCOUNT : {{\App\Helpers\GlobalHelper::moneyFormatReport($discount)}}</td>
+                                    <td colspan="8" style="text-align: right;font-size: 14px" class="summary-td">{{strtoupper(__('web.totalDiscount'))}} : {{\App\Helpers\GlobalHelper::moneyFormatReport($discount)}}</td>
                                 </tr>
                             @else
                                 <tr>
-                                    <td colspan="8" style="text-align: center">No Data Found</td>
+                                    <td colspan="8" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

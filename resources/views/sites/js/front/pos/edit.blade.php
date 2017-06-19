@@ -77,7 +77,7 @@
                         listGuest.push('<td>'+value.id_number+' ('+getIDTypeName(value.id_type)+')</td>');
                         listGuest.push('<td><a data-dismiss="modal" data-firstname="'+value.first_name+'" data-lastname="'+value.last_name+'"');
                         listGuest.push('data-id="'+value.guest_id+'"');
-                        listGuest.push('data-handphone="'+value.handphone+'" class="btn btn-success chooseGuest">Choose</a></td>')
+                        listGuest.push('data-handphone="'+value.handphone+'" class="btn btn-success chooseGuest">@lang('web.choose')</a></td>')
                         listGuest.push('</tr>');
                     });
                     listElement = listGuest.join(" ");
@@ -109,7 +109,7 @@
                         listGuest.push('<tr class="'+rowType+' gradeX">');
                         listGuest.push('<td>'+value.extracharge_name+'</td>');
                         listGuest.push('<td>'+toMoney(value.extracharge_price)+'</td>');
-                        listGuest.push('<td><a data-dismiss="modal" data-id="'+value.extracharge_id+'" data-name="'+value.extracharge_name+'" data-price="'+value.extracharge_price+'" class="btn btn-success chooseItem">Choose</a></td>');
+                        listGuest.push('<td><a data-dismiss="modal" data-id="'+value.extracharge_id+'" data-name="'+value.extracharge_name+'" data-price="'+value.extracharge_price+'" class="btn btn-success chooseItem">@lang('web.choose')</a></td>');
                         listGuest.push('</tr>');
                     });
                     listElement = listGuest.join(" ");
@@ -160,7 +160,7 @@
             console.log(grand_total);
 
             if(paid < grand_total){
-                alert('Paid amout must be bigger than billed amount');
+                alert('@lang('web.paidBiggerBilled')');
             } else {
                 change = paid - grand_total;
             }
@@ -193,7 +193,7 @@
             var guest_id = $('#guest_id').val();
             if(guest_id == '' || guest_id == '0'){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest data</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestDataNull')</div>');
             }
         }
 
@@ -203,28 +203,28 @@
 
             if(payment_method == 0){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please select payment method</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.paymentMethodNull')</div>');
             }
 
             if(parseInt(pay_paid) == 0){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input paid amount</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.paidAmountNull')</div>');
             }
 
             if(parseInt(pay_paid) < parseInt(grand_total)){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Paid amount must be bigger than billed amount</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.paidBiggerBilled')</div>');
             }
         }
 
         if(date == ''){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please input transaction date</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.transactionDateNull')</div>');
         }
 
         if(grand_total == '0'){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please select minimum 1 item</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.minimumOneItem')</div>');
         }
 
         if(err == 1){
@@ -276,7 +276,7 @@
         if(parseInt(disc) > parseInt(subtotal)){
             disc = 0;
             elem.val(disc);
-            alert('Discount cannot be bigger than total')
+            alert('@lan('msg.discountBiggetTotal')')
         }
         var total = parseInt($('#qty-'+id_item_qty).val()) * parseInt($('#price-'+id_item_qty).val()) - parseInt(disc);
         $('#total-'+id_item_qty).html(toMoney(total));

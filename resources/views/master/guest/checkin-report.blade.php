@@ -5,19 +5,19 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}} by Check In</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.guestByCheckin')</a> </div>
+        <h1>@lang('module.guestByCheckin')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Date Range</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                     <form>
                         <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                         <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </form>
                 </div>
             </div>
@@ -33,11 +33,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>NOMOR</th>
-                                    <th>DATE</th>
-                                    <th>ADULT GUEST</th>
-                                    <th>CHILD GUEST</th>
-                                    <th>TOTAL GUEST</th>
+                                    <th>#</th>
+                                    <th>{{strtoupper(__('web.date'))}}</th>
+                                    <th>{{strtoupper(__('web.adult'))}}</th>
+                                    <th>{{strtoupper(__('web.child'))}}</th>
+                                    <th>TOTAL {{strtoupper(__('web.guest'))}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,7 +62,7 @@
                                         </tr>
                                 @else
                                     <tr>
-                                        <td colspan="3" style="text-align: center">No Data Found</td>
+                                        <td colspan="3" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                             </tbody>

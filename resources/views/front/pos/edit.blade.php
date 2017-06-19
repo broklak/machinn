@@ -6,10 +6,10 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <h1>Point of Sales (POS)</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a href="{{route($route_name.'.index')}}" class="btn btn-success">View Transaction</a>
+        <a href="{{route($route_name.'.index')}}" class="btn btn-success">@lang('web.view') @lang('module.transaction')</a>
         <div id="error_messages" style="margin-top: 20px">
 
         </div>
@@ -17,7 +17,7 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Edit {{$master_module}} Data</h5>
+                        <h5>@lang('web.edit') @lang('module.transaction')</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <form id="form-pos" class="form-horizontal" action="{{route("$route_name.update", ['id' => $row->transaction_id])}}" method="post">
@@ -27,35 +27,35 @@
                                 <div class="span6">
                                     <div class="widget-box">
                                         <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                                            <h5>Create New Transaction</h5>
+                                            <h5>@lang('web.edit') @lang('module.transaction')</h5>
                                         </div>
                                         <div class="widget-content nopadding">
                                             <div id="form-wizard-1" class="step">
                                                 <div class="control-group">
-                                                    <label class="control-label">Bill Number</label>
+                                                    <label class="control-label">@lang('web.billNumber')</label>
                                                     <div class="controls">
                                                         <input id="bill_number" value="{{$row->bill_number}}" readonly type="text" name="bill_number" />
                                                     </div>
                                                 </div>
                                                 <div class="control-group">
-                                                    <label class="control-label">Date</label>
+                                                    <label class="control-label">@lang('web.date')</label>
                                                     <div class="controls">
                                                         <input id="date" value="{{$row->date}}" type="text" name="date" />
                                                     </div>
                                                 </div>
                                                 <div class="control-group">
-                                                    <label class="control-label">Customer</label>
+                                                    <label class="control-label">@lang('web.guest')</label>
                                                     <div class="controls">
-                                                        <input type="radio" @if($row->guest_id == 0) checked @endif value="0" name="is_guest" id="no"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="no">Not Guest</label>
-                                                        <input type="radio" @if($row->guest_id != 0) checked @endif value="1" name="is_guest" id="yes"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="yes">Guest</label>
+                                                        <input type="radio" @if($row->guest_id == 0) checked @endif value="0" name="is_guest" id="no"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="no">@lang('web.no') @lang('web.guest')</label>
+                                                        <input type="radio" @if($row->guest_id != 0) checked @endif value="1" name="is_guest" id="yes"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="yes">@lang('web.guest')</label>
                                                     </div>
                                                 </div>
                                                 <div id="guest-cont" class="control-group @if($row->guest_id == 0) hide @endif">
-                                                    <label class="control-label">Guest</label>
+                                                    <label class="control-label">@lang('web.name')</label>
                                                     <div class="controls">
                                                         <input type="text" id="guest_name" value="{{\App\Guest::getFullName($row->guest_id)}}" name="guest_name">
                                                         <input type="hidden" id="guest_id" value="{{$row->guest_id}}" name="guest_id">
-                                                        <a href="#modalFindGuest" data-toggle="modal" class="btn btn-inverse">Find Guest</a>
+                                                        <a href="#modalFindGuest" data-toggle="modal" class="btn btn-inverse">@lang('web.findGuest')</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -63,16 +63,16 @@
                                     </div>
                                     <div id="dp-container" class="widget-box @if($row->status == 1) hide @endif ">
                                         <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                                            <h5>Pay Bill</h5>
+                                            <h5>@lang('web.payBill')</h5>
                                         </div>
                                         <div class="widget-content nopadding">
                                             <div id="form-wizard-1" class="step">
                                                 <input type="hidden" id="need_dp" />
                                                 <div class="control-group">
-                                                    <label class="control-label">Payment Method</label>
+                                                    <label class="control-label">@lang('web.paymentMethod')</label>
                                                     <div class="controls">
                                                         <select id="payment_method" name="payment_method">
-                                                            <option value="0" disabled selected>Choose Payment Method</option>
+                                                            <option value="0" disabled selected>@lang('web.choose')</option>
                                                             @foreach($payment_method as $key => $val)
                                                                 <option @if(isset($payment->payment_method) && $payment->payment_method == $val) selected="selected" @endif value="{{$key}}">{{$val}}</option>
                                                             @endforeach
@@ -80,19 +80,19 @@
                                                     </div>
                                                 </div>
                                                 <div class="control-group">
-                                                    <label class="control-label">Total Bill</label>
+                                                    <label class="control-label">Total @lang('web.bill')</label>
                                                     <div class="controls">
                                                         <input readonly id="pay_bill" value="{{\App\Helpers\GlobalHelper::moneyFormat($row->grand_total)}}" type="text" name="pay_bill" />
                                                     </div>
                                                 </div>
                                                 <div class="control-group">
-                                                    <label class="control-label">Total Paid</label>
+                                                    <label class="control-label">@lang('web.totalPaid')</label>
                                                     <div class="controls">
                                                         <input value="{{(isset($payment->total_paid)) ? $payment->total_paid : 0}}" id="pay_paid" type="number" name="pay_paid" />
                                                     </div>
                                                 </div>
                                                 <div class="control-group">
-                                                    <label class="control-label">Change</label>
+                                                    <label class="control-label">@lang('web.payChange')</label>
                                                     <div class="controls">
                                                         <input id="pay_change" value="{{(isset($payment->total_change)) ? $payment->total_change : 0}}" type="number" name="pay_change" />
                                                     </div>
@@ -104,17 +104,17 @@
                                 <div class="span6">
                                     <div class="widget-box">
                                         <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                                            <h5>Item List</h5>
-                                            <a href="#modalFindItem" data-toggle="modal" id="add_item" style="float: right;padding: 7px 10px" class="btn btn-info">Add New Item</a>
+                                            <h5>@lang('web.itemName')</h5>
+                                            <a href="#modalFindItem" data-toggle="modal" id="add_item" style="float: right;padding: 7px 10px" class="btn btn-info">@lang('web.addButton') @lang('web.itemName')</a>
                                         </div>
                                         <div class="widget-content nopadding">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
-                                                    <th>ITEM NAME</th>
-                                                    <th>PRICE</th>
-                                                    <th>QTY</th>
-                                                    <th>DISCOUNT</th>
+                                                    <th>{{strtoupper(__('web.itemName'))}}</th>
+                                                    <th>{{strtoupper(__('web.price'))}}</th>
+                                                    <th>{{strtoupper(__('web.qty'))}}</th>
+                                                    <th>{{strtoupper(__('web.discount'))}}</th>
                                                     <th>TOTAL</th>
                                                 </tr>
                                                 </thead>
@@ -158,14 +158,14 @@
                             <div class="row-fluid">
                                 @if($row->status == 1)
                                     <div class="span6">
-                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SAVE CHANGE">
+                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="{{strtoupper(__('web.saveChange'))}}">
                                     </div>
                                     <div class="span6">
-                                        <a id="billedButton" class="btn btn-success" style="display: block;width: 100%">SAVE AS BILLED</a>
+                                        <a id="billedButton" class="btn btn-success" style="display: block;width: 100%">{{strtoupper(__('web.saveBilled'))}}</a>
                                     </div>
                                 @else
                                     <div class="span12">
-                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SET AS PAID">
+                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="{{strtoupper(__('web.setPaid'))}}">
                                     </div>
                                  @endif
                             </div>
@@ -183,17 +183,17 @@
     <div id="modalFindGuest" class="modal hide">
         <div class="modal-header">
             <button data-dismiss="modal" class="close" type="button">×</button>
-            <h3>Find Guest</h3>
+            <h3>@lang('web.findGuest')</h3>
         </div>
         <div class="modal-body">
             <form id="searchGuestForm" class="form-horizontal">
                 {{csrf_field()}}
                 <div id="form-search-guest" class="step">
                     <div class="control-group">
-                        <label class="control-label">Filter Guest By Name or ID</label>
+                        <label class="control-label">@lang('web.searchName')</label>
                         <div class="controls">
                             <input id="searchguest" name="query" type="text" />
-                            <input type="submit" value="Search" class="btn btn-primary" />
+                            <input type="submit" value="@lang('web.search')" class="btn btn-primary" />
                         </div>
                     </div>
                 </div>
@@ -201,9 +201,9 @@
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>@lang('web.name')</th>
                     <th>ID</th>
-                    <th>Action</th>
+                    <th>@lang('web.action')</th>
                 </tr>
                 </thead>
                 <tbody id="listGuest">
@@ -216,7 +216,7 @@
                                data-religion="{{$val['religion']}}" data-gender="{{$val['gender']}}" data-job="{{$val['job']}}" data-birthplace="{{$val['birthplace']}}"
                                data-address="{{$val['address']}}" data-countryid="{{$val['country_id']}}" data-provinceid="{{$val['province_id']}}"
                                data-zipcode="{{$val['zipcode']}}" data-homephone="{{$val['homephone']}}" data-handphone="{{$val['handphone']}}" data-guesttitle="{{$val['title']}}"
-                               id="guest-{{$val['guest_id']}}" class="btn btn-success chooseGuest">Choose</a></td>
+                               id="guest-{{$val['guest_id']}}" class="btn btn-success chooseGuest">@lang('web.choose')</a></td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -227,17 +227,17 @@
     <div id="modalFindItem" class="modal hide">
         <div class="modal-header">
             <button data-dismiss="modal" class="close" type="button">×</button>
-            <h3>Find Item</h3>
+            <h3>@lang('web.findItem')</h3>
         </div>
         <div class="modal-body">
             <form id="searchItemForm" class="form-horizontal">
                 {{csrf_field()}}
                 <div id="form-search-item" class="step">
                     <div class="control-group">
-                        <label class="control-label">Search Item</label>
+                        <label class="control-label">@lang('web.searchName')</label>
                         <div class="controls">
                             <input id="searchitem" name="query" type="text" />
-                            <input type="submit" value="Search" class="btn btn-primary" />
+                            <input type="submit" value="@lang('web.search')" class="btn btn-primary" />
                         </div>
                     </div>
                 </div>
@@ -245,9 +245,9 @@
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Action</th>
+                    <th>@lang('web.name')</th>
+                    <th>@lang('web.price')</th>
+                    <th>@lang('web.action')</th>
                 </tr>
                 </thead>
                 <tbody id="listItem">
@@ -256,7 +256,7 @@
                         <td>{{$val->extracharge_name}}</td>
                         <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->extracharge_price)}}</td>
                         <td>
-                            <a data-dismiss="modal" data-id="{{$val->extracharge_id}}" data-price="{{$val->extracharge_price}}" data-name="{{$val->extracharge_name}}" class="btn btn-success chooseItem">Choose</a>
+                            <a data-dismiss="modal" data-id="{{$val->extracharge_id}}" data-price="{{$val->extracharge_price}}" data-name="{{$val->extracharge_name}}" class="btn btn-success chooseItem">@lang('web.choose')</a>
                         </td>
                     </tr>
                 @endforeach

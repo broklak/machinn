@@ -5,22 +5,22 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Lost Asset</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.lostAsset')</a> </div>
+        <h1>@lang('module.lostAsset')</h1>
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}?lost=1">Add New Lost Asset</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}?lost=1">@lang('web.addButton') Data</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
-                        <h5>Lost Asset List</h5>
+                        <h5>@lang('module.lostAsset')</h5>
                         <div class="filter-data">
                             <form>
-                                <input id="guest" name="asset_name" placeholder="Search by Asset Name" value="{{$asset_name}}" type="text" />
-                                <input type="submit" class="btn btn-primary" value="Search">
+                                <input id="guest" name="asset_name" placeholder="@lang('web.searchName')" value="{{$asset_name}}" type="text" />
+                                <input type="submit" class="btn btn-primary" value="@lang('web.submitSearch')">
                                 <input type="hidden" name="lost" value="1">
                             </form>
                         </div>
@@ -30,12 +30,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Date Report</th>
-                                <th>Asset Name</th>
-                                <th>Description</th>
-                                <th>Room Number</th>
-                                <th>Reported By</th>
-                                <th>Action</th>
+                                <th>@lang('web.date')</th>
+                                <th>@lang('web.assetName')</th>
+                                <th>@lang('web.desc')</th>
+                                <th>@lang('module.roomNumber')</th>
+                                <th>@lang('web.reportedBy')</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -49,10 +49,10 @@
                                         <td>{{\App\User::getName($val->founder_employee_id)}}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
+                                                <button data-toggle="dropdown" class="btn dropdown-toggle">@lang('web.action') <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a></li>
-                                                    <li><a onclick="return confirm('{{$val->asset_name}} will be deleted, continue?')" href="{{route($route_name.'.delete', ['id' => $val->id])}}"><i class="icon icon-remove"></i> Delete</a></li>
+                                                    <li><a href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a></li>
+                                                    <li><a onclick="return confirm('@lang('msg.confirmDelete', ['data' => $val->asset_name])')" href="{{route($route_name.'.delete', ['id' => $val->id])}}"><i class="icon icon-remove"></i> @lang('web.delete')</a></li>
                                                 </ul>
                                             </div>
                                         </td>

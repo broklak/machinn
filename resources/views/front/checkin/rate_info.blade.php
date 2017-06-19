@@ -3,10 +3,10 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>DATE</th>
-            <th>ROOM NUMBER</th>
-            <th>ROOM RATE PRICE</th>
-            <th>ROOM PLAN PRICE</th>
+            <th>{{strtoupper(__('web.date'))}}</th>
+            <th>{{strtoupper(__('module.roomNumber'))}}</th>
+            <th>{{strtoupper(__('web.roomRate'))}}</th>
+            <th>{{strtoupper(__('web.roomPlanPrice'))}}</th>
             <th>DISCOUNT</th>
             <th>TOTAL</th>
         </tr>
@@ -30,7 +30,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6" style="text-align: right;font-weight: bold;font-size: 16px"><input type="submit" value="SAVE CHANGE" class="btn btn-success"></td>
+                <td colspan="6" style="text-align: right;font-weight: bold;font-size: 16px"><input type="submit" value="{{strtoupper(__('web.saveChange'))}}" class="btn btn-success"></td>
             </tr>
         </tbody>
     </table>

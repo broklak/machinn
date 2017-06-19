@@ -1,12 +1,12 @@
 @if(count($deposit) == 0)
-<a href="#modalDeposit" data-toggle="modal" class="btn btn-primary">Add Deposit</a>
+<a href="#modalDeposit" data-toggle="modal" class="btn btn-primary">@lang('web.add') Deposit</a>
 @endif
 <div class="row-fluid">
     <div class="span6">
         <table class="">
             <tbody>
             <tr>
-                <td><h4>Billed to</h4></td>
+                <td><h4>@lang('web.billed') @lang('web.to')</h4></td>
             </tr>
             <tr>
                 <td>{{\App\Guest::getTitleName($guest->title)}} {{$guest->first_name}} {{$guest->last_name}}</td>
@@ -15,7 +15,7 @@
                 <td>ID: {{$guest->id_number}} ({{\App\Guest::getIdType($guest->id_type)}})</td>
             </tr>
             <tr>
-                <td >Mobile Phone : {{$guest->handphone}}</td>
+                <td >@lang('web.handphone') : {{$guest->handphone}}</td>
             </tr>
             </tbody>
         </table>
@@ -25,15 +25,15 @@
             <tbody>
             <tr>
             <tr>
-                <td class="width30">Check In Date</td>
+                <td class="width30">@lang('web.checkinDate')</td>
                 <td class="width70"><strong>{{date('j F Y', strtotime($header->checkin_date))}}</strong></td>
             </tr>
             <tr>
-                <td>Check Out date</td>
+                <td>@lang('web.checkoutDate')</td>
                 <td><strong>{{date('j F Y', strtotime($header->checkout_date))}}</strong></td>
             </tr>
             <tr>
-                <td>Room Number</td>
+                <td>@lang('module.roomNumber')</td>
                 <td><strong>{{\App\RoomNumber::getRoomCodeList($header->room_list)}}</strong></td>
             </tr>
             </tbody>
@@ -46,11 +46,11 @@
         <table class="table table-bordered table-invoice-full">
             <thead>
             <tr>
-                <th class="head0">Date</th>
-                <th class="head1">Description</th>
-                <th class="head0">Payment Method</th>
-                <th class="head0 right">Amount</th>
-                <th class="head0">Action</th>
+                <th class="head0">@lang('web.date')</th>
+                <th class="head1">@lang('web.desc')</th>
+                <th class="head0">@lang('web.paymentMethod')</th>
+                <th class="head0 right">@lang('web.amount')</th>
+                <th class="head0">@lang('web.action')</th>
             </tr>
             </thead>
             <tbody>
@@ -75,8 +75,8 @@
                             You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
                             </a>
                         </noscript>
-                        <a onclick="return confirm('You will void deposit of this booking, continue?')" class="btn btn-danger"
-                           href="{{route('checkin.void-deposit', ['bookingId' => $header->booking_id])}}">Void Deposit</a>
+                        <a onclick="return confirm('@lang('msg.confirmVoidDeposit')')" class="btn btn-danger"
+                           href="{{route('checkin.void-deposit', ['bookingId' => $header->booking_id])}}">@lang('web.void') Deposit</a>
                     </td>
                 </tr>
             @endif
@@ -95,13 +95,13 @@
             {{csrf_field()}}
             <div id="form-search-guest" class="step">
                 <div class="control-group">
-                    <label class="control-label">Deposit Amount</label>
+                    <label class="control-label">@lang('web.depositAmount')</label>
                     <div class="controls">
                         <input onkeyup="formatMoney($(this))" name="amount" type="text" required />
                     </div>
                 </div>
                 <div class="form-actions text-center">
-                    <button type="submit" class="btn btn-success">Add Deposit</button>
+                    <button type="submit" class="btn btn-success">@lang('web.add') Deposit</button>
                 </div>
             </div>
         </form>

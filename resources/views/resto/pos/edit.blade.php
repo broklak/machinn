@@ -5,11 +5,11 @@
 @section('content')
     @php $route_name = 'resto.pos'; @endphp
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Edit {{$master_module}}</a> </div>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">@lang('web.edit') {{$master_module}}</a> </div>
         <h1>Resto POS</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a href="{{route($route_name.'.index')}}" class="btn btn-success">View Transaction</a>
+        <a href="{{route($route_name.'.index')}}" class="btn btn-success">@lang('web.view') @lang('module.transaction')</a>
         <div id="error_messages" style="margin-top: 20px">
 
         </div>
@@ -28,12 +28,12 @@
                                 <div class="span6">
                                     <div class="widget-box">
                                         <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                                            <h5>Item List</h5>
+                                            <h5>@lang('web.itemList')</h5>
                                         </div>
                                         <div class="widget-content nopadding">
                                             <div id="form-wizard-1" class="step">
                                                 <div class="control-group">
-                                                    <label class="control-label">Search Menu</label>
+                                                    <label class="control-label">@lang('web.search') @lang('web.itemMenu')</label>
                                                     <div class="controls">
                                                         <input @if($row->status != 1) readonly @endif id="menu" type="text" name="menu" list="menu-list" />
                                                         <datalist id="menu-list">
@@ -47,10 +47,10 @@
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
-                                                    <th>ITEM NAME</th>
-                                                    <th>PRICE</th>
-                                                    <th>QTY</th>
-                                                    <th>DISCOUNT</th>
+                                                    <th>{{strtoupper(__('web.itemName'))}}</th>
+                                                    <th>{{strtoupper(__('web.price'))}}</th>
+                                                    <th>{{strtoupper(__('web.qty'))}}</th>
+                                                    <th>{{strtoupper(__('web.discount'))}}</th>
                                                     <th>TOTAL</th>
                                                 </tr>
                                                 </thead>
@@ -82,7 +82,7 @@
                                                     </tr>
                                                 @endforeach
                                                 <tr>
-                                                    <td colspan="5" style="text-align: right;font-size: 14px">Total Bill : <span id="grand_total_text">
+                                                    <td colspan="5" style="text-align: right;font-size: 14px">Total @lang('web.billed') : <span id="grand_total_text">
                                                             {{\App\Helpers\GlobalHelper::moneyFormat($row->total_billed)}}</span>
                                                         <input type="hidden" name="grand_total" value="{{($row->status == 1) ? $row->total_billed : $row->grand_total}}" id="grand_total">
                                                     </td>
@@ -113,39 +113,36 @@
                             <div class="row-fluid">
                                 @if($row->status == 1)
                                     <div class="span6">
-                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SAVE CHANGE">
+                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="{{strtoupper(__('web.saveChange'))}}">
                                     </div>
                                     <div class="span6">
-                                        <a id="billedButton" class="btn btn-success" style="display: block;width: 100%">SAVE AS BILLED</a>
+                                        <a id="billedButton" class="btn btn-success" style="display: block;width: 100%">{{strtoupper(__('web.saveBilled'))}}</a>
                                     </div>
                                 @elseif($row->status == 2)
                                     <div class="span6">
-                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SET AS PAID">
+                                        <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="{{strtoupper(__('web.setPaid'))}}">
                                     </div>
                                     <div class="span6">
                                         <a style="display: block;width: 100%" class="btn btn-success" href="#"
                                            onClick="window.open('{{route('resto.pos.print-receipt', ['id' => $row->transaction_id])}}',
                                                    'pagename','resizable,height=500,width=280');
-                                                   return false;">PRINT BILL</a><noscript>
+                                                   return false;">{{strtoupper(__('web.printBill'))}}</a><noscript>
                                             You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
                                             </a>
                                         </noscript>
                                     </div>
-                                    {{--<div class="span6">--}}
-                                        {{--<a class="btn btn-danger" href="{{route('resto.pos.change-status', ['id' => $row->transaction_id, 'status' => 1])}}?back=edit" style="display: block;width: 100%">VOID BILLED</a>--}}
-                                    {{--</div>--}}
                                 @else
                                     <div class="span6">
                                         <a style="display: block;width: 100%" class="btn btn-primary" href="#"
                                            onClick="window.open('{{route('resto.pos.print-receipt', ['id' => $row->transaction_id])}}',
                                                    'pagename','resizable,height=500,width=280');
-                                                return false;">PRINT RECEIPT</a><noscript>
+                                                return false;">{{strtoupper(__('web.printReceipt'))}}</a><noscript>
                                             You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
                                             </a>
                                         </noscript>
                                     </div>
                                     <div class="span6">
-                                        <a class="btn btn-danger" href="{{route('resto.pos.change-status', ['id' => $row->transaction_id, 'status' => 2])}}?back=edit" style="display: block;width: 100%">VOID PAYMENT</a>
+                                        <a class="btn btn-danger" href="{{route('resto.pos.change-status', ['id' => $row->transaction_id, 'status' => 2])}}?back=edit" style="display: block;width: 100%">{{strtoupper(__('web.voidPayment'))}}</a>
                                     </div>
                                 @endif
                             </div>

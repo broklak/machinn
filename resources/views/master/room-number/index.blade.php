@@ -5,12 +5,12 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.roomNumber')</a> </div>
+        <h1>@lang('module.roomNumber')</h1>
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">@lang('web.addButton') @lang('module.roomNumber')</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -19,11 +19,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Number</th>
-                                <th>Type</th>
-                                <th>Floor</th>
+                                <th>@lang('module.roomNumber')</th>
+                                <th>@lang('web.type')</th>
+                                <th>@lang('web.roomFloor')</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -35,13 +35,13 @@
                                         <td>{{$model->getFloorName($val->room_floor_id)}}</td>
                                         <td><span class="label label-{{\App\Helpers\GlobalHelper::setButtonStatus($val->hk_status)}}">{{\App\Helpers\GlobalHelper::setStatusName($val->hk_status)}}</span></td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->room_number_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            <a onclick="return confirm('You will delete {{$val->room_number_code}}, continue? ')"
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->room_number_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
+                                            <a onclick="return confirm('@lang('msg.confirmDelete', ['data' => $val->room_number_code])')"
                                                class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->room_number_id])}}"
-                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> @lang('web.delete')
                                             </a>
                                             <div class="btn-group">
-                                                <button data-toggle="dropdown" class="btn dropdown-toggle">Change Status <span class="caret"></span></button>
+                                                <button data-toggle="dropdown" class="btn dropdown-toggle">@lang('web.changeStatus') <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
                                                     @foreach($status as $key => $val_status)
                                                         <li><a href="{{route($route_name.'.change-status', ['id' => $val->room_number_id, 'status' => $key])}}">{{$val_status}}</a></li>
@@ -53,7 +53,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="7" style="text-align: center">No Data Found</td>
+                                    <td colspan="7" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

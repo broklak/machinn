@@ -6,7 +6,7 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Outlet Posting Report</h1>
+        <h1>@lang('module.outletPostingReport')</h1>
     </div>
     <div class="container-fluid">
         <hr>
@@ -17,11 +17,11 @@
                     <form>
                         <input value="{{$filter['start']}}" id="checkin" type="text" name="start" /> TO
                         <input value="{{$filter['end']}}" id="checkout" type="text" name="end" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </form>
                 </div>
                 <div style="float: right">
-                    <a href="{{route('back.excel.frontPos')}}?start={{$filter['start']}}&year={{$filter['end']}}" class="btn btn-success">Export to CSV</a>
+                    <a href="{{route('back.excel.frontPos')}}?start={{$filter['start']}}&year={{$filter['end']}}" class="btn btn-success">@lang('module.exportCsv')</a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -34,11 +34,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Bill Number</th>
-                                    <th>Date</th>
-                                    <th>Customer Name</th>
-                                    <th>Item</th>
-                                    <th>Total Bill</th>
+                                    <th>@lang('web.billNumber')</th>
+                                    <th>@lang('web.date')</th>
+                                    <th>@lang('web.guest')</th>
+                                    <th>@lang('web.itemName')</th>
+                                    <th>Total @lang('web.bill')</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -56,7 +56,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="7" style="text-align: center">No Data Found</td>
+                                    <td colspan="7" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

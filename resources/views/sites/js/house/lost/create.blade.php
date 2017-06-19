@@ -28,7 +28,7 @@
                     listGuest.push('data-birthdate="'+value.birthdate+'" data-religion="'+value.religion+'" data-gender="'+value.gender+'" data-job="'+value.job+'"');
                     listGuest.push('data-birthplace="'+value.birthplace+'" data-address="'+value.address+'" data-countryid="'+value.country_id+'" data-id="'+value.guest_id+'"');
                     listGuest.push('data-provinceid="'+value.province_id+'" data-zipcode="'+value.zipcode+'" data-homephone="'+value.homephone+'" data-guesttitle="'+value.title+'"');
-                    listGuest.push('data-handphone="'+value.handphone+'" class="btn btn-success chooseGuest">Choose</a></td>')
+                    listGuest.push('data-handphone="'+value.handphone+'" class="btn btn-success chooseGuest">@lang('web.choose')</a></td>')
                     listGuest.push('</tr>');
                 });
                 listElement = listGuest.join(" ");

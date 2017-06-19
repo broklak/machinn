@@ -5,8 +5,8 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.stock')</a> </div>
+        <h1>@lang('module.stock')</h1>
     </div>
     <div class="container-fluid">
         <hr>
@@ -15,16 +15,16 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
-                        <h5>Item and Price List</h5>
+                        <h5>@lang('module.itemPrice')</h5>
                         <div class="filter-data">
                             <form>
-                                <input type="text" name="name" value="{{$item_name}}" placeholder="Search by Item Name">
+                                <input type="text" name="name" value="{{$item_name}}" placeholder="@lang('web.searchName')">
                                 <select name="type">
-                                    <option @if($item_type == 0) selected @endif value="0">All Stock</option>
-                                    <option @if($item_type == 1) selected @endif value="1">Stock Available</option>
-                                    <option @if($item_type == 2) selected @endif value="2">Out of Stock</option>
+                                    <option @if($item_type == 0) selected @endif value="0">@lang('web.allType')</option>
+                                    <option @if($item_type == 1) selected @endif value="1">@lang('web.stockAvailable')</option>
+                                    <option @if($item_type == 2) selected @endif value="2">@lang('web.outOfStock')</option>
                                 </select>
-                                <input type="submit" class="btn btn-primary" value="Search">
+                                <input type="submit" class="btn btn-primary" value="@lang('web.search')">
                             </form>
                         </div>
                         <div style="clear: both"></div>
@@ -33,11 +33,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Action</th>
+                                <th>@lang('web.name')</th>
+                                <th>@lang('web.category')</th>
+                                <th>@lang('web.price')</th>
+                                <th>@lang('module.stock')</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -49,15 +49,15 @@
                                         <td width="15%">{{\App\Helpers\GlobalHelper::moneyFormat($val->cost_sales)}}</td>
                                         <td><input onfocus="formatStock($(this))" style="width: 30px" type="text" name="stock" id="stock-{{$val->id}}" value="{{$val->stock}}"></td>
                                         <td><button onclick="changeStock($(this))" data-id="{{$val->id}}"
-                                                    data-name="{{$val->name}}" data-stock="{{$val->stock}}" class="btm btn-primary">Update Stock</button>
+                                                    data-name="{{$val->name}}" data-stock="{{$val->stock}}" class="btm btn-primary">@lang('web.updateStock')</button>
                                             <button onclick="setOutOfStock($(this))" data-id="{{$val->id}}"
-                                                    data-name="{{$val->name}}" data-stock="{{$val->stock}}" class="btm btn-danger">Set Out Of Stock</button>
+                                                    data-name="{{$val->name}}" data-stock="{{$val->stock}}" class="btm btn-danger">@lang('web.setOut')</button>
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5" style="text-align: center">No Data Found</td>
+                                    <td colspan="5" style="text-align: center">@lang('web.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

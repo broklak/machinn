@@ -6,24 +6,24 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Outstanding Bill</h1>
+        <h1>@lang('module.outstandingBill')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Date</label>
+                <label class="control-label">@lang('web.chooseStatus')</label>
                 <div class="controls">
                     <form action="">
                         <select name="status" onchange="this.form.submit()">
-                            <option @if($status == 0) selected @endif value="0">All Status</option>
-                            <option @if($status == 2) selected @endif value="2">In House Guest</option>
-                            <option @if($status == 1) selected @endif value="1">Booking</option>
+                            <option @if($status == 0) selected @endif value="0">@lang('web.allStatus')</option>
+                            <option @if($status == 2) selected @endif value="2">@lang('module.inhouseGuest')</option>
+                            <option @if($status == 1) selected @endif value="1">@lang('module.booking')</option>
                         </select>
                     </form>
                 </div>
                 <div style="float: right">
-                    <a href="{{route('back.excel.outstanding')}}?status={{$status}}" class="btn btn-success">Export to CSV</a>
+                    <a href="{{route('back.excel.outstanding')}}?status={{$status}}" class="btn btn-success">@lang('web.exportCsv')</a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -40,13 +40,13 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Booking Code</th>
-                                    <th>Guest Name</th>
-                                    <th>Business Source</th>
-                                    <th>Checkin Date</th>
-                                    <th>Checkout Date</th>
-                                    <th>Total Bill</th>
-                                    <th>Total Paid</th>
+                                    <th>@lang('web.bookingCode')</th>
+                                    <th>@lang('web.guest')</th>
+                                    <th>@lang('web.source')</th>
+                                    <th>@lang('web.checkinDate')</th>
+                                    <th>@lang('web.checkoutDate')</th>
+                                    <th>Total @lang('web.bill')</th>
+                                    <th>Total @lang('web.paid')</th>
                                     <th>Total Outstanding</th>
                                     <th>Status</th>
                                 </tr>

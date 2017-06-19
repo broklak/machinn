@@ -5,14 +5,14 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>HouseKeeping</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('web.houseKeeping')</a> </div>
+        <h1>@lang('web.houseKeeping')</h1>
     </div>
     <div class="container-fluid">
         <div class="legend-status">
-            <span class="ooo"><i class="icon icon-check"></i></span><span class="legend-title">Ready</span>
-            <span class="ooo"><i class="icon icon-warning-sign"></i></span><span class="legend-title">Dirty</span>
-            <span class="ooo"><i class="icon icon-wrench"></i></span><span class="legend-title">Out of Order</span>
+            <span class="ooo"><i class="icon icon-check"></i></span><span class="legend-title">@lang('web.roomStatusReady')</span>
+            <span class="ooo"><i class="icon icon-warning-sign"></i></span><span class="legend-title">@lang('web.roomStatusDirty')</span>
+            <span class="ooo"><i class="icon icon-wrench"></i></span><span class="legend-title">@lang('web.roomStatusOut')</span>
         </div>
         {!! session('displayMessage') !!}
         <div class="row-fluid">

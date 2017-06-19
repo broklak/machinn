@@ -6,13 +6,13 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Business Source {{$master_module}}</h1>
+        <h1>@lang('module.businessSourceReport')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Report Time</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                     <form>
                         <select onchange="this.form.submit()" name="month">
@@ -25,11 +25,11 @@
                                 <option @if($year == $year-$x) selected @endif>{{$year - $x}}</option>
                             @endfor
                         </select>
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </form>
                 </div>
                 <div style="float: right">
-                    <a href="{{route('back.excel.source')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                    <a href="{{route('back.excel.source')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">@lang('web.exportCsv')</a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -48,8 +48,8 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <td>NAME</td>
-                                    <td>TOTAL BILL</td>
+                                    <td>{{strtoupper(__('web.name'))}}</td>
+                                    <td>TOTAL {{strtoupper(__('web.bill'))}}</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -67,7 +67,7 @@
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="2" style="text-align: center">No Data Found</td>
+                                        <td colspan="2" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                                 </tbody>

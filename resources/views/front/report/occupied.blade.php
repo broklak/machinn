@@ -6,22 +6,22 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Actual Room Occupied Report</h1>
+        <h1>@lang('module.actualRoomOccupied')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Date</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                     <form action="">
                         <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                         <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.chooseDateRange')" class="btn btn-primary">
                     </form>
                 </div>
                 <div style="float: right">
-                    <a href="{{route('back.excel.occupied')}}?start={{$start}}&end={{$end}}" class="btn btn-success">Export to CSV</a>
+                    <a href="{{route('back.excel.occupied')}}?start={{$start}}&end={{$end}}" class="btn btn-success">@lang('web.exportCsv')</a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -41,10 +41,10 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Total Room Sold</th>
-                                    <th>Total Guest</th>
-                                    <th>Total Bill</th>
+                                    <th>@lang('web.date')</th>
+                                    <th>@lang('web.totalRoomSold')</th>
+                                    <th>Total @lang('web.guest')</th>
+                                    <th>Total @lang('web.bill')</th>
                                 </tr>
                                 </thead>
                                 <tbody>

@@ -1,5 +1,5 @@
     <div>
-        <a data-toggle="modal" href="#modalFindItem" class="btn btn-primary" style="margin-bottom: 15px">Add Extra Charge</a>
+        <a data-toggle="modal" href="#modalFindItem" class="btn btn-primary" style="margin-bottom: 15px">@lang('web.addButton') @lang('web.extracharge')</a>
     </div>
  <form method="post" action="{{route('checkin.extracharge', ['id' => $header->booking_id])}}">
      {{csrf_field()}}
@@ -7,11 +7,11 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>DATE</th>
-            <th>ROOM</th>
-            <th>EXTRACHARGE</th>
-            <th>PRICE</th>
-            <th>QTY</th>
+            <th>{{strtoupper(__('web.date'))}}</th>
+            <th>{{strtoupper(__('web.room'))}}</th>
+            <th>{{strtoupper(__('web.extracharge'))}}</th>
+            <th>{{strtoupper(__('web.price'))}}</th>
+            <th>{{strtoupper(__('web.qty'))}}</th>
             <th>DISCOUNT</th>
             <th>TOTAL</th>
         </tr>
@@ -59,7 +59,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="8"><input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SAVE CHANGE"></td>
+            <td colspan="8"><input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="{{strtoupper(__('web.saveChange'))}}"></td>
         </tr>
         </tbody>
     </table>
@@ -75,10 +75,10 @@
                 {{csrf_field()}}
                 <div id="form-search-item" class="step">
                     <div class="control-group">
-                        <label class="control-label">Search Item</label>
+                        <label class="control-label">@lang('web.search') {{strtoupper(__('web.itemName'))}}</label>
                         <div class="controls">
                             <input id="searchitem" name="query" type="text" />
-                            <input type="submit" value="Search" class="btn btn-primary" />
+                            <input type="submit" value="@lang('web.search')" class="btn btn-primary" />
                         </div>
                     </div>
                 </div>
@@ -86,9 +86,9 @@
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Action</th>
+                    <th>@lang('web.name')</th>
+                    <th>@lang('web.price')</th>
+                    <th>@lang('web.action')</th>
                 </tr>
                 </thead>
                 <tbody id="listItem">
@@ -97,7 +97,8 @@
                         <td>{{$val->extracharge_name}}</td>
                         <td>{{\App\Helpers\GlobalHelper::moneyFormat($val->extracharge_price)}}</td>
                         <td>
-                            <a data-dismiss="modal" data-id="{{$val->extracharge_id}}" data-price="{{$val->extracharge_price}}" data-name="{{$val->extracharge_name}}" class="btn btn-success chooseItem">Choose</a>
+                            <a data-dismiss="modal" data-id="{{$val->extracharge_id}}" data-price="{{$val->extracharge_price}}" data-name="{{$val->extracharge_name}}"
+                              class="btn btn-success chooseItem">@lang('web.choose')</a>
                         </td>
                     </tr>
                 @endforeach

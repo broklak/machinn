@@ -4,14 +4,14 @@
 
 @section('content')
 
-    @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'guest' : '' @endphp
+    @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'guest.' : '' @endphp
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.$route.index")}}">{{$master_module}}</a> <a href="#" class="current">Create {{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route($route_name.'.'.$route.'index')}}">{{$master_module}}</a> <a href="#" class="current">@lang('web.add') @lang('web.guest')</a> </div>
+        <h1>@lang('web.guest')</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
+        <a class="btn btn-success" href="javascript:history.back()">@lang('web.view') Data</a>
         @foreach($errors->all() as $message)
             <div style="margin: 20px 0" class="alert alert-error">
                 {{$message}}
@@ -21,15 +21,15 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Add New {{$master_module}}</h5>
+                        <h5>@lang('web.addButton') @lang('web.guest')</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.$route.store")}}" method="post">
+                        <form id="form-wizard" class="form-horizontal" action="{{route($route_name.'.'.$route.'store')}}" method="post">
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <input type="hidden" name="guest_id" id="guest_id">
                                 <div class="control-group">
-                                    <label class="control-label">Guest Title</label>
+                                    <label class="control-label">@lang('web.guestTitle')</label>
                                     <div class="controls">
                                         <input type="radio" @if(old('guest_title') == 1) checked @endif value="1" name="guest_title" id="mr"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="mr">Mr</label>
                                         <input type="radio" @if(old('guest_title') == 2) checked @endif value="2" name="guest_title" id="mrs"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="mrs">Mrs</label>
@@ -37,29 +37,29 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">First Name</label>
+                                    <label class="control-label">@lang('web.firstName')</label>
                                     <div class="controls">
                                         <input value="{{old('first_name')}}" id="first_name" type="text" name="first_name" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Last Name</label>
+                                    <label class="control-label">@lang('web.lastName')</label>
                                     <div class="controls">
                                         <input value="{{old('last_name')}}" id="last_name" type="text" name="last_name" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Guest Type</label>
+                                    <label class="control-label">@lang('web.guestType')</label>
                                     <div class="controls">
                                         <input type="radio" @if(old('guest_type') == 1) checked @endif value="1" name="guest_type" id="reg"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="reg">Regular</label>
                                         <input type="radio" @if(old('guest_type') == 2) checked @endif value="2" name="guest_type" id="vip"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="vip">VIP</label>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">ID Type</label>
+                                    <label class="control-label">@lang('web.idType')</label>
                                     <div class="controls">
                                         <select id="id_type" name="id_type">
-                                            <option value="0" disabled selected>Choose ID Type</option>
+                                            <option value="0" disabled selected>@lang('web.choose')</option>
                                             @foreach($idType as $key => $val)
                                                 <option @if(old('id_type') == $key) selected="selected" @endif value="{{$key}}">{{$val}}</option>
                                             @endforeach
@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">ID Number</label>
+                                    <label class="control-label">@lang('web.idNumber')</label>
                                     <div class="controls">
                                         <input value="{{old('id_number')}}" id="id_number" type="text" name="id_number" />
                                     </div>
@@ -79,41 +79,41 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Phone Number</label>
+                                    <label class="control-label">@lang('web.phone')</label>
                                     <div class="controls">
                                         <input value="{{old('homephone')}}" id="homephone" type="text" name="homephone" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Handphone Number</label>
+                                    <label class="control-label">@lang('web.handphone')</label>
                                     <div class="controls">
                                         <input value="{{old('handphone')}}" id="handphone" type="text" name="handphone" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Birthplace</label>
+                                    <label class="control-label">@lang('web.birthplace')</label>
                                     <div class="controls">
                                         <input value="{{old('birthplace')}}" id="birthplace" type="text" name="birthplace" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Birthdate</label>
+                                    <label class="control-label">@lang('web.birthdate')</label>
                                     <div class="controls">
                                         <input value="{{old('birthdate')}}" class="datepicker" data-date-format="yyyy-mm-dd" id="birthdate" type="text" name="birthdate" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Gender</label>
+                                    <label class="control-label">@lang('web.gender')</label>
                                     <div class="controls">
-                                        <input type="radio" @if(old('gender') == 1) checked @endif value="1" name="gender" id="male"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="male">Male</label>
-                                        <input type="radio" @if(old('gender') == 2) checked @endif value="2" name="gender" id="female"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="female">Female</label>
+                                        <input type="radio" @if(old('gender') == 1) checked @endif value="1" name="gender" id="male"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="male">@lang('web.male')</label>
+                                        <input type="radio" @if(old('gender') == 2) checked @endif value="2" name="gender" id="female"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="female">@lang('web.female')</label>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Religion</label>
+                                    <label class="control-label">@lang('web.religion')</label>
                                     <div class="controls">
                                         <select id="religion" name="religion">
-                                            <option value="0" disabled selected>Select Religion</option>
+                                            <option value="0" disabled selected>@lang('web.choose')</option>
                                             @foreach($religion as $val)
                                                 <option @if(old('religion') == $val) selected="selected" @endif value="{{$val}}">{{ucwords($val)}}</option>
                                             @endforeach
@@ -121,22 +121,22 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Job</label>
+                                    <label class="control-label">@lang('web.choose')</label>
                                     <div class="controls">
                                         <input value="{{old('job')}}" id="job" type="text" name="job" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Address</label>
+                                    <label class="control-label">@lang('web.address')</label>
                                     <div class="controls">
                                         <textarea id="address" name="address">{{old('address')}}</textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Country</label>
+                                    <label class="control-label">@lang('module.country')</label>
                                     <div class="controls">
                                         <select id="country_id" name="country_id">
-                                            <option value="0" disabled selected>Choose Country</option>
+                                            <option value="0" disabled selected>@lang('web.choose')</option>
                                             @foreach($country as $key => $val)
                                                 <option @if(old('country') == $val['country_id']) selected="selected" @endif value="{{$val['country_id']}}">{{$val['country_name']}}</option>
                                             @endforeach
@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <input id="next" class="btn btn-primary" type="submit" value="Save" />
+                                <input id="next" class="btn btn-primary" type="submit" value="@lang('web.save')" />
                                 <div id="status"></div>
                             </div>
                             <div id="submitted"></div>

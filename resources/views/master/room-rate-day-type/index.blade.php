@@ -5,8 +5,8 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.rateDayType')</a> </div>
+        <h1>@lang('module.rateDayType')</h1>
     </div>
     <div class="container-fluid">
         <hr>
@@ -20,8 +20,8 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Days</th>
+                                    <th>@lang('web.name')</th>
+                                    <th>@lang('web.days')</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -39,11 +39,11 @@
                                         </tr>
                                     @endforeach
                                 <tr>
-                                    <td style="text-align: center" colspan="2"><input class="btn btn-primary" type="submit" value="Save" /></td>
+                                    <td style="text-align: center" colspan="2"><input class="btn btn-primary" type="submit" value="@lang('web.save')" /></td>
                                 </tr>
                                 @else
                                     <tr>
-                                        <td colspan="3" style="text-align: center">No Data Found</td>
+                                        <td colspan="3" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                                 </tbody>

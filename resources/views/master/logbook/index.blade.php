@@ -5,12 +5,12 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.logBook')</a> </div>
+        <h1>@lang('module.logBook')</h1>
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}?type={{$type}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}?type={{$type}}">@lang('web.addButton') @lang('module.logBook')</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -19,12 +19,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Message</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Reminder Date</th>
+                                <th>@lang('web.message')</th>
+                                <th>@lang('web.from')</th>
+                                <th>@lang('web.to')</th>
+                                <th>@lang('web.reminderDate')</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,18 +38,18 @@
                                         <td>{{($val->done == 1) ? 'Done' : 'Not Done'}}</td>
                                         <td>
                                             @if($val->done == 0)
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->logbook_id])}}?type={{$type}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            <a style="margin-right: 20px" onclick="return confirm('You will delete this message, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->logbook_id, 'status' => $val->logbook_status])}}?type={{$type}}">
-                                                <i class="icon-remove" aria-hidden="true"></i> Delete
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->logbook_id])}}?type={{$type}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
+                                            <a style="margin-right: 20px" onclick="return confirm('@lang('msg.confirmDelete', ['data' => ''])')" href="{{route("$route_name.change-status", ['id' => $val->logbook_id, 'status' => $val->logbook_status])}}?type={{$type}}">
+                                                <i class="icon-remove" aria-hidden="true"></i> @lang('web.delete')
                                             </a>
-                                            <a href="{{route("$route_name.done", ['id' => $val->logbook_id])}}?type={{$type}}" title="Set Done"><i class="icon-check" aria-hidden="true"></i> Set Done</a>
+                                            <a href="{{route("$route_name.done", ['id' => $val->logbook_id])}}?type={{$type}}" title="Set Done"><i class="icon-check" aria-hidden="true"></i> @lang('web.setDone')</a>
                                             @endif
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5" style="text-align: center">No Data Found</td>
+                                    <td colspan="5" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

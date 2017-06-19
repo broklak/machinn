@@ -5,11 +5,11 @@
 @section('content')
 @php $route_name = 'resto.pos'; @endphp
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Create {{$master_module}}</a> </div>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">@lang('web.add') {{$master_module}}</a> </div>
         <h1>Resto POS</h1>
     </div>
     <div class="container-fluid">
-        <a href="{{route($route_name.'.index')}}" class="btn btn-success">View Transaction</a>
+        <a href="{{route($route_name.'.index')}}" class="btn btn-success">@lang('web.view') @lang('module.transaction')</a>
         <div id="error_messages" style="margin-top: 20px">
 
         </div>
@@ -24,12 +24,12 @@
                 <div class="span6">
                     <div class="widget-box">
                         <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                            <h5>Item List</h5>
+                            <h5>@lang('web.itemList')</h5>
                         </div>
                         <div class="widget-content nopadding">
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
-                                    <label class="control-label">Search Menu</label>
+                                    <label class="control-label">@lang('web.search') @lang('web.itemMenu')</label>
                                     <div class="controls">
                                         <input id="menu" type="text" name="menu" list="menu-list" />
                                         <datalist id="menu-list">
@@ -43,16 +43,16 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ITEM NAME</th>
-                                        <th>PRICE</th>
-                                        <th>QTY</th>
-                                        <th>DISCOUNT</th>
+                                        <th>{{strtoupper(__('web.itemName'))}}</th>
+                                        <th>{{strtoupper(__('web.price'))}}</th>
+                                        <th>{{strtoupper(__('web.qty'))}}</th>
+                                        <th>{{strtoupper(__('web.discount'))}}</th>
                                         <th>TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody id="list-data">
                                     <tr>
-                                        <td colspan="5" style="text-align: right;font-weight: bold;font-size: 18px">TOTAL BILLED : <span id="grand_total_text">IDR 0</span>
+                                        <td colspan="5" style="text-align: right;font-weight: bold;font-size: 18px">TOTAL {{strtoupper(__('web.billed'))}} : <span id="grand_total_text">IDR 0</span>
                                             <input type="hidden" name="grand_total" value="0" id="grand_total">
                                         </td>
                                     </tr>
@@ -64,10 +64,10 @@
             </div>
             <div class="row-fluid">
                 <div class="span6">
-                    <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SAVE AS DRAFT">
+                    <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="{{strtoupper(__('web.saveDraft'))}}">
                 </div>
                 <div class="span6">
-                    <a id="billedButton" class="btn btn-success" style="display: block;width: 100%">SAVE AS BILLED</a>
+                    <a id="billedButton" class="btn btn-success" style="display: block;width: 100%">{{strtoupper(__('web.saveBilled'))}}</a>
                 </div>
             </div>
         </form>

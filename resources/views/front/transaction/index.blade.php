@@ -5,33 +5,24 @@
 @section('content')
     @php $route_name = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.transaction' : 'transaction'; @endphp
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Expenses</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.expense')</a> </div>
+        <h1>@lang('module.expense')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <form>
-                {{--<div class="control-group">--}}
-                    {{--<label class="control-label">Choose Status</label>--}}
-                    {{--<div class="controls">--}}
-                        {{--<select name="status" onchange="this.form.submit()">--}}
-                            {{--<option @if($filter['status'] == 0) selected @endif value="0">Not Approved</option>--}}
-                            {{--<option @if($filter['status'] == 1) selected @endif value="1">Approved</option>--}}
-                        {{--</select>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
                 <div class="control-group">
-                    <label class="control-label">Choose Date Range</label>
+                    <label class="control-label">@lang('web.chooseDateRange')</label>
                     <div class="controls">
                         <input value="{{$filter['start']}}" id="checkin" type="text" name="start" />
                         <input value="{{$filter['end']}}" id="checkout" type="text" name="end" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </div>
                 </div>
             </form>
         </div>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New Expense</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">@lang('web.addButton') Data</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -40,13 +31,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Cost Type</th>
-                                <th>From Account</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-                                {{--<th>Status</th>--}}
-                                <th>Action</th>
+                                <th>@lang('web.date')</th>
+                                <th>@lang('web.costType')</th>
+                                <th>@lang('web.source')</th>
+                                <th>@lang('web.desc')</th>
+                                <th>@lang('web.amount')</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -62,30 +52,19 @@
                                         <td>
                                             @if($val->status != 1)
                                                 <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->id])}}" title="Edit">
-                                                    <i class="icon-pencil" aria-hidden="true"></i> Edit
+                                                    <i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')
                                                 </a>
-                                                <a onclick="return confirm('You will delete the data, continue? ')"
+                                                <a onclick="return confirm('@lang('msg.confirmDelete', ['data' => ''])')"
                                                    class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->id])}}"
-                                                   title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                                   title="delete"><i class="icon-trash" aria-hidden="true"></i> @lang('web.delete')
                                                 </a>
                                             @endif
-                                            {{--<div class="btn-group">--}}
-                                                {{--<button @if($val->status == 1) disabled @endif data-toggle="dropdown" class="btn dropdown-toggle">Action--}}
-                                                    {{--<span class="caret"></span>--}}
-                                                {{--</button>--}}
-                                                {{--<ul class="dropdown-menu">--}}
-                                                    {{--@if($val->status != 1)--}}
-                                                        {{--<li><a href="{{route($route_name.'.change-status', ['id' => $val->id, 'status' => 1])}}"><i class="icon-check"></i>Approve</a></li>--}}
-                                                        {{--<li><a href="{{route($route_name.'.change-status', ['id' => $val->id, 'status' => 3])}}"><i class="icon-remove"></i>Delete</a></li>--}}
-                                                    {{--@endif--}}
-                                                {{--</ul>--}}
-                                            {{--</div>--}}
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="7" style="text-align: center">No Data Found</td>
+                                    <td colspan="7" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

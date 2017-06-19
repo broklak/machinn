@@ -1,11 +1,11 @@
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th>Check In Date</th>
-        <th>Check Out Date</th>
-        <th>Room List</th>
-        <th>Rate Plan</th>
-        <th>Total Billed</th>
+        <th>@lang('web.checkinDate')</th>
+        <th>@lang('web.checkoutDate')</th>
+        <th>@lang('web.room')</th>
+        <th>@lang('module.roomPlan')</th>
+        <th>Total @lang('web.bill')</th>
     </tr>
     </thead>
     <tbody>

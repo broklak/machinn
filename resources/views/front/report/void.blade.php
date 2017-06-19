@@ -6,32 +6,32 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Booking Cancel History</h1>
+        <h1>@lang('module.bookingCancelHistory')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <form>
             <div class="control-group">
-                <label class="control-label">Choose Status</label>
+                <label class="control-label">@lang('web.chooseStatus')/label>
                 <div class="controls">
                         <select name="status" onchange="this.form.submit()">
-                            <option @if($status == 0) selected @endif value="0">All Status</option>
-                            <option @if($status == 3) selected @endif value="3">No Show</option>
-                            <option @if($status == 4) selected @endif value="4">Cancelled</option>
+                            <option @if($status == 0) selected @endif value="0">@lang('web.allStatus')</option>
+                            <option @if($status == 3) selected @endif value="3">@lang('web.bookingStatusNoShowing')</option>
+                            <option @if($status == 4) selected @endif value="4">@lang('web.bookingStatusVoid')</option>
                         </select>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Choose Date Range</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                         <input value="{{$start}}" id="checkin" type="text" name="checkin_date" />
                         <input value="{{$end}}" id="checkout" type="text" name="checkout_date" />
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.chooseDateRange')" class="btn btn-primary">
                 </div>
             </div>
                 <div style="float: right">
-                    <a href="{{route('back.excel.void')}}?start={{$start}}&end={{$end}}" class="btn btn-success">Export to CSV</a>
+                    <a href="{{route('back.excel.void')}}?start={{$start}}&end={{$end}}" class="btn btn-success">@lang('web.exportCsv')</a>
                 </div>
                 <div style="clear: both;"></div>
             </form>
@@ -51,13 +51,13 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Booking Code</th>
-                                    <th>Guest Name</th>
-                                    <th>Business Source</th>
-                                    <th>Checkin Date</th>
-                                    <th>Checkout Date</th>
+                                    <th>@lang('web.bookingCode')</th>
+                                    <th>@lang('web.guest')</th>
+                                    <th>@lang('web.source')</th>
+                                    <th>@lang('web.checkinDate')</th>
+                                    <th>@lang('web.checkoutDate')</th>
                                     <th>Status</th>
-                                    <th>Void By</th>
+                                    <th>@lang('web.void') @lang('web.by')</th>
                                 </tr>
                                 </thead>
                                 <tbody>

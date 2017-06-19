@@ -5,16 +5,16 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.booking')</a> </div>
+        <h1>@lang('module.booking')</h1>
     </div>
     <div class="container-fluid">
         <div class="legend-status">
-            <span class="checkin-soon">&nbsp;</span><span class="legend-title">Expected Check In</span>
+            <span class="checkin-soon">&nbsp;</span><span class="legend-title">@lang('web.expected') Check In</span>
         </div>
         <hr>
         @if($type != 'housekeep')
-            <a class="btn btn-primary" href="{{route("$route_name.create")}}">Create New {{$master_module}}</a>
+            <a class="btn btn-primary" href="{{route("$route_name.create")}}">@lang('web.addButton') @lang('module.booking')</a>
         @endif
         <div class="filter-data">
 
@@ -24,20 +24,20 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
-                        <h5>Booking List</h5>
+                        <h5>@lang('module.booking')</h5>
                         <div class="filter-data">
                             <form>
                                 <select name="status" id="booking-status">
-                                    <option @if($filter['status'] == null || $filter['status'] == 0) selected @endif value="0">All Booking Status</option>
-                                    <option @if($filter['status'] == 1) selected @endif value="1">Wait to Check In</option>
-                                    <option @if($filter['status'] == 2) selected @endif value="2">Already Check In</option>
-                                    <option @if($filter['status'] == 3) selected @endif value="3">No Showing</option>
-                                    <option @if($filter['status'] == 4) selected @endif value="4">Void</option>
+                                    <option @if($filter['status'] == null || $filter['status'] == 0) selected @endif value="0">@lang('web.allStatus')</option>
+                                    <option @if($filter['status'] == 1) selected @endif value="1">@lang('web.bookingStatusWait')</option>
+                                    <option @if($filter['status'] == 2) selected @endif value="2">@lang('web.bookingStatusAlready')</option>
+                                    <option @if($filter['status'] == 3) selected @endif value="3">@lang('web.bookingStatusNoShowing')</option>
+                                    <option @if($filter['status'] == 4) selected @endif value="4">@lang('web.bookingStatusVoid')</option>
                                 </select>
 
-                                <input id="guest" name="guest" placeholder="Search By Guest Name" value="{{$filter['guest']}}" type="text" />
+                                <input id="guest" name="guest" placeholder="@lang('web.searchName')" value="{{$filter['guest']}}" type="text" />
                                 <input type="hidden" name="type" value="{{$type}}">
-                                <input type="submit" class="btn btn-primary" value="Search">
+                                <input type="submit" class="btn btn-primary" value="@lang('web.search')">
                             </form>
                         </div>
                         <div style="clear: both"></div>
@@ -46,15 +46,15 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Booking Code</th>
-                                    <th>Guest Name</th>
-                                    <th>Room Number</th>
-                                    <th>Check In Date</th>
-                                    <th>Check Out Date</th>
-                                    <th>Business Source</th>
+                                    <th>@lang('web.bookingCode')</th>
+                                    <th>@lang('web.guest')</th>
+                                    <th>@lang('module.roomNumber')</th>
+                                    <th>@lang('web.checkinDate')</th>
+                                    <th>@lang('web.checkoutDate')</th>
+                                    <th>@lang('web.source')</th>
                                     <th>Status</th>
                                     @if($type != 'housekeep')
-                                        <th>Action</th>
+                                        <th>@lang('web.action')</th>
                                     @endif
                                 </tr>
                             </thead>
@@ -78,14 +78,14 @@
                                                     <ul class="dropdown-menu">
                                                         @if($val->booking_status != 4 && $val->booking_status != 3)
                                                             @if($val->type == 1)
-                                                                <li><a href="{{route("$route_name.showdownpayment", ['id' => $val->booking_id])}}"><i class="icon-money"></i> Down Payment</a></li>
+                                                                <li><a href="{{route("$route_name.showdownpayment", ['id' => $val->booking_id])}}"><i class="icon-money"></i> @lang('web.bookingPaymentDescriptionDown')</a></li>
                                                             @endif
                                                             @if($val->booking_status != 2)
                                                                 <li><a onclick="return confirm('Check In Booking #{{$val->booking_code}}?')" href="{{route('checkin.book', ['id' => $val->booking_id])}}">
                                                                     <i class="icon-signout"></i> Check In</a>
                                                                 </li>
-                                                                <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> Edit</a></li>
-                                                                <li><a href="#modalVoid-{{$val->booking_id}}" data-toggle="modal" href="#"><i class="icon-remove"></i> Void</a></li>
+                                                                <li><a href="{{route("$route_name.edit", ['id' => $val->booking_id])}}"><i class="icon-pencil"></i> @lang('web.edit')</a></li>
+                                                                <li><a href="#modalVoid-{{$val->booking_id}}" data-toggle="modal" href="#"><i class="icon-remove"></i> @lang('web.void')</a></li>
                                                             @endif
                                                         @endif
                                                     </ul>
@@ -96,7 +96,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="8" style="text-align: center">No Booking Found</td>
+                                    <td colspan="8" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>
@@ -115,7 +115,7 @@
             <div id="modalVoid-{{$val->booking_id}}" class="modal hide">
                 <div class="modal-header">
                     <button data-dismiss="modal" class="close" type="button">×</button>
-                    <h3>Void Booking #{{$val->booking_code}}</h3>
+                    <h3>@lang('web.voidBooking') #{{$val->booking_code}}</h3>
                 </div>
                 <div class="modal-body">
                     <form id="searchGuestForm" class="form-horizontal" method="post" action="{{route("$route_name.void", ['booking_id' => $val->booking_id])}}">
@@ -124,32 +124,32 @@
                         <input type="hidden" name="void_guest_id" value="{{$val->guest_id}}">
                         <div id="form-search-guest" class="step">
                             <div class="control-group">
-                                <label class="control-label">Guest Name</label>
+                                <label class="control-label">@lang('web.guest')</label>
                                 <div class="controls">
                                     <input readonly id="void_guest_name" value="{{$val->first_name .' '.$val->last_name}}" name="void_guest_name" type="text" />
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Room Number</label>
+                                <label class="control-label">@lang('module.roomNumber')</label>
                                 <div class="controls">
                                     <input readonly id="void_room" value="{{\App\RoomNumber::getRoomCodeList($val->room_list)}}" name="void_room" type="text" />
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Down Payment Paid</label>
+                                <label class="control-label">@lang('web.bookingPaymentDescriptionDown')</label>
                                 <div class="controls">
                                     <input readonly id="void_dp_paid" value="{{\App\Helpers\GlobalHelper::moneyFormat($val->down_payment)}}" name="void_dp_paid" type="text" />
                                 </div>
                             </div>
                             @if($val->type == 1)
                                 <div class="control-group">
-                                    <label class="control-label">Refund Amount</label>
+                                    <label class="control-label">@lang('web.refundAmount')</label>
                                     <div class="controls">
                                         <input id="void_dp_refund" required value="{{\App\Helpers\GlobalHelper::moneyFormat($val->down_payment)}}" name="void_dp_refund" type="number" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Refund Method</label>
+                                    <label class="control-label">@lang('web.refundMethod')</label>
                                     <div class="controls">
                                         <select required id="payment_method" name="void_payment_method">
                                             @foreach($payment_method as $key => $val)
@@ -160,13 +160,13 @@
                                 </div>
                             @endif
                             <div class="control-group">
-                                <label class="control-label">Void Description</label>
+                                <label class="control-label">@lang('web.voidDesc')</label>
                                 <div class="controls">
                                     <textarea name="void_desc"></textarea>
                                 </div>
                             </div>
                             <div class="form-actions text-center">
-                                <button type="submit" class="btn btn-danger">Void Booking</button>
+                                <button type="submit" class="btn btn-danger">@lang('web.voidBooking')</button>
                             </div>
                         </div>
                     </form>

@@ -7,12 +7,12 @@
     @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'guest.' : '' @endphp
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('web.guest')</a> </div>
+        <h1>@lang('web.guest')</h1>
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route($route_name.'.'.$route.'create')}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route($route_name.'.'.$route.'create')}}">@lang('web.addButton') @lang('web.guest')</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -21,11 +21,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>ID Number</th>
-                                <th>Gender</th>
-                                <th>Handphone Number</th>
-                                <th>Action</th>
+                                <th>@lang('web.name')</th>
+                                <th>@lang('web.idNumber')</th>
+                                <th>@lang('web.gender')</th>
+                                <th>@lang('web.handphone')</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -37,17 +37,17 @@
                                         <td>@if($val->gender == 1) Male @else Female @endif</td>
                                         <td>{{$val->handphone}}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route($route_name.'.'.$route.'edit', ['id' => $val->guest_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            <a onclick="return confirm('You will delete {{$val->first_name.' '.$val->last_name}}, continue? ')"
+                                            <a style="margin-right: 20px" href="{{route($route_name.'.'.$route.'edit', ['id' => $val->guest_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
+                                            <a onclick="return confirm('@lang('msg.confirmDelete', ['data' => $val->first_name])')"
                                                class="delete-link" style="margin-right: 20px" href="{{route($route_name.'.'.$route.'delete', ['id' => $val->guest_id])}}"
-                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> @lang('web.delete')
                                             </a>
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="3" style="text-align: center">No Data Found</td>
+                                    <td colspan="3" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

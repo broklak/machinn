@@ -5,8 +5,8 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Staff {{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.staffContact')</a> </div>
+        <h1>@lang('module.staffContact')</h1>
     </div>
     <div class="container-fluid">
         <hr>
@@ -15,14 +15,14 @@
                 <label class="control-label">Filter</label>
                 <div class="controls">
                     <form>
-                        <input value="{{$name}}" placeholder="Staff Name" id="name" type="text" name="name" />
+                        <input placeholder="@lang('web.searchName')" value={{$name}} value="ler" id="name" type="text" name="name" />
                         <select name="department">
-                            <option value="0">All Department</option>
+                            <option value="0">@lang('web.allDepartment')</option>
                             @foreach($department as $key => $val)
                                 <option value="{{$val->department_id}}">{{$val->department_name}}</option>
                             @endforeach
                         </select>
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </form>
                 </div>
             </div>
@@ -35,10 +35,10 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Username</th>
-                                <th>Type</th>
-                                <th>Department</th>
-                                <th>Handphone Number</th>
+                                <th>@lang('web.name')</th>
+                                <th>@lang('web.type')</th>
+                                <th>@lang('web.department')</th>
+                                <th>@lang('web.handphone')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -53,7 +53,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="7" style="text-align: center">No Data Found</td>
+                                    <td colspan="7" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

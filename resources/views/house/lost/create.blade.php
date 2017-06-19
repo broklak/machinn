@@ -5,11 +5,11 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Create {{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">@lang('module.lost')</a> <a href="#" class="current">@lang('web.add') @lang('module.lost')</a> </div>
+        <h1>@lang('module.lost')</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
+        <a class="btn btn-success" href="javascript:history.back()">@lang('web.view') Data</a>
         @foreach($errors->all() as $message)
             <div style="margin: 20px 0" class="alert alert-error">
                 {{$message}}
@@ -21,42 +21,42 @@
                 <div class="span6">
                     <div class="widget-box">
                         <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                            <h5>Item Information</h5>
+                            <h5>@lang('web.add') @lang('module.lost')</h5>
                         </div>
                         <div class="widget-content nopadding">
                                 <div id="form-wizard-1" class="step">
                                     <div class="control-group">
-                                        <label class="control-label">Date Lost</label>
+                                        <label class="control-label">@lang('web.date')</label>
                                         <div class="controls">
                                             <input id="date" required class="datepicker" value="{{old('date')}}" data-date-format="yyyy-mm-dd" type="text" name="date" />
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Item Name</label>
+                                        <label class="control-label">@lang('web.itemName')</label>
                                         <div class="controls">
                                             <input id="item_name" required type="text" value="{{old('item_name')}}" name="item_name" />
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Color</label>
+                                        <label class="control-label">@lang('web.color')</label>
                                         <div class="controls">
                                             <input id="item_color" type="text"  value="{{old('item_color')}}" name="item_color" />
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Item Value</label>
+                                        <label class="control-label">@lang('web.itemValue')</label>
                                         <div class="controls">
                                             <input id="item_value" type="text" value="{{old('item_value')}}" name="item_value" />
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Place Missing</label>
+                                        <label class="control-label">@lang('web.placeMissing')</label>
                                         <div class="controls">
                                             <input id="place" type="text" value="{{old('place')}}" name="place" />
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label">Description</label>
+                                        <label class="control-label">@lang('web.desc')</label>
                                         <div class="controls">
                                             <textarea name="description">{{old('description')}}</textarea>
                                         </div>
@@ -68,32 +68,32 @@
             <div class="span6">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Reporter Information</h5>
+                        <h5>@lang('web.reporterInformation')</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <div id="form-wizard-1" class="step">
                             <div class="control-group">
-                                <label class="control-label">Name</label>
+                                <label class="control-label">@lang('web.name')</label>
                                 <div class="controls">
                                     <input id="guest_id" type="hidden" name="guest_id" value="{{old('guest_id')}}">
                                     <input id="report_name" value="{{old('report_name')}}" required type="text" name="report_name" />
-                                    <a href="#modalFindGuest" data-toggle="modal" class="btn btn-inverse">Find Guest</a>
+                                    <a href="#modalFindGuest" data-toggle="modal" class="btn btn-inverse">@lang('web.findGuest')</a>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Address</label>
+                                <label class="control-label">@lang('web.address')</label>
                                 <div class="controls">
                                     <textarea id="report_address" name="report_address">{{old('report_address')}}</textarea>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Phone</label>
+                                <label class="control-label">@lang('web.phone')</label>
                                 <div class="controls">
                                     <input id="phone" type="text" value="{{old('phone')}}" name="phone" />
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Email</label>
+                                <label class="control-label">@lang('web.email')</label>
                                 <div class="controls">
                                     <input id="email" type="email" value="{{old('email')}}" name="email" />
                                 </div>
@@ -102,7 +102,7 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="SAVE">
+            <input type="submit" class="btn btn-primary" style="display: block;width: 100%" value="@lang('web.save')">
         </div>
         </form>
     </div>
@@ -110,17 +110,17 @@
     <div id="modalFindGuest" class="modal hide">
         <div class="modal-header">
             <button data-dismiss="modal" class="close" type="button">×</button>
-            <h3>Find Guest</h3>
+            <h3>@lang('web.findGuest')</h3>
         </div>
         <div class="modal-body">
             <form id="searchGuestForm" class="form-horizontal">
                 {{csrf_field()}}
                 <div id="form-search-guest" class="step">
                     <div class="control-group">
-                        <label class="control-label">Filter Guest By Name or ID</label>
+                        <label class="control-label">@lang('web.searchName')</label>
                         <div class="controls">
                             <input id="searchguest" name="query" type="text" />
-                            <input type="submit" value="Search" class="btn btn-primary" />
+                            <input type="submit" value="@lang('web.submitSearch')" class="btn btn-primary" />
                         </div>
                     </div>
                 </div>
@@ -128,9 +128,9 @@
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>@lang('web.name')</th>
                     <th>ID</th>
-                    <th>Action</th>
+                    <th>@lang('web.action')</th>
                 </tr>
                 </thead>
                 <tbody id="listGuest">
@@ -143,7 +143,7 @@
                                data-religion="{{$val['religion']}}" data-gender="{{$val['gender']}}" data-job="{{$val['job']}}" data-birthplace="{{$val['birthplace']}}"
                                data-address="{{$val['address']}}" data-countryid="{{$val['country_id']}}" data-provinceid="{{$val['province_id']}}"
                                data-zipcode="{{$val['zipcode']}}" data-homephone="{{$val['homephone']}}" data-handphone="{{$val['handphone']}}" data-guesttitle="{{$val['title']}}"
-                               id="guest-{{$val['guest_id']}}" class="btn btn-success chooseGuest">Choose</a></td>
+                               id="guest-{{$val['guest_id']}}" class="btn btn-success chooseGuest">@lang('web.choose')</a></td>
                     </tr>
                 @endforeach
                 </tbody>

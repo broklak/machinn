@@ -229,19 +229,19 @@
 
         if(room_plan == 0){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please choose room plan</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.roomPlanNull')</div>');
         }
         if(partner_id == 0){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please choose source</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.sourceNull')</div>');
         }
         if(checkout == ''){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please input checkout date</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.checkoutDateNull')</div>');
         }
         if(room == ''){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please select room</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.roomNull')</div>');
         }
 
         if(err == 1){
@@ -262,7 +262,7 @@
 
         if(grand_total == '0'){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please select minimum 1 item</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('web.minimumOneItem')</div>');
         }
 
         if(err == 1){
@@ -314,7 +314,7 @@
         if(parseInt(disc) > parseInt(subtotal)){
             disc = 0;
             elem.val(disc);
-            alert('Discount cannot be bigger than total')
+            alert('@lang('msg.discountBiggerTotal')')
         }
         var total = parseInt($('#qty-'+id_item_qty).val()) * parseInt($('#price-'+id_item_qty).val()) - parseInt(disc);
         $('#total-'+id_item_qty).html(toMoney(total));

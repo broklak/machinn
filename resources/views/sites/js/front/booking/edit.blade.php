@@ -189,7 +189,7 @@
                 success     : function (result){
                     $('#province_id').html("");
                     obj = JSON.parse(result);
-                    $('#province_id').append('<option disabled selected>Choose Province</option>');
+                    $('#province_id').append('<option disabled selected>@lang('web.choose')</option>');
                     $.each(obj, function(key, value) {
                         $('#province_id').append('<option value="'+value.province_id+'">'+value.province_name+'</option>');
                     });
@@ -387,27 +387,27 @@
 
         if(type == undefined){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please choose booking type</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.bookingTypeNull')</div>');
         }
         if(room_plan == 0){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please choose room plan</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.roomPlanNull')</div>');
         }
         if(partner_id == 0){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please choose source</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.sourceNull')</div>');
         }
         if(checkin == ''){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please input checkin date</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.checkinDateNull')</div>');
         }
         if(checkout == ''){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please input checkout date</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.checkoutDateNull')</div>');
         }
-        if(room == ''){
+        if(room == '' || room.length < 2){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please select room</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.roomNull')</div>');
         }
 
         if(guest == ''){
@@ -415,43 +415,43 @@
             var first_name = $('#first_name').val();
             var id_type = $('#id_type').val();
             var id_number = $('#id_number').val();
-            var birthdate = $('#birthdate').val();
             var handphone = $('#handphone').val();
+            var birthdate = $('#birthdate').val();
             var gender = $('input[type=radio][name=gender]:checked').val();
             var country_id = $('#country_id').val();
             var religion = $('#religion').val();
 
             if(title == undefined){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please choose guest title name</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestTitleNull')</div>');
             }
             if(first_name == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest first name</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestNameNull')</div>');
             }
             if(id_type == 0){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest ID type</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestIDTypeNull')</div>');
             }
             if(id_number == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest ID number</div>');
-            }
-            if(birthdate == ''){
-                err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest birthdate</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestIDNumberNull')</div>');
             }
             if(handphone == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest handphone number</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestPhoneNull')</div>');
+            }
+            if(birthdate == ''){
+                err = 1;
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestBirthdateNull')</div>');
             }
             if(gender == undefined){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest gender</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestGenderNull')</div>');
             }
             if(religion == 0){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please select guest religion</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestReligionNull')</div>');
             }
         }
 
@@ -461,11 +461,11 @@
 
             if(payment_method == 0){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please select payment method</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.paymentMethodNull')</div>');
             }
             if(down_payment_amount == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input down payment amount</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.downPaymentNull')</div>');
             }
 
         }

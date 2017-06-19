@@ -7,13 +7,13 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Cash and Bank Account</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('web.cashBankAccount')</a> </div>
+        <h1>@lang('web.cashBankAccount')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         @if($user['employee_type_id'] == 1)
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New Cash and Bank Account</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">@lang('web.addButton') @lang('web.cashBankAccount')</a>
         @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">
@@ -23,12 +23,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Opening Balance</th>
-                                <th>Opening Date</th>
+                                <th>@lang('web.name')</th>
+                                <th>@lang('web.desc')</th>
+                                <th>@lang('master.cashBankOpenBalance')</th>
+                                <th>@lang('master.cashBankOpenDate')</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -42,11 +42,11 @@
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->cash_account_status)!!}</td>
                                         <td>
                                             @if($user['employee_type_id'] == 1)
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->cash_account_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->cash_account_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
                                             @if($val->type == 1)
-                                            <a onclick="return confirm('You will delete {{$val->cash_account_name}}, continue? ')"
+                                            <a onclick="return confirm('@lang('msg.confirmDelete', ['data' => $val->cash_account_name])')"
                                                class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->cash_account_id])}}"
-                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> @lang('web.delete')
                                             </a>
                                             @endif
                                             @endif
@@ -55,7 +55,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="3" style="text-align: center">No Data Found</td>
+                                    <td colspan="3" style="text-align: center">@lang('masg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

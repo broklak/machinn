@@ -5,11 +5,11 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">{{$master_module}}</a> <a href="#" class="current">Create {{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">@lang('module.itemCategory')</a> <a href="#" class="current">@lang('web.add') @lang('module.itemCategory')</a> </div>
+        <h1>@lang('module.itemCategory')</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
+        <a class="btn btn-success" href="javascript:history.back()">@lang('web.view') Data</a>
         @foreach($errors->all() as $message)
             <div style="margin: 20px 0" class="alert alert-error">
                 {{$message}}
@@ -19,40 +19,40 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Add New {{$master_module}}</h5>
+                        <h5>@lang('web.addButton') @lang('module.itemCategory')</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <form id="form-wizard" class="form-horizontal" action="{{route("$route_name.store")}}" method="post">
                             {{csrf_field()}}
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
-                                    <label class="control-label">Name</label>
+                                    <label class="control-label">@lang('web.name')</label>
                                     <div class="controls">
                                         <input id="name" value="{{old('name')}}" required type="text" name="name" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Description</label>
+                                    <label class="control-label">@lang('web.desc')</label>
                                     <div class="controls">
                                         <textarea name="desc">{{old('desc')}}</textarea>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Type</label>
+                                    <label class="control-label">@lang('web.type')</label>
                                     <div class="controls">
-                                        <input @if(old('type') == 1) checked @endif type="radio" value="1" name="type" id="food"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="food">Food</label>
-                                        <input @if(old('type') == 2) checked @endif type="radio" value="2" name="type" id="beve"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="beve">Beverages</label>
+                                        <input @if(old('type') == 1) checked @endif type="radio" value="1" name="type" id="food"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="food">@lang('web.menuTypeFood')</label>
+                                        <input @if(old('type') == 2) checked @endif type="radio" value="2" name="type" id="beve"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="beve">@lang('web.menuTypeBeverage')</label>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">Discount (%)</label>
+                                    <label class="control-label">@lang('web.discount') (%)</label>
                                     <div class="controls">
                                         <input id="percentage" value="{{old('percentage')}}" type="text" name="discount" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <input id="next" class="btn btn-primary" type="submit" value="Save" />
+                                <input id="next" class="btn btn-primary" type="submit" value="@lang('web.save')" />
                                 <div id="status"></div>
                             </div>
                             <div id="submitted"></div>

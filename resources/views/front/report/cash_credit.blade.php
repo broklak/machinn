@@ -7,17 +7,16 @@
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
         <h1>
-            @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.down-payment' || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.down-payment') Deposit
-            @else Cash and Credit
+            @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.down-payment' || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.down-payment') @lang('module.depositReport')
+            @else @lang('module.cashCreditReport')
             @endif
-            {{$master_module}}
         </h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Report Time</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                     <form>
                         <select onchange="this.form.submit()" name="month">
@@ -30,14 +29,14 @@
                                 <option @if($year == $year-$x) selected @endif>{{$year - $x}}</option>
                             @endfor
                         </select>
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </form>
                 </div>
                 <div style="float: right">
                     @if(\Illuminate\Support\Facades\Route::CurrentRouteName() == 'report.down-payment' || \Illuminate\Support\Facades\Route::CurrentRouteName() == 'back.report.down-payment')
-                        <a href="{{route('back.excel.deposit')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                        <a href="{{route('back.excel.deposit')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">@lang('web.exportCsv')</a>
                     @else
-                        <a href="{{route('back.excel.cashCredit')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                        <a href="{{route('back.excel.cashCredit')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">@lang('web.exportCsv')</a>
                     @endif
                 </div>
                 <div style="clear: both;"></div>
@@ -53,10 +52,10 @@
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#total">TOTAL</a></li>
-                            <li><a data-toggle="tab" href="#cashfo">CASH FO </a></li>
-                            <li><a data-toggle="tab" href="#cashbo">CASH BO</a></li>
-                            <li><a data-toggle="tab" href="#credit">CREDIT</a></li>
-                            <li><a data-toggle="tab" href="#bank">BOOKING TRANSFER</a></li>
+                            <li><a data-toggle="tab" href="#cashfo">@lang('web.paymentMethodDescriptionCashFront')</a></li>
+                            <li><a data-toggle="tab" href="#cashbo">@lang('web.paymentMethodDescriptionCashBack')</a></li>
+                            <li><a data-toggle="tab" href="#credit">@lang('web.credit')</a></li>
+                            <li><a data-toggle="tab" href="#bank">@lang('web.bankTransfer')</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
@@ -64,16 +63,16 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <td>DATE</td>
-                                    <td>BOOKING CODE</td>
-                                    <td>ROOM</td>
-                                    <td>CASH</td>
-                                    <td>CREDIT</td>
-                                    <td>BANK TRANSFER</td>
+                                    <td>{{strtoupper(__('web.date'))}}</td>
+                                    <td>{{strtoupper(__('web.bookingCode'))}}</td>
+                                    <td>{{strtoupper(__('web.room'))}}</td>
+                                    <td>{{strtoupper(__('web.cash'))}}</td>
+                                    <td>{{strtoupper(__('web.credit'))}}</td>
+                                    <td>{{strtoupper(__('web.bankTransfer'))}}</td>
                                     <td>TOTAL</td>
                                     <td>MDR</td>
-                                    <td>TOTAL AFTER MDR</td>
-                                    <td>RECEIVE BY</td>
+                                    <td>TOTAL {{strtoupper(__('web.after'))}} MDR</td>
+                                    <td>{{strtoupper(__('web.receiveBy'))}}</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -99,7 +98,7 @@
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="14" style="text-align: center">No Data Found</td>
+                                        <td colspan="14" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                                 </tbody>
@@ -109,11 +108,11 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <td>DATE</td>
-                                    <td>BOOKING CODE</td>
-                                    <td>ROOM</td>
+                                    <td>{{strtoupper(__('web.date'))}}</td>
+                                    <td>{{strtoupper(__('web.bookingCode'))}}</td>
+                                    <td>{{strtoupper(__('web.room'))}}</td>
                                     <td>TOTAL</td>
-                                    <td>RECEIVE BY</td>
+                                    <td>{{strtoupper(__('web.receiveBy'))}}</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -134,7 +133,7 @@
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="14" style="text-align: center">No Data Found</td>
+                                        <td colspan="14" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                                 </tbody>
@@ -145,11 +144,11 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <td>DATE</td>
-                                    <td>BOOKING CODE</td>
-                                    <td>ROOM</td>
+                                    <td>{{strtoupper(__('web.date'))}}</td>
+                                    <td>{{strtoupper(__('web.bookingCode'))}}</td>
+                                    <td>{{strtoupper(__('web.room'))}}</td>
                                     <td>TOTAL</td>
-                                    <td>RECEIVE BY</td>
+                                    <td>{{strtoupper(__('web.receiveBy'))}}</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -170,7 +169,7 @@
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="14" style="text-align: center">No Data Found</td>
+                                        <td colspan="14" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                                 </tbody>
@@ -181,13 +180,13 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <td>DATE</td>
-                                    <td>BOOKING CODE</td>
-                                    <td>ROOM</td>
-                                    <td>CARD TYPE</td>
+                                    <td>{{strtoupper(__('web.date'))}}</td>
+                                    <td>{{strtoupper(__('web.bookingCode'))}}</td>
+                                    <td>{{strtoupper(__('web.room'))}}</td>
+                                    <td>{{strtoupper(__('web.cardType'))}}</td>
                                     <td>BANK</td>
                                     <td>TOTAL</td>
-                                    <td>RECEIVE BY</td>
+                                    <td>{{strtoupper(__('web.receiveBy'))}}</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -210,7 +209,7 @@
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="14" style="text-align: center">No Data Found</td>
+                                        <td colspan="14" style="text-align: center">{{strtoupper(__('msg.noData'))}}</td>
                                     </tr>
                                 @endif
                                 </tbody>
@@ -221,12 +220,12 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <td>DATE</td>
-                                    <td>BOOKING CODE</td>
-                                    <td>ROOM</td>
-                                    <td>CASH ACCOUNT</td>
+                                    <td>{{strtoupper(__('web.date'))}}</td>
+                                    <td>{{strtoupper(__('web.bookingCode'))}}</td>
+                                    <td>{{strtoupper(__('web.room'))}}</td>
+                                    <td>{{strtoupper(__('web.cashBankAccount'))}}</td>
                                     <td>TOTAL</td>
-                                    <td>RECEIVE BY</td>
+                                    <td>{{strtoupper(__('web.receiveBy'))}}</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -248,7 +247,7 @@
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="14" style="text-align: center">No Data Found</td>
+                                        <td colspan="14" style="text-align: center">@lang('msg.noData')</td>
                                     </tr>
                                 @endif
                                 </tbody>

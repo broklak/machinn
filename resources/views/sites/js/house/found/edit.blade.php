@@ -38,7 +38,7 @@
                     listEmployee.push('<td>'+value.username+'</td>');
                     listEmployee.push('<td>'+value.department+'</td>');
                     listEmployee.push('<td><a data-dismiss="modal" data-name="'+value.username+'" data-id="'+value.id+'"');
-                    listEmployee.push('class="btn btn-success chooseEmployee">Choose</a></td>')
+                    listEmployee.push('class="btn btn-success chooseEmployee">@lang('web.choose')</a></td>')
                     listEmployee.push('</tr>');
                 });
                 listElement = listEmployee.join(" ");

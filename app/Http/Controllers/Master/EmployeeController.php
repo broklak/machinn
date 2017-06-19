@@ -86,7 +86,7 @@ class EmployeeController extends Controller
         if(!UserRole::checkAccess($subModule = 18, $type = 'read')){
             return view("auth.unauthorized");
         }
-        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? 'User' : 'Employee';
+        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? __('module.userManagement') : __('module.employee');
         $data['url'] = $this->url;
         $data['parent_menu'] = $this->parent;
         $data['model'] = $this->model;
@@ -105,7 +105,7 @@ class EmployeeController extends Controller
         if(!UserRole::checkAccess($subModule = 18, $type = 'create')){
             return view("auth.unauthorized");
         }
-        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? 'User' : 'Employee';
+        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? __('module.userManagement') : __('module.employee');
         $data['url'] = $this->url;
         $data['parent_menu'] = $this->parent;
         $data['religion'] = $this->religion;
@@ -182,7 +182,7 @@ class EmployeeController extends Controller
         if(!UserRole::checkAccess($subModule = 18, $type = 'update')){
             return view("auth.unauthorized");
         }
-        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? 'User' : 'Employee';
+        $data['header'] = (\Illuminate\Support\Facades\Request::segment(1) == 'setting') ? __('module.userManagement') : __('module.employee');
         $data['url'] = $this->url;
         $data['parent_menu'] = $this->parent;
         $data['religion'] = $this->religion;

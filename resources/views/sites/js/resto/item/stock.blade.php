@@ -13,7 +13,7 @@
             data    : {"id":id, "stock":newStock},
             url     : "{{route('ajax.changeStock')}}",
             success : function () {
-                alert('Success to change stock of '+name);
+                alert('@lang('msg.successChangeStock') '+name);
             }
         });
     }
@@ -27,7 +27,7 @@
             data    : {"id":id},
             url     : "{{route('ajax.setOutStock')}}",
             success : function () {
-                alert('Success to change stock of '+name+ ' to out of stock');
+                alert('@lang('msg.successChangeStock') '+name);
                 $('#stock-'+id).val('0');
             }
         });

@@ -35,6 +35,6 @@ class Contact extends Model
     public static function getGroupName ($groupId) {
         $group = ContactGroup::find($groupId);
 
-        return isset($group->contact_group_name) ? $group->contact_group_name : 'DELETED';
+        return isset($group->contact_group_name) ? $group->contact_group_name : __('web.deleted');
     }
 }

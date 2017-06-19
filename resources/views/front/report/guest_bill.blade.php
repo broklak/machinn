@@ -6,13 +6,13 @@
 
     <div id="content-header">
         <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>Guest Bill {{$master_module}}</h1>
+        <h1>@lang('module.guestBillReport')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         <div>
             <div class="control-group">
-                <label class="control-label">Choose Report Time</label>
+                <label class="control-label">@lang('web.chooseDateRange')</label>
                 <div class="controls">
                     <form>
                         <select onchange="this.form.submit()" name="month">
@@ -25,11 +25,11 @@
                                 <option @if($year == date('Y')-$x) selected @endif>{{date('Y') - $x}}</option>
                             @endfor
                         </select>
-                        <input type="submit" style="vertical-align: top" class="btn btn-primary">
+                        <input type="submit" style="vertical-align: top" value="@lang('web.search')" class="btn btn-primary">
                     </form>
                 </div>
                 <div style="float: right">
-                    <a href="{{route('back.excel.guestBill')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">Export to CSV</a>
+                    <a href="{{route('back.excel.guestBill')}}?month={{$numericMonth}}&year={{$year}}" class="btn btn-success">@lang('web.exportCsv')</a>
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -45,24 +45,24 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th rowspan="2">BOOKING CODE</th>
-                                <th rowspan="2">GUEST</th>
-                                <th rowspan="2">ROOM</th>
+                                <th rowspan="2">{{strtoupper(__('web.bookingCode'))}}</th>
+                                <th rowspan="2">{{strtoupper(__('web.guest'))}}</th>
+                                <th rowspan="2">{{strtoupper(__('web.room'))}}</th>
                                 <th rowspan="2">CHECK IN</th>
                                 <th rowspan="2">CHECK OUT</th>
-                                <th colspan="2">GUEST BILL</th>
-                                <th colspan="3">PAYMENT</th>
-                                <th rowspan="2">REFUND</th>
+                                <th colspan="2">{{strtoupper(__('web.guestBill'))}}</th>
+                                <th colspan="3">{{strtoupper(__('web.payment'))}}</th>
+                                <th rowspan="2">{{strtoupper(__('web.refundAmount'))}}</th>
                                 <th rowspan="2">TOTAL</th>
-                                <th rowspan="2">CHECK IN BY</th>
-                                <th rowspan="2">CHECK OUT BY</th>
+                                <th rowspan="2">CHECK IN {{strtoupper(__('web.by'))}}</th>
+                                <th rowspan="2">CHECK OUT {{strtoupper(__('web.by'))}}</th>
                             </tr>
                             <tr>
-                                <th>ROOM</th>
-                                <th>EXTRACHARGE</th>
-                                <th>CASH</th>
-                                <th>CREDIT CARD</th>
-                                <th>BANK TRANSFER</th>
+                                <th>{{strtoupper(__('web.room'))}}</th>
+                                <th>{{strtoupper(__('web.bookingPaymentDescriptionExtra'))}}</th>
+                                <th>{{strtoupper(__('web.cash'))}}</th>
+                                <th>{{strtoupper(__('web.paymentMethodDescriptionCredit'))}}</th>
+                                <th>{{strtoupper(__('web.bankTransfer'))}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -87,7 +87,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="14" style="text-align: center">No Data Found</td>
+                                    <td colspan="14" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

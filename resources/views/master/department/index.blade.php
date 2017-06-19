@@ -5,13 +5,13 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('web.department')</a> </div>
+        <h1>@lang('web.department')</h1>
     </div>
     <div class="container-fluid">
         <hr>
         @if($user['employee_type_id'] == 1)
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">@lang('web.addButton') @lang('web.department')</a>
         @endif
         {!! session('displayMessage') !!}
         <div class="row-fluid">
@@ -21,9 +21,9 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>@lang('web.name')</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -34,14 +34,14 @@
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->department_status)!!}</td>
                                         <td>
                                             @if($user['employee_type_id'] == 1)
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->department_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->department_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
                                             @endif
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="3" style="text-align: center">No Data Found</td>
+                                    <td colspan="3" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

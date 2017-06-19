@@ -123,7 +123,7 @@
                         listGuest.push('<td><a data-dismiss="modal" data-firstname="'+value.first_name+'" data-lastname="'+value.last_name+'"');
                         listGuest.push('data-booking="'+value.booking_id+'"');
                         listGuest.push('data-id="'+value.guest_id+'" data-room="'+value.room_number_id+'" data-roomcode="'+value.room_number_code+'"');
-                        listGuest.push('class="btn btn-success chooseGuest">Choose</a></td>')
+                        listGuest.push('class="btn btn-success chooseGuest">@lang('web.choose')</a></td>')
                         listGuest.push('</tr>');
                     });
                     listElement = listGuest.join(" ");
@@ -199,18 +199,18 @@
 
         if(delivery_type == undefined){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please choose transaction type</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.transactionTypeNull')</div>');
         }
 
         if(delivery_type == 1){
             if(guest_num == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input number of guest</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.numberGuestNull')</div>');
             }
 
             if(table == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please choose table number</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.tableNumberNull')</div>');
             }
         }
 
@@ -218,7 +218,7 @@
             var guest_id = $('#guest_id').val();
             if(guest_id == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest data</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestDataNull')</div>');
             }
         }
 
@@ -226,18 +226,18 @@
             var guest_id = $('#guest_id').val();
             if(guest_id == ''){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please input guest data</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.guestDataNull')</div>');
             }
         }
 
         if(date == ''){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please input transaction date</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.transactionDateNull')</div>');
         }
 
         if(grand_total == '0'){
             err = 1;
-            $('#error_messages').append('<div class="alert alert-error">Please select minimum 1 item</div>');
+            $('#error_messages').append('<div class="alert alert-error">@lang('msg.minimumOneItem')</div>');
         }
 
         if(billed == 1){
@@ -245,7 +245,7 @@
 
             if(payment_method == '0'){
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please select payment method</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.paymentMethodNull')</div>');
             }
         }
 
@@ -299,7 +299,7 @@
         if(parseInt(disc) > parseInt(subtotal)){
             disc = 0;
             elem.val(disc);
-            alert('Discount cannot be bigger than total')
+            alert('@lang('msg.discountBiggerTotal')');
         }
         var total = parseInt($('#qty-'+id_item_qty).val()) * parseInt($('#price-'+id_item_qty).val()) - parseInt(disc);
         $('#total-'+id_item_qty).html(toMoney(total));

@@ -39,7 +39,7 @@
 
             if (payment_method == 0) {
                 err = 1;
-                $('#error_messages').append('<div class="alert alert-error">Please select payment method</div>');
+                $('#error_messages').append('<div class="alert alert-error">@lang('msg.paymentMethodNull')</div>');
             }
 
             if(payment_method == 3){
@@ -51,27 +51,27 @@
 
                 if (number == '') {
                     err = 1;
-                    $('#error_messages').append('<div class="alert alert-error">Please input card number</div>');
+                    $('#error_messages').append('<div class="alert alert-error">@lang('msg.cardNumberNull')</div>');
                 }
 
                 if (holder == '') {
                     err = 1;
-                    $('#error_messages').append('<div class="alert alert-error">Please input card holder</div>');
+                    $('#error_messages').append('<div class="alert alert-error">@lang('msg.cardHolderNull')</div>');
                 }
 
                 if (expired == '') {
                     err = 1;
-                    $('#error_messages').append('<div class="alert alert-error">Please input card expired date</div>');
+                    $('#error_messages').append('<div class="alert alert-error">@lang('msg.cardExpiredNull')</div>');
                 }
 
                 if (type == 0) {
                     err = 1;
-                    $('#error_messages').append('<div class="alert alert-error">Please input card type</div>');
+                    $('#error_messages').append('<div class="alert alert-error">@lang('msg.cardTypeNull')</div>');
                 }
 
                 if (bank == 0) {
                     err = 1;
-                    $('#error_messages').append('<div class="alert alert-error">Please input card bank issuer</div>');
+                    $('#error_messages').append('<div class="alert alert-error">@lang('msg.cardBankNull')</div>');
                 }
             }
 
@@ -79,7 +79,7 @@
                 var cash_account = $('#cash_account_id').val();
                 if (cash_account == 0) {
                     err = 1;
-                    $('#error_messages').append('<div class="alert alert-error">Please input cash account recipient</div>');
+                    $('#error_messages').append('<div class="alert alert-error">@lang('msg.cashRecipientNull')</div>');
                 }
             }
 

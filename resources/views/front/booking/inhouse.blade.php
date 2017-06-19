@@ -7,13 +7,13 @@
     @php $route = (\Illuminate\Support\Facades\Request::segment(1) == 'back') ? 'back.' : '' @endphp
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{($paid) ? 'Guest Payment' : 'In House Guest'}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.inhouseGuest')</a> </div>
+        <h1>{{($paid) ? __('module.guestPayment') : __('module.inhouseGuest')}}</h1>
     </div>
     <div class="container-fluid">
         <div class="legend-status">
-            <span class="checkout-now">&nbsp;</span><span class="legend-title">Need to Checkout Now</span>
-            <span class="checkout-soon">&nbsp;</span><span class="legend-title">Expected Checkout</span>
+            <span class="checkout-now">&nbsp;</span><span class="legend-title">@lang('msg.needToCheckout')</span>
+            <span class="checkout-soon">&nbsp;</span><span class="legend-title">@lang('web.expected') Checkout</span>
         </div>
         <hr>
         {!! session('displayMessage') !!}
@@ -21,14 +21,14 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
-                        <h5>Booking List</h5>
+                        <h5>@lang('module.booking')</h5>
                         <div class="filter-data">
                             <form action="{{route($route.'guest.inhouse')}}">
-                                <input id="guest" name="guest" placeholder="Search By Guest Name" value="{{$filter['guest']}}" type="text" />
+                                <input id="guest" name="guest" placeholder="@lang('web.searchName')" value="{{$filter['guest']}}" type="text" />
                                 <input type="hidden" name="paid" value="{{$paid}}">
                                 <input type="hidden" name="type" value="{{$type}}">
-                                <input id="room_number" name="room_number" placeholder="Search By Room Number" value="{{$filter['room_number']}}" type="text" />
-                                <input type="submit" class="btn btn-primary" value="Search">
+                                <input id="room_number" name="room_number" placeholder="@lang('web.searchRoom')" value="{{$filter['room_number']}}" type="text" />
+                                <input type="submit" class="btn btn-primary" value="@lang('web.search')">
                             </form>
                         </div>
                         <div style="clear: both"></div>
@@ -37,16 +37,16 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Booking Code</th>
-                                <th>Guest Name</th>
-                                <th>Room Number</th>
+                                <th>@lang('web.bookingCode')</th>
+                                <th>@lang('web.guest')</th>
+                                <th>@lang('module.roomNumber')</th>
                                 @if($type != 'housekeep')
-                                    <th>Room Plan</th>
+                                    <th>@lang('web.roomPlan')</th>
                                 @endif
-                                <th>Check In Date</th>
-                                <th>Check Out Date</th>
+                                <th>@lang('web.checkinDate')</th>
+                                <th>@lang('web.checkoutDate')</th>
                                 @if($type != 'housekeep')
-                                    <th>Business Source</th>
+                                    <th>@lang('web.source')</th>
                                     <th>Action</th>
                                 @endif
                             </tr>
@@ -70,24 +70,23 @@
                                                         @if($paid)
                                                             <li>
                                                                 <a href="#" onClick="window.open('{{route('checkin.print-receipt', ['id' => $val->booking_id])}}','pagename','resizable,height=800,width=750');
-                                                                    return false;"><i class="icon-money"></i> Print Receipt</a><noscript>
+                                                                    return false;"><i class="icon-money"></i> @lang('web.printReceipt')</a><noscript>
                                                                     You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
                                                                     </a>
                                                                 </noscript>
                                                             </li>
                                                             <li>
                                                                 <a href="#" onClick="window.open('{{route('checkin.print-bill', ['id' => $val->booking_id])}}','pagename','resizable,height=900,width=950');
-                                                                        return false;"><i class="icon-file-alt"></i> Print Bill</a><noscript>
+                                                                        return false;"><i class="icon-file-alt"></i> @lang('web.printBill')</a><noscript>
                                                                     You need Javascript to use the previous link or use <a href="yourpage.htm" target="_blank">New Page
                                                                     </a>
                                                                 </noscript>
                                                             </li>
-                                                            {{--<li><a href=""><i class="icon-credit-card"></i> Print Receipt</a></li>--}}
                                                         @endif
                                                         @if($val->checkout == 1)
-                                                            <li><a href="{{route('checkin.payment', ['id' => $val->booking_id])}}"><i class="icon-signout"></i> Payment</a></li>
+                                                            <li><a href="{{route('checkin.payment', ['id' => $val->booking_id])}}"><i class="icon-signout"></i> @lang('web.payment')</a></li>
                                                         @endif
-                                                        <li><a href="{{route('checkin.detail', ['id' => $val->booking_id])}}"><i class="icon-file"></i> View Detail</a></li>
+                                                        <li><a href="{{route('checkin.detail', ['id' => $val->booking_id])}}"><i class="icon-file"></i> @lang('web.viewDetail')</a></li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -96,7 +95,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="8" style="text-align: center">No Booking Found</td>
+                                    <td colspan="8" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

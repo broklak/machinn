@@ -5,12 +5,12 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">{{$master_module}}</a> </div>
-        <h1>{{$master_module}}</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">@lang('module.settlement')</a> </div>
+        <h1>@lang('module.settlement')</h1>
     </div>
     <div class="container-fluid">
         <hr>
-        <a class="btn btn-primary" href="{{route("$route_name.create")}}">Add New {{$master_module}}</a>
+        <a class="btn btn-primary" href="{{route("$route_name.create")}}">@lang('web.addButton') @lang('module.settlement')</a>
         {!! session('displayMessage') !!}
         <div class="row-fluid">
             <div class="span12">
@@ -19,10 +19,10 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>@lang('web.name')</th>
                                 <th>Bank</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>@lang('web.action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -33,22 +33,22 @@
                                         <td>{{$model->getBankName($val->settlement_bank_id)}}</td>
                                         <td>{!!\App\Helpers\GlobalHelper::setActivationStatus($val->settlement_status)!!}</td>
                                         <td>
-                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->settlement_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> Edit</a>
-                                            <a onclick="return confirm('You will delete {{$val->settlement_name}}, continue? ')"
+                                            <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->settlement_id])}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
+                                            <a onclick="return confirm('@lang('msg.confirmDelete', ['data' => $val->settlement_name])')"
                                                class="delete-link" style="margin-right: 20px" href="{{route("$route_name.delete", ['id' => $val->settlement_id])}}"
-                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> Delete
+                                               title="delete"><i class="icon-trash" aria-hidden="true"></i> @lang('web.delete')
                                             </a>
                                             @if($val->settlement_status == 0)
-                                                <a onclick="return confirm('You will activate {{$val->settlement_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->settlement_id, 'status' => $val->settlement_status])}}"><i class="icon-check" aria-hidden="true"></i> Set Active</a>
+                                                <a onclick="return confirm('@lang('msg.confirmActivate', ['data' => $val->settlement_name])')" href="{{route("$route_name.change-status", ['id' => $val->settlement_id, 'status' => $val->settlement_status])}}"><i class="icon-check" aria-hidden="true"></i> @lang('web.setActive')</a>
                                             @else
-                                                <a onclick="return confirm('You will deactivate {{$val->settlement_name}}, continue? ')" href="{{route("$route_name.change-status", ['id' => $val->settlement_id, 'status' => $val->settlement_status])}}"><i class="icon-remove" aria-hidden="true"></i> Set Not Active</a>
+                                                <a onclick="return confirm('@lang('msg.confirmNotActivate', ['data' => $val->settlement_name])')" href="{{route("$route_name.change-status", ['id' => $val->settlement_id, 'status' => $val->settlement_status])}}"><i class="icon-remove" aria-hidden="true"></i> @lang('web.setNotActive')</a>
                                             @endif
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="7" style="text-align: center">No Data Found</td>
+                                    <td colspan="7" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>

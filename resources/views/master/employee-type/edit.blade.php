@@ -5,11 +5,11 @@
 @section('content')
 
     <div id="content-header">
-        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">Role</a> <a href="#" class="current">Edit Role</a> </div>
-        <h1>Role Management</h1>
+        <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="{{route("$route_name.index")}}">@lang('module.roleManagement')</a> <a href="#" class="current">@lang('web.edit') @lang('master.role')</a> </div>
+        <h1>@lang('module.roleManagement')</h1>
     </div>
     <div class="container-fluid"><hr>
-        <a class="btn btn-success" href="javascript:history.back()">Back to list</a>
+        <a class="btn btn-success" href="javascript:history.back()">@lang('web.view') Data</a>
         @foreach($errors->all() as $message)
             <div style="margin: 20px 0" class="alert alert-error">
                 {{$message}}
@@ -21,12 +21,12 @@
                     {{csrf_field()}}
                 <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                        <h5>Edit Role Data</h5>
+                        <h5>@lang('web.edit') @lang('master.role')</h5>
                     </div>
                     <div class="widget-content nopadding">
                             <div id="form-wizard-1" class="step">
                                 <div class="control-group">
-                                    <label class="control-label">Role Name</label>
+                                    <label class="control-label">@lang('master.roleName')</label>
                                     <div class="controls">
                                         <input id="name" required type="text" value="{{$row->employee_type_name}}" name="employee_type_name" />
                                     </div>
@@ -42,12 +42,12 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th rowspan="2">Module Name</th>
-                                    <th rowspan="2">Action</th>
-                                    <th>Create</th>
-                                    <th>Read</th>
-                                    <th>Update</th>
-                                    <th>Delete</th>
+                                    <th rowspan="2">@lang('master.moduleName')</th>
+                                    <th rowspan="2">@lang('web.action')</th>
+                                    <th>@lang('master.create')</th>
+                                    <th>@lang('master.read')</th>
+                                    <th>@lang('master.update')</th>
+                                    <th>@lang('master.delete')</th>
                                 </tr>
                                 <tr>
                                     <th><input type="checkbox" onchange="checkAll(this, 'checkCreate')" /></th>
@@ -61,8 +61,8 @@
                                     <tr>
                                         <td>{{$val->submodule_name}}</td>
                                         <td style="text-align: center">
-                                            <a data-id="{{$val->submodule_id}}" id="grant-{{$val->submodule_id}}" onclick="grantAll($(this))" class="btn btn-success">Grant All</a>
-                                            <a data-id="{{$val->submodule_id}}" id="revoke-{{$val->submodule_id}}" onclick="revokeAll($(this))" class="btn btn-danger hide">Revoke All</a>
+                                            <a data-id="{{$val->submodule_id}}" id="grant-{{$val->submodule_id}}" onclick="grantAll($(this))" class="btn btn-success">@lang('master.grantAll')</a>
+                                            <a data-id="{{$val->submodule_id}}" id="revoke-{{$val->submodule_id}}" onclick="revokeAll($(this))" class="btn btn-danger hide">@lang('master.revokeAll')</a>
                                         </td>
                                         <td>
                                             <input @if(\App\UserRole::checkAccess($val->submodule_id, 'create', $row->employee_type_id)) checked @endif
