@@ -177,13 +177,13 @@ class RoomRateDayTypeController extends Controller
      */
     protected function listOfDays() {
         return [
-            '1' => 'Monday',
-            '2' => 'Tuesday',
-            '3' => 'Wednesday',
-            '4' => 'Thursday',
-            '5' => 'Friday',
-            '6' => 'Saturday',
-            '7' => 'Sunday'
+            '1' => __('master.monday'),
+            '2' => __('master.tuesday'),
+            '3' => __('master.wednesday'),
+            '4' => __('master.thursday'),
+            '5' => __('master.friday'),
+            '6' => __('master.saturday'),
+            '7' => __('master.sunday')
         ];
     }
 }

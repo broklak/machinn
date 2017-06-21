@@ -59,4 +59,11 @@ return [
     'settlementName' => 'Nama Cicilan',
     'taxName' => 'Nama Pajak',
     'taxPercentage' => 'Persentase Pajak',
+    'monday' => 'Senin',
+    'tuesday' => 'Selasa',
+    'wednesday' => 'Rabu',
+    'thursday' => 'Kamis',
+    'friday' => 'Jumat',
+    'saturday' => 'Sabtu',
+    'sunday' => 'Minggu',
 ];

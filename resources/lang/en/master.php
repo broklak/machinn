@@ -58,4 +58,12 @@ return [
     'roomTypeName' => 'Room Type Name',
     'settlementName' => 'Settlement Name',
     'taxName' => 'Tax Name',
+    'taxPercentage' => 'Tax Percentage',
+    'monday' => 'Monday',
+    'tuesday' => 'Tuesday',
+    'wednesday' => 'Wednesday',
+    'thursday' => 'Thursday',
+    'friday' => 'Friday',
+    'saturday' => 'Saturday',
+    'sunday' => 'Sunday',
 ];
