@@ -43,7 +43,7 @@
                                         <td>Room</td>
                                         @for ($i = 0; $i < $date_diff; $i++)
                                             <td @if(date('D', strtotime($start) + (86400 * $i)) == 'Sun' || date('D', strtotime($start) + (86400 * $i)) == 'Sat') class="red-date" @endif>
-                                                {{date('d', strtotime($start) + (86400 * $i))}} {{date('M', strtotime($start) + (86400 * $i))}} <br />{{date('D', strtotime($start) + (86400 * $i))}}
+                                                {{date('d', strtotime($start) + (86400 * $i))}} {{date('M', strtotime($start) + (86400 * $i))}} <br />{{__('master.'.strtolower(date('l', strtotime($start) + (86400 * $i))))}}
                                             </td>
                                         @endfor
                                     </tr>
