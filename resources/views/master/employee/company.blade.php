@@ -27,7 +27,7 @@
                                 <div class="control-group">
                                     <label class="control-label">@lang('master.hotelLogo') *@lang('master.logoResolution') 220 X 75 Pixels</label>
                                     <div class="controls">
-                                        <img style="width: 220px;height: 75px;" src="{{($row->logo == null) ? asset('img/matrix/no_image.png') : asset('storage/img/matrix/'.$row->logo) }}">
+                                        <img style="width: 220px;height: 75px;" src="{{($row->logo == null) ? asset('img/matrix/no_image.png') : asset('storage/img/matrix/'.$row->logo) }}?v={{date('s')}}">
                                         <input type="file" name="logo" accept="image/*" >
                                     </div>
                                 </div>

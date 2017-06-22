@@ -1,7 +1,7 @@
 <!--Header-part-->
 <div id="header">
     <a href="#">
-        <img style="height: 75px;width: 220px" src="{{(session('logo') == null) ? asset('img/matrix/no_image.png') : asset('storage/img/matrix/'.session('logo')) }}">
+        <img style="height: 75px;width: 220px" src="{{(session('logo') == null) ? asset('img/matrix/no_image.png') : asset('storage/img/matrix/'.session('logo')) }}?v={{date('s')}}">
     </a>
 </div>
 <!--close-Header-part-->
