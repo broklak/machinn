@@ -100,7 +100,7 @@ class FoundController extends Controller
 
         $this->model->create([
             'date'   => $request->input('date'),
-            'lost_id'   => $request->input('lost_id'),
+            'lost_id'   => ($request->input('lost_id')) ? $request->input('lost_id') : 0,
             'item_name'   => $request->input('item_name'),
             'item_color'   => $request->input('item_color'),
             'item_value'   => $request->input('item_value'),

@@ -25,8 +25,15 @@
                         </div>
                         <div class="widget-content nopadding">
                                 <div id="form-wizard-1" class="step">
-                                    <div class="control-group">
-                                        <label class="control-label">@lang('web.lostItem')</label>
+                                  <div class="control-group">
+                                      <label class="control-label">@lang('web.lostItem')</label>
+                                      <div class="controls">
+                                          <input type="radio" value="1" name="type" id="yes"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="yes">@lang('web.yes')</label>
+                                          <input type="radio" value="2" checked name="type" id="no"><label style="display: inline-table;vertical-align: sub;margin: 0 10px" for="no">@lang('web.no')</label>
+                                      </div>
+                                  </div>
+                                    <div class="control-group hide" id="yes-lost">
+                                        <label class="control-label">Data @lang('web.lostItem')</label>
                                         <div class="controls">
                                             <select id="lost_id" name="lost_id">
                                                 <option value="0">@lang('web.choose')</option>

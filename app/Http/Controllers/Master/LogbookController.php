@@ -187,7 +187,7 @@ class LogbookController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeStatus($id, $status, Request $request) {
-        if(!UserRole::checkAccess($subModule = 10, $type = 'update')){
+        if(!UserRole::checkAccess($subModule = 10, $type = 'update') || !UserRole::checkAccess($subModule = 10, $type = 'delete')){
             return view("auth.unauthorized");
         }
         $data = $this->model->find($id);

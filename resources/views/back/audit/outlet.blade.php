@@ -57,6 +57,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                      @php $total = 0; @endphp
                                     @foreach($rows as $key => $value)
                                         <tr>
                                             <td>{{$value->bill_number}}</td>
@@ -69,11 +70,21 @@
                                                     <a onclick="return confirm('@lang('msg.confirmVoidAudit')')"
                                                        href="{{route('back.night.outlet.void', ['boking_id' => $value->transaction_id])}}" class="btn btn-danger">@lang('web.void') Audit</a>
                                                 @else
-                                                    <input value="{{$value->transaction_id}}" type="checkbox" @if($value->audited == 1) disabled checked @endif name="audit[]">
+                                                    <input value="{{$value->transaction_id}}" data-total={{$value->grand_total}} onclick="addTotal($(this))" type="checkbox" @if($value->audited == 1) disabled checked @endif name="audit[]">
                                                 @endif
                                             </td>
                                         </tr>
+                                        @php $total = $total + $value->grand_total; @endphp
                                     @endforeach
+                                    <tr>
+                                      <td colspan="5" style="text-align: right">Total @lang('web.transaction')</td>
+                                      <td style="text-align: right">{{\App\Helpers\GlobalHelper::moneyFormat($total)}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="5" style="text-align: right">Total Audit</td>
+                                      <input type="hidden" id="total_audit" value="0" />
+                                      <td style="text-align: right" id="total_audit_text">0</td>
+                                    </tr>
                                     @if($status == 0)
                                         <tr>
                                             <td colspan="7" style="text-align: right"><input class="btn btn-primary" value="@lang('web.makeNightAudit')" type="submit"></td>

@@ -342,10 +342,6 @@
         var room = $('#room_number').val();
         var guest = $('#guest_id').val();
 
-        if(type == undefined){
-            err = 1;
-            $('#error_messages').append('<div class="alert alert-error">@lang('msg.bookingTypeNull')</div>');
-        }
         if(room_plan == 0){
             err = 1;
             $('#error_messages').append('<div class="alert alert-error">@lang('msg.roomPlanNull')</div>');

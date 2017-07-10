@@ -9,3 +9,5 @@ Vagrantfile
 Homestead.json
 Homestead.yaml
 .env
+.tags
+.tags1

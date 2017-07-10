@@ -376,10 +376,12 @@
     }
 
     function changeDiscountRate(elem){
+        $('#discount_per_'+id).val('0');
         var id = elem.data('id');
         var rate = $('#discount_'+id).val();
         var subtotal = $('#subtotal_'+id).val();
-
+        var subtotal_ori = $('#subtotal_ori_'+id).val();
+        var percent = 0;
         if(rate != ''){
             rate = rate;
         } else {
@@ -389,6 +391,33 @@
         calculateGrandTotalRate(subtotal, 'minus');
 
         var subtotal_new = parseInt($('#room_rate_'+id).val()) + parseInt($('#plan_rate_'+id).val()) - (parseInt(rate));
+
+        percent = Math.round(rate / subtotal_ori * 100);
+        $('#discount_per_'+id).val(percent);
+        $('#sub_text_'+id).html(toMoney(subtotal_new));
+        $('#subtotal_'+id).val(subtotal_new);
+        calculateGrandTotalRate(subtotal_new, 'plus');
+    }
+
+    function changeDiscountRatePercent(elem){
+        $('#discount_'+id).val('0');
+        var id = elem.data('id');
+        var ratePercent = $('#discount_per_'+id).val();
+        var subtotal_ori = $('#subtotal_ori_'+id).val();
+        var subtotal = $('#subtotal_'+id).val();
+
+        if(ratePercent != ''){
+            ratePercent = ratePercent;
+        } else {
+            ratePercent = 0;
+        }
+
+        calculateGrandTotalRate(subtotal, 'minus');
+
+        rate = Math.round(subtotal_ori * (ratePercent / 100));
+
+        var subtotal_new = parseInt($('#room_rate_'+id).val()) + parseInt($('#plan_rate_'+id).val()) - (rate);
+        $('#discount_'+id).val(rate);
         $('#sub_text_'+id).html(toMoney(subtotal_new));
         $('#subtotal_'+id).val(subtotal_new);
         calculateGrandTotalRate(subtotal_new, 'plus');

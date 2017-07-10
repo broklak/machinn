@@ -311,4 +311,5 @@ return [
     'weekendPrice' => 'Weekends Price',
     'maxAdult' => 'Max Adult',
     'maxChild' => 'Max Child',
+    'transaction' => 'Transaction',
 ];

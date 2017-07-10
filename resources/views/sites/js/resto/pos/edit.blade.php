@@ -65,25 +65,29 @@
             searchGuest($(this));
         });
 
-        function chooseItem (id, name, price) {
+        function chooseItem (id, name, price, qty) {
             var grand_total = $('#grand_total').val();
 
-            $('#list-data').prepend('<tr id="item-'+id+'">' +
-                    '<td>'+name+'</td>' +
-                    '<td>'+toMoney(price)+'</td>' +
-                    '<td><input type="number" name="qty['+id+']" onchange="changeQty($(this))" onkeyup="changeQty($(this))" id="qty-'+id+'" data-id="'+id+'" class="qtyItem" value="1" size="1" style="width: 30px" /><input type="hidden" name="price['+id+']" id="price-'+id+'" value="'+price+'" /></td>' +
-                    '<td><input type="number" name="discount['+id+']" onchange="changeDiscount($(this))" onkeyup="changeDiscount($(this))" data-id="'+id+'" value="0" style="width: 80px" /></td>' +
-                    '<input type="hidden" id="discount-'+id+'" value="0" />' +
-                    '<input type="hidden" name="subtotal['+id+']" id="subtotal-'+id+'" value="'+price+'" />' +
-                    '<td><span id="total-'+id+'">'+toMoney(price)+' &nbsp;</span> <a id="deleteCart-'+id+'" onclick="deleteCart($(this))" data-id="'+id+'" data-price="'+price+'"><i class="icon-2x icon-remove"></i></a></td></tr>'
-            );
+            if(qty < 1){
+              alert('@lang('msg.invalidQty')')
+            } else {
+              $('#list-data').prepend('<tr id="item-'+id+'">' +
+                      '<td>'+name+'</td>' +
+                      '<td>'+toMoney(price)+'</td>' +
+                      '<td><input type="number" name="qty['+id+']" onchange="changeQty($(this))" onkeyup="changeQty($(this))" id="qty-'+id+'" data-id="'+id+'" class="qtyItem" value="1" size="1" style="width: 30px" /><input type="hidden" name="price['+id+']" id="price-'+id+'" value="'+price+'" /></td>' +
+                      '<td><input type="number" name="discount['+id+']" onchange="changeDiscount($(this))" onkeyup="changeDiscount($(this))" data-id="'+id+'" value="0" style="width: 80px" /></td>' +
+                      '<input type="hidden" id="discount-'+id+'" value="0" />' +
+                      '<input type="hidden" name="subtotal['+id+']" id="subtotal-'+id+'" value="'+price+'" />' +
+                      '<td><span id="total-'+id+'">'+toMoney(price)+' &nbsp;</span> <a id="deleteCart-'+id+'" onclick="deleteCart($(this))" data-id="'+id+'" data-price="'+price+'"><i class="icon-2x icon-remove"></i></a></td></tr>'
+              );
 
-            calculateGrandTotal(price, 'plus');
-            $('input[type=number]').focusin(function () {
-                if($(this).val() == '0'){
-                    $(this).val('');
-                }
-            });
+              calculateGrandTotal(price, 'plus');
+              $('input[type=number]').focusin(function () {
+                  if($(this).val() == '0'){
+                      $(this).val('');
+                  }
+              });
+            }
         }
 
         $("#menu").on('input', function () {
@@ -96,8 +100,9 @@
                 var name = val;
                 var price = selected.data('price');
                 var id = selected.data('id');
+                var qty = selected.data('qty');
 
-                chooseItem(id, name, price);
+                chooseItem(id, name, price, qty);
 
                 $(this).val('');
             }

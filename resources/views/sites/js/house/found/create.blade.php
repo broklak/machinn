@@ -6,6 +6,14 @@
         searchEmployee($(this));
     });
 
+    $('input[type=radio][name=type]').change(function() { // IS BANQUET
+      if (this.value == '1') {
+        $('#yes-lost').show();
+      } else {
+        $('#yes-lost').hide();
+      }
+    });
+
     $('#lost_id').change(function () {
         var val = $(this).val();
         var itemname = $('#opt-'+val).data('itemname');

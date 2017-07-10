@@ -39,9 +39,11 @@
                                         <td>
                                             @if($val->done == 0)
                                             <a style="margin-right: 20px" href="{{route("$route_name.edit", ['id' => $val->logbook_id])}}?type={{$type}}" title="Edit"><i class="icon-pencil" aria-hidden="true"></i> @lang('web.edit')</a>
+                                            @if(App\UserRole::checkAccess($subModule = 10, $type = 'update') && App\UserRole::checkAccess($subModule = 10, $type = 'delete'))
                                             <a style="margin-right: 20px" onclick="return confirm('@lang('msg.confirmDelete', ['data' => ''])')" href="{{route("$route_name.change-status", ['id' => $val->logbook_id, 'status' => $val->logbook_status])}}?type={{$type}}">
                                                 <i class="icon-remove" aria-hidden="true"></i> @lang('web.delete')
                                             </a>
+                                            @endif
                                             <a href="{{route("$route_name.done", ['id' => $val->logbook_id])}}?type={{$type}}" title="Set Done"><i class="icon-check" aria-hidden="true"></i> @lang('web.setDone')</a>
                                             @endif
                                         </td>

@@ -38,7 +38,7 @@
                                                         <input @if($row->status != 1) readonly @endif id="menu" type="text" name="menu" list="menu-list" />
                                                         <datalist id="menu-list">
                                                             @foreach($item as $key => $val)
-                                                                <option data-id="{{$val->id}}" data-price="{{$val->cost_sales}}" value="{{$val->name}}"></option>
+                                                                <option data-id="{{$val->id}}" data-price="{{$val->cost_sales}}"  data-qty="{{$val->stock}}" value="{{$val->name}}"></option>
                                                             @endforeach
                                                         </datalist>
                                                     </div>

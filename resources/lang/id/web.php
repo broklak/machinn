@@ -311,4 +311,5 @@ return [
     'weekendPrice' => 'Harga Weekends',
     'maxAdult' => 'Maksimal Dewasa',
     'maxChild' => 'Maksimal Anak Kecil',
+    'transaction' => 'Transaksi',
 ];

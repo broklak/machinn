@@ -70,4 +70,5 @@ return [
     'tableNumberNull' => 'Please input table number',
     'selectCheckinCheckout' => 'Please Select Check In and Check Out Date',
     'needToCheckout' => 'Need to Checkout Now',
+    'invalidQty' => 'Stock of this item is 0',
 ];

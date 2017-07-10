@@ -72,4 +72,5 @@ return [
     'tableNumberNull' => 'Nomor meja harus diisi',
     'selectCheckinCheckout' => 'Pilih Tanggal Check In dan Check Out',
     'needToCheckout' => 'Harus segera checkout',
+    'invalidQty' => 'Jumlah stok tidak memadai',
 ];
