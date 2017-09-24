@@ -12,3 +12,6 @@ Homestead.yaml
 .env
 .tags
 .tags1
+*.yml
+*.dockerfile
+*.conf
