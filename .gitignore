@@ -15,3 +15,4 @@ Homestead.yaml
 *.yml
 *.dockerfile
 *.conf
+step.txt
