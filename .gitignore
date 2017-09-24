@@ -8,6 +8,7 @@ Vagrantfile
 .vagrant
 Homestead.json
 Homestead.yaml
+.DS_Store
 .env
 .tags
 .tags1

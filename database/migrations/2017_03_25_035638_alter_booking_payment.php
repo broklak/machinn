@@ -17,8 +17,6 @@ class AlterBookingPayment extends Migration
             $table->integer('settlement_id')->after('bank')->nullable();
             $table->integer('card_type')->after('total_payment')->comment('only filled if payment method is card. 1:Credit Card 2:Debit Card')->nullable();
             $table->tinyInteger('cc_type_id')->after('bank')->nullable();
-            $table->string('card_number', 50)->nullable()->after('card_type');
-            $table->string('card_name', 100)->nullable()->after('settlement_id');
         });
 
         Schema::table('booking_header', function (Blueprint $table) {
@@ -42,8 +40,6 @@ class AlterBookingPayment extends Migration
             $table->dropColumn('settlement_id');
             $table->dropColumn('card_type');
             $table->dropColumn('cc_type_id');
-            $table->dropColumn('card_number');
-            $table->dropColumn('card_name');
         });
 
         Schema::table('booking_header', function (Blueprint $table) {
