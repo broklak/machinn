@@ -1,7 +1,0 @@
-[
-  {"module_id":1, "module_name":"Master"},
-  {"module_id":2, "module_name":"Front Office"},
-  {"module_id":3, "module_name":"Back Office"},
-  {"module_id":4, "module_name":"POS"},
-  {"module_id":5, "module_name":"House Keeping"}
-]

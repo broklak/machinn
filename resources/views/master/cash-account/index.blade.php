@@ -55,7 +55,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="3" style="text-align: center">@lang('masg.noData')</td>
+                                    <td colspan="6" style="text-align: center">@lang('msg.noData')</td>
                                 </tr>
                             @endif
                             </tbody>
